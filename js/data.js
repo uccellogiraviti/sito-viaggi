@@ -1,0 +1,1532 @@
+/**
+ * data.js - Database Viaggi e Archivio Storico Voli di Giuseppe Ricatti
+ * Dati estratti fedelmente dall'archivio Flighty e dalle tappe personali
+ */
+if (typeof window === "undefined") { var window = typeof globalThis !== "undefined" ? globalThis : this; }
+if (typeof localStorage === "undefined") { var localStorage = { getItem: () => null, setItem: () => {}, removeItem: () => {} }; }
+
+// Coordinate Geografiche di Tutte le Città dell'Archivio
+const CITY_COORDINATES = {
+  // Italia
+  "Roma": [41.9028, 12.4964],
+  "Milano": [45.4642, 9.1900],
+  "Bergamo": [45.6983, 9.6773],
+  "Cagliari": [39.2238, 9.1217],
+  "Lampedusa": [35.5069, 12.6074],
+  "Firenze": [43.7696, 11.2558],
+  "Venezia": [45.4408, 12.3155],
+  "Napoli": [40.8518, 14.2681],
+  "Bari": [41.1171, 16.8719],
+
+  // Caraibi & Americhe
+  "Punta Cana": [18.5820, -68.4055],
+  "New York": [40.7128, -74.0060],
+  "Boston": [42.3601, -71.0589],
+  "Miami": [25.7617, -80.1918],
+  "Los Angeles": [34.0522, -118.2437],
+  "Las Vegas": [36.1699, -115.1398],
+  "San Francisco": [37.7749, -122.4194],
+  "Atlanta": [33.7490, -84.3880],
+  "Città del Guatemala": [14.6349, -90.5069],
+  "Flores": [16.9248, -89.8927],
+  "Cancun": [21.1619, -86.8515],
+  "Città del Messico": [19.4326, -99.1332],
+  "San Paolo": [-23.5505, -46.6333],
+  "Rio de Janeiro": [-22.9068, -43.1729],
+
+  // Europa
+  "Stoccolma": [59.3293, 18.0686],
+  "Parigi": [48.8566, 2.3522],
+  "Rodi": [36.4349, 28.2175],
+  "Dublino": [53.3498, -6.2603],
+  "Atene": [37.9838, 23.7275],
+  "Chania": [35.5138, 24.0180],
+  "Corfù": [39.6243, 19.9217],
+  "Madrid": [40.4168, -3.7038],
+  "Girona": [41.9794, 2.8214],
+  "Siviglia": [37.3891, -5.9845],
+  "Valencia": [39.4699, -0.3763],
+  "La Coruña": [43.3623, -8.4115],
+  "Santiago de Compostela": [42.8782, -8.5448],
+  "Tenerife": [28.2916, -16.6291],
+  "Amsterdam": [52.3676, 4.9041],
+  "Porto": [41.1579, -8.6291],
+  "Lisbona": [38.7223, -9.1393],
+  "Billund": [55.7303, 9.1158],
+  "Copenaghen": [55.6761, 12.5683],
+  "Francoforte": [50.1109, 8.6821],
+  "Berlino": [52.5200, 13.4050],
+  "Londra": [51.5074, -0.1278],
+  "Birmingham": [52.4862, -1.8904],
+  "Edimburgo": [55.9533, -3.1883],
+  "Bruxelles": [50.8503, 4.3517],
+  "La Valletta": [35.8989, 14.5146],
+  "Vienna": [48.2082, 16.3738],
+  "Bucarest": [44.4268, 26.1025],
+  "Helsinki": [60.1699, 24.9384],
+  "Rovaniemi": [66.5039, 25.7294],
+  "Vilnius": [54.6872, 25.2797],
+  "Riga": [56.9496, 24.1052],
+  "Zurigo": [47.3769, 8.5417],
+
+  // Africa & Medio Oriente
+  "Sharm el-Sheikh": [27.9158, 34.3299],
+  "Il Cairo": [30.0444, 31.2357],
+  "Fès": [34.0181, -5.0078],
+  "Monastir": [35.7643, 10.8113],
+  "Dubai": [25.2048, 55.2708],
+  "Doha": [25.2854, 51.5310],
+  "Jeddah": [21.5433, 39.1728],
+
+  // Asia & Oceania
+  "Tokyo": [35.6762, 139.6503],
+  "Pechino": [39.9042, 116.4074],
+  "Xi'an": [34.3416, 108.9398],
+  "Shanghai": [31.2304, 121.4737],
+  "Hong Kong": [22.3193, 114.1694],
+  "Giacarta": [-6.2088, 106.8456],
+  "Yogyakarta": [-7.7956, 110.3695],
+  "Bali": [-8.3405, 115.0920],
+  "Singapore": [1.3521, 103.8198],
+  "Kuala Lumpur": [3.1390, 101.6869],
+  "Bangkok": [13.7563, 100.5018],
+  "Koh Samui": [9.5120, 100.0136],
+  "Chiang Mai": [18.7883, 98.9853],
+  "Seoul": [37.5665, 126.9780],
+  "Sydney": [-33.8688, 151.2093],
+  "Melbourne": [-37.8136, 144.9631],
+  "Adelaide": [-34.9285, 138.6007],
+  "Cairns": [-16.9186, 145.7781]
+};
+
+// Dizionario Completo Nomi Paesi (Italiano, ISO, Continente, Bandiera)
+const COUNTRY_NAME_MAP = {
+  "italia": { iso: "ITA", name: "Italia", continent: "Europa", flag: "🇮🇹" },
+  "repubblica dominicana": { iso: "DOM", name: "Repubblica Dominicana", continent: "Americhe", flag: "🇩🇴" },
+  "egitto": { iso: "EGY", name: "Egitto", continent: "Africa", flag: "🇪🇬" },
+  "svezia": { iso: "SWE", name: "Svezia", continent: "Europa", flag: "🇸🇪" },
+  "francia": { iso: "FRA", name: "Francia", continent: "Europa", flag: "🇫🇷" },
+  "grecia": { iso: "GRC", name: "Grecia", continent: "Europa", flag: "🇬🇷" },
+  "irlanda": { iso: "IRL", name: "Irlanda", continent: "Europa", flag: "🇮🇪" },
+  "spagna": { iso: "ESP", name: "Spagna", continent: "Europa", flag: "🇪🇸" },
+  "stati uniti": { iso: "USA", name: "Stati Uniti d'America", continent: "Americhe", flag: "🇺🇸" },
+  "stati uniti d'america": { iso: "USA", name: "Stati Uniti d'America", continent: "Americhe", flag: "🇺🇸" },
+  "paesi bassi": { iso: "NLD", name: "Paesi Bassi", continent: "Europa", flag: "🇳🇱" },
+  "portogallo": { iso: "PRT", name: "Portogallo", continent: "Europa", flag: "🇵🇹" },
+  "guatemala": { iso: "GTM", name: "Guatemala", continent: "Americhe", flag: "🇬🇹" },
+  "messico": { iso: "MEX", name: "Messico", continent: "Americhe", flag: "🇲🇽" },
+  "danimarca": { iso: "DNK", name: "Danimarca", continent: "Europa", flag: "🇩🇰" },
+  "germania": { iso: "DEU", name: "Germania", continent: "Europa", flag: "🇩🇪" },
+  "giappone": { iso: "JPN", name: "Giappone", continent: "Asia", flag: "🇯🇵" },
+  "marocco": { iso: "MAR", name: "Marocco", continent: "Africa", flag: "🇲🇦" },
+  "brasile": { iso: "BRA", name: "Brasile", continent: "Americhe", flag: "🇧🇷" },
+  "cina": { iso: "CHN", name: "Cina", continent: "Asia", flag: "🇨🇳" },
+  "hong kong": { iso: "HKG", name: "Hong Kong", continent: "Asia", flag: "🇭🇰" },
+  "regno unito": { iso: "GBR", name: "Regno Unito", continent: "Europa", flag: "🇬🇧" },
+  "tunisia": { iso: "TUN", name: "Tunisia", continent: "Africa", flag: "🇹🇳" },
+  "belgio": { iso: "BEL", name: "Belgio", continent: "Europa", flag: "🇧🇪" },
+  "malta": { iso: "MLT", name: "Malta", continent: "Europa", flag: "🇲🇹" },
+  "romania": { iso: "ROU", name: "Romania", continent: "Europa", flag: "🇷🇴" },
+  "emirati arabi uniti": { iso: "ARE", name: "Emirati Arabi Uniti", continent: "Asia", flag: "🇦🇪" },
+  "australia": { iso: "AUS", name: "Australia", continent: "Oceania", flag: "🇦🇺" },
+  "austria": { iso: "AUT", name: "Austria", continent: "Europa", flag: "🇦🇹" },
+  "arabia saudita": { iso: "SAU", name: "Arabia Saudita", continent: "Asia", flag: "🇸🇦" },
+  "indonesia": { iso: "IDN", name: "Indonesia", continent: "Asia", flag: "🇮🇩" },
+  "singapore": { iso: "SGP", name: "Singapore", continent: "Asia", flag: "🇸🇬" },
+  "malesia": { iso: "MYS", name: "Malesia", continent: "Asia", flag: "🇲🇾" },
+  "finlandia": { iso: "FIN", name: "Finlandia", continent: "Europa", flag: "🇫🇮" },
+  "lituania": { iso: "LTU", name: "Lituania", continent: "Europa", flag: "🇱🇹" },
+  "lettonia": { iso: "LVA", name: "Lettonia", continent: "Europa", flag: "🇱🇻" },
+  "thailandia": { iso: "THA", name: "Thailandia", continent: "Asia", flag: "🇹🇭" },
+  "corea del sud": { iso: "KOR", name: "Corea del Sud", continent: "Asia", flag: "🇰🇷" },
+  "svizzera": { iso: "CHE", name: "Svizzera", continent: "Europa", flag: "🇨🇭" },
+  "norvegia": { iso: "NOR", name: "Norvegia", continent: "Europa", flag: "🇳🇴" },
+  "islanda": { iso: "ISL", name: "Islanda", continent: "Europa", flag: "🇮🇸" },
+  "argentina": { iso: "ARG", name: "Argentina", continent: "Americhe", flag: "🇦🇷" },
+  "cile": { iso: "CHL", name: "Cile", continent: "Americhe", flag: "🇨🇱" },
+  "namibia": { iso: "NAM", name: "Namibia", continent: "Africa", flag: "🇳🇦" },
+  "sudafrica": { iso: "ZAF", name: "Sudafrica", continent: "Africa", flag: "🇿🇦" },
+  "kenya": { iso: "KEN", name: "Kenya", continent: "Africa", flag: "🇰🇪" },
+  "tanzania": { iso: "TZA", name: "Tanzania", continent: "Africa", flag: "🇹🇿" },
+  "peru": { iso: "PER", name: "Perù", continent: "Americhe", flag: "🇵🇪" },
+  "colombia": { iso: "COL", name: "Colombia", continent: "Americhe", flag: "🇨🇴" },
+  "canada": { iso: "CAN", name: "Canada", continent: "Americhe", flag: "🇨🇦" },
+  "cuba": { iso: "CUB", name: "Cuba", continent: "Americhe", flag: "🇨🇺" },
+  "costa rica": { iso: "CRI", name: "Costa Rica", continent: "Americhe", flag: "🇨🇷" },
+  "turchia": { iso: "TUR", name: "Turchia", continent: "Europa", flag: "🇹🇷" },
+  "croazia": { iso: "HRV", name: "Croazia", continent: "Europa", flag: "🇭🇷" },
+  "polonia": { iso: "POL", name: "Polonia", continent: "Europa", flag: "🇵🇱" },
+  "repubblica ceca": { iso: "CZE", name: "Repubblica Ceca", continent: "Europa", flag: "🇨🇿" },
+  "ungheria": { iso: "HUN", name: "Ungheria", continent: "Europa", flag: "🇭🇺" },
+  "giordania": { iso: "JOR", name: "Giordania", continent: "Asia", flag: "🇯🇴" },
+  "israele": { iso: "ISR", name: "Israele", continent: "Asia", flag: "🇮🇱" },
+  "nuova zelanda": { iso: "NZL", name: "Nuova Zelanda", continent: "Oceania", flag: "🇳🇿" },
+  "vietnam": { iso: "VNM", name: "Vietnam", continent: "Asia", flag: "🇻🇳" },
+  "cambogia": { iso: "KHM", name: "Cambogia", continent: "Asia", flag: "🇰🇭" },
+  "filippine": { iso: "PHL", name: "Filippine", continent: "Asia", flag: "🇵🇭" },
+  "india": { iso: "IND", name: "India", continent: "Asia", flag: "🇮🇳" },
+  "maldive": { iso: "MDV", name: "Maldive", continent: "Asia", flag: "🇲🇻" },
+  "mauritius": { iso: "MUS", name: "Mauritius", continent: "Africa", flag: "🇲🇺" },
+  "seychelles": { iso: "SYC", name: "Seychelles", continent: "Africa", flag: "🇸🇨" },
+  "nepal": { iso: "NPL", name: "Nepal", continent: "Asia", flag: "🇳🇵" },
+  "sri lanka": { iso: "LKA", name: "Sri Lanka", continent: "Asia", flag: "🇱🇰" },
+  "albania": { iso: "ALB", name: "Albania", continent: "Europa", flag: "🇦🇱" },
+  "montenegro": { iso: "MNE", name: "Montenegro", continent: "Europa", flag: "🇲🇪" },
+  "serbia": { iso: "SRB", name: "Serbia", continent: "Europa", flag: "🇷🇸" },
+  "slovenia": { iso: "SVN", name: "Slovenia", continent: "Europa", flag: "🇸🇮" },
+  "slovacchia": { iso: "SVK", name: "Slovacchia", continent: "Europa", flag: "🇸🇰" },
+  "estonia": { iso: "EST", name: "Estonia", continent: "Europa", flag: "🇪🇪" }
+};
+
+// Funzione globale che restituisce tutti i paesi per il selettore multi-paese
+window.getAllWorldCountries = function() {
+  const map = new Map();
+  // 1. Aggiungi i paesi dal dizionario italiano con bandiera
+  for (const [key, val] of Object.entries(COUNTRY_NAME_MAP)) {
+    const code = val.iso.toUpperCase();
+    if (!map.has(code)) {
+      map.set(code, {
+        name: val.name,
+        code: code,
+        continent: val.continent,
+        flag: val.flag
+      });
+    }
+  }
+  // 2. Integra i paesi dal GeoJSON mondiale se presenti
+  if (window.WORLD_GEOJSON && window.WORLD_GEOJSON.features) {
+    window.WORLD_GEOJSON.features.forEach(f => {
+      const p = f.properties || {};
+      const code = (p.adm0_a3 || p.iso_a3 || p.sov_a3 || "").toUpperCase().trim();
+      if (code && !map.has(code) && p.name) {
+        let cont = p.continent || "Mondo";
+        if (cont === "Europe") cont = "Europa";
+        if (cont === "North America" || cont === "South America") cont = "Americhe";
+        map.set(code, {
+          name: p.name,
+          code: code,
+          continent: cont,
+          flag: "🌐"
+        });
+      }
+    });
+  }
+  return Array.from(map.values()).sort((a, b) => a.name.localeCompare(b.name, 'it'));
+};
+
+// Funzione helper per ottenere la bandiera emoji dal nome nazione
+window.getCountryFlagByName = function(name) {
+  if (!name) return null;
+  const clean = name.trim().toLowerCase();
+  for (const [key, val] of Object.entries(COUNTRY_NAME_MAP)) {
+    if (key.toLowerCase() === clean || val.name.toLowerCase() === clean) {
+      return val.flag;
+    }
+  }
+  if (window.TRIPADVISOR_COUNTRIES_LIST && Array.isArray(window.TRIPADVISOR_COUNTRIES_LIST)) {
+    const found = window.TRIPADVISOR_COUNTRIES_LIST.find(c => c.name.toLowerCase() === clean);
+    if (found) return found.flag;
+  }
+  return null;
+};
+
+// Funzione helper per estrarre tutte le bandiere delle nazioni visitate in un viaggio
+// Regola richiesta: include solo le nazioni di destinazione reale visitate ed ESCLUDE scali aeroportuali di solo transito (es. Doha/Qatar, Zurigo solo cambio volo)
+window.getTripFlags = function(trip) {
+  if (!trip) return "📍";
+
+  // 1. Se ha già un array di bandiere multiple salvate
+  if (trip.flags && Array.isArray(trip.flags) && trip.flags.length > 0) {
+    return trip.flags.join(" ");
+  }
+
+  // 2. Se ha più paesi visitati nel titolo/campo country (es. "Thailandia & Corea del Sud", "Cina & Svizzera")
+  const countryStr = trip.country || "";
+  const parts = countryStr.split(/[&,/+]/).map(s => s.trim()).filter(Boolean);
+  const detectedFlags = [];
+
+  parts.forEach(part => {
+    let name = part;
+    if (part.includes("Regno Unito") || part.includes("Inghilterra")) name = "Regno Unito";
+    else if (part.includes("Stati Uniti") || part.includes("USA")) name = "Stati Uniti";
+    else if (part.includes("Corea")) name = "Corea del Sud";
+    else if (part.includes("Svizzera")) name = "Svizzera";
+    else if (part.includes("Thailandia")) name = "Thailandia";
+    else if (part.includes("Cina")) name = "Cina";
+    else if (part.includes("Spagna")) name = "Spagna";
+    else if (part.includes("Francia")) name = "Francia";
+    else if (part.includes("Giappone")) name = "Giappone";
+    else if (part.includes("Indonesia")) name = "Indonesia";
+    else if (part.includes("Australia")) name = "Australia";
+
+    const f = window.getCountryFlagByName(name) || window.getCountryFlagByName(part);
+    if (f && !detectedFlags.includes(f)) {
+      detectedFlags.push(f);
+    }
+  });
+
+  if (detectedFlags.length > 0) {
+    return detectedFlags.join(" ");
+  }
+
+  return trip.flag || "📍";
+};
+
+// I 52 VIAGGI REALI DI GIUSEPPE RICATTI ESTRATTI DALL'ARCHIVIO VOLI
+const REAL_FLIGHT_TRIPS = [
+  {
+    id: "trip-real-01",
+    country: "Repubblica Dominicana",
+    countryCode: "DOM",
+    flag: "🇩🇴",
+    continent: "Americhe",
+    city: "Punta Cana",
+    mainCity: "Punta Cana",
+    coordinates: [18.5820, -68.4055],
+    startDate: "1997-03-25",
+    endDate: "1997-04-03",
+    durationDays: 10,
+    companions: "In famiglia",
+    category: "Caraibi & Mare",
+    imageUrl: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80",
+    description: "Volo Milano Malpensa ➔ Punta Cana (PUJ). Soggiorno caraibico tra palme, barriera corallina e spiagge bianchissime.",
+    highlights: ["Spiaggia di Bavaro", "Barriera corallina caraibica", "Volo transatlantico MXP-PUJ"]
+  },
+  {
+    id: "trip-real-02",
+    country: "Egitto",
+    countryCode: "EGY",
+    flag: "🇪🇬",
+    continent: "Africa",
+    city: "Sharm el-Sheikh",
+    mainCity: "Sharm el-Sheikh",
+    coordinates: [27.9158, 34.3299],
+    startDate: "1998-03-16",
+    endDate: "1998-03-24",
+    durationDays: 9,
+    companions: "In famiglia",
+    category: "Mare & Snorkeling",
+    imageUrl: "https://images.unsplash.com/photo-1544945582-1a4659b6c934?auto=format&fit=crop&w=800&q=80",
+    description: "Volo MXP ➔ Sharm el-Sheikh (SSH). Esplorazione dei fondali del Mar Rosso e della penisola del Sinai.",
+    highlights: ["Snorkeling tra i coralli", "Deserto del Sinai al tramonto", "Baia di Naama"]
+  },
+  {
+    id: "trip-real-03",
+    country: "Italia",
+    countryCode: "ITA",
+    flag: "🇮🇹",
+    continent: "Europa",
+    city: "Lampedusa",
+    mainCity: "Lampedusa",
+    coordinates: [35.5069, 12.6074],
+    startDate: "2005-08-20",
+    endDate: "2005-09-03",
+    durationDays: 15,
+    companions: "Con amici",
+    category: "Isole & Mare",
+    imageUrl: "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800&q=80",
+    description: "Volo MXP ➔ Lampedusa (LMP) con Gandalf Airlines (GJ1094). Due settimane nella splendida isola delle Pelagie.",
+    highlights: ["Spiaggia dei Conigli", "Giro in barca dell'isola", "Acque cristalline di Cala Pulcino"]
+  },
+  {
+    id: "trip-real-04",
+    country: "Svezia",
+    countryCode: "SWE",
+    flag: "🇸🇪",
+    continent: "Europa",
+    city: "Stoccolma",
+    mainCity: "Stoccolma",
+    coordinates: [59.3293, 18.0686],
+    startDate: "2005-12-10",
+    endDate: "2005-12-14",
+    durationDays: 5,
+    companions: "Con amici",
+    category: "Capitale del Nord",
+    imageUrl: "https://images.unsplash.com/photo-1509356843151-3e7d96241e11?auto=format&fit=crop&w=800&q=80",
+    description: "Volo Bergamo Orio (BGY) ➔ Stoccolma Skavsta (NYO) con Ryanair (FR1944). Atmosfera natalizia svedese tra Gamla Stan e i canali ghiacciati.",
+    highlights: ["Gamla Stan innevata", "Museo Vasa", "Mercatini di Natale di Skansen"]
+  },
+  {
+    id: "trip-real-05",
+    country: "Francia",
+    countryCode: "FRA",
+    flag: "🇫🇷",
+    continent: "Europa",
+    city: "Parigi",
+    mainCity: "Parigi",
+    coordinates: [48.8566, 2.3522],
+    startDate: "2006-01-05",
+    endDate: "2006-01-09",
+    durationDays: 5,
+    companions: "In coppia",
+    category: "Città d'Arte",
+    imageUrl: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=800&q=80",
+    description: "Volo BGY ➔ Parigi Beauvais (BVA) (FR4235/4236). La Ville Lumière all'inizio dell'inverno: Montmartre, il Louvre e la Senna.",
+    highlights: ["Tour Eiffel illuminata", "Museo del Louvre", "Passeggiata a Montmartre"]
+  },
+  {
+    id: "trip-real-06",
+    country: "Grecia",
+    countryCode: "GRC",
+    flag: "🇬🇷",
+    continent: "Europa",
+    city: "Rodi",
+    mainCity: "Rodi",
+    coordinates: [36.4349, 28.2175],
+    startDate: "2006-06-17",
+    endDate: "2006-06-24",
+    durationDays: 8,
+    companions: "Con amici",
+    category: "Mare & Isole",
+    imageUrl: "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?auto=format&fit=crop&w=800&q=80",
+    description: "Volo BGY ➔ Rodi Diagoras (RHO) (Volo 9X760). Una settimana tra la città vecchia dei Cavalieri di San Giovanni e le spiagge di Lindos.",
+    highlights: ["Città medievale fortificata di Rodi", "Acropoli di Lindos", "Spiaggia di Anthony Quinn"]
+  },
+  {
+    id: "trip-real-07",
+    country: "Irlanda",
+    countryCode: "IRL",
+    flag: "🇮🇪",
+    continent: "Europa",
+    city: "Dublino",
+    mainCity: "Dublino",
+    coordinates: [53.3498, -6.2603],
+    startDate: "2007-04-18",
+    endDate: "2007-04-24",
+    durationDays: 7,
+    companions: "Con amici",
+    category: "Cultura & Pubs",
+    imageUrl: "https://images.unsplash.com/photo-1549918864-48ac978761a4?auto=format&fit=crop&w=800&q=80",
+    description: "Volo BGY ➔ Dublino (DUB) (Ryanair FR9429/9428 su Boeing 737-800). Settimana irlandese tra Temple Bar, musica folk e Trinity College.",
+    highlights: ["Temple Bar di sera", "Trinity College e la Old Library", "Guinness Storehouse"]
+  },
+  {
+    id: "trip-real-08",
+    country: "Grecia",
+    countryCode: "GRC",
+    flag: "🇬🇷",
+    continent: "Europa",
+    city: "Atene",
+    mainCity: "Atene",
+    coordinates: [37.9838, 23.7275],
+    startDate: "2007-05-19",
+    endDate: "2007-05-27",
+    durationDays: 9,
+    companions: "Con amici",
+    category: "Archeologia & Storia",
+    imageUrl: "https://images.unsplash.com/photo-1603565816030-6b389eeb23cb?auto=format&fit=crop&w=800&q=80",
+    description: "Volo MXP ➔ Atene Eleftherios Venizelos (ATH) (EasyJet U2 4369/4372 - Airbus A319). Tra l'Acropoli baciata dal sole e il quartiere Plaka.",
+    highlights: ["Partenone ed Eretteo", "Tramonto dalla collina del Licabetto", "Taverne tradizionali a Plaka"]
+  },
+  {
+    id: "trip-real-09",
+    country: "Francia",
+    countryCode: "FRA",
+    flag: "🇫🇷",
+    continent: "Europa",
+    city: "Parigi",
+    mainCity: "Parigi",
+    coordinates: [48.8566, 2.3522],
+    startDate: "2007-10-11",
+    endDate: "2007-10-14",
+    durationDays: 4,
+    companions: "In coppia",
+    category: "Weekend Romantico",
+    imageUrl: "https://images.unsplash.com/photo-1509840841025-9088ba78a826?auto=format&fit=crop&w=800&q=80",
+    description: "Volo MXP ➔ Parigi CDG (EasyJet U2 4387/4384). Quattro giorni autunnali lungo la Senna, Saint-Germain e il Musée d'Orsay.",
+    highlights: ["Musée d'Orsay", "Passeggiata nei Jardin du Luxembourg", "Quartiere Latino"]
+  },
+  {
+    id: "trip-real-10",
+    country: "Spagna",
+    countryCode: "ESP",
+    flag: "🇪🇸",
+    continent: "Europa",
+    city: "Madrid",
+    mainCity: "Madrid",
+    coordinates: [40.4168, -3.7038],
+    startDate: "2007-11-10",
+    endDate: "2007-11-13",
+    durationDays: 4,
+    companions: "Con amici",
+    category: "Culturale",
+    imageUrl: "https://images.unsplash.com/photo-1539037116277-4db20889f2d4?auto=format&fit=crop&w=800&q=80",
+    description: "Volo MXP ➔ Madrid Barajas (MAD) (EasyJet U2 4301/4306). Museo del Prado, Plaza Mayor e tapas nel quartiere La Latina.",
+    highlights: ["Museo del Prado e Guernica al Reina Sofia", "Parco del Retiro", "Tapas serali a La Latina"]
+  },
+  {
+    id: "trip-real-11",
+    country: "Stati Uniti",
+    countryCode: "USA",
+    flag: "🇺🇸",
+    continent: "Americhe",
+    city: "New York",
+    mainCity: "New York",
+    coordinates: [40.7128, -74.0060],
+    startDate: "2008-01-10",
+    endDate: "2008-01-21",
+    durationDays: 12,
+    companions: "In famiglia",
+    category: "Grande Mela",
+    imageUrl: "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?auto=format&fit=crop&w=800&q=80",
+    description: "Rotta BGY ➔ Roma FCO ➔ New York JFK (Eurofly ISS9956 / Alitalia ITY7615 su Boeing 767). Dodici giorni invernali tra i grattacieli di Manhattan.",
+    highlights: ["Empire State Building e Top of the Rock", "Attraversamento del Ponte di Brooklyn", "Central Park sotto la neve", "Times Square"]
+  },
+  {
+    id: "trip-real-12",
+    country: "Paesi Bassi",
+    countryCode: "NLD",
+    flag: "🇳🇱",
+    continent: "Europa",
+    city: "Amsterdam",
+    mainCity: "Amsterdam",
+    coordinates: [52.3676, 4.9041],
+    startDate: "2008-02-13",
+    endDate: "2008-02-18",
+    durationDays: 6,
+    companions: "Con amici",
+    category: "Città & Canali",
+    imageUrl: "https://images.unsplash.com/photo-1512470876302-972faa2aa9a4?auto=format&fit=crop&w=800&q=80",
+    description: "Volo MXP ➔ Amsterdam Schiphol (AMS) (EasyJet U2 4327/4328). Sei giorni in bicicletta tra musei, Jordaan e i canali della cerchia storica.",
+    highlights: ["Museo Van Gogh e Rijksmuseum", "Giro in bici lungo i canali", "Quartiere Jordaan"]
+  },
+  {
+    id: "trip-real-13",
+    country: "Portogallo",
+    countryCode: "PRT",
+    flag: "🇵🇹",
+    continent: "Europa",
+    city: "Porto",
+    mainCity: "Porto",
+    coordinates: [41.1579, -8.6291],
+    startDate: "2008-03-14",
+    endDate: "2008-03-17",
+    durationDays: 4,
+    companions: "In solitaria",
+    category: "Oceano & Vino",
+    imageUrl: "https://images.unsplash.com/photo-1555881400-74d7acaacd81?auto=format&fit=crop&w=800&q=80",
+    description: "Volo BGY ➔ Porto (OPO) (Ryanair FR4702/4703). Il ponte Dom Luís I, le azulejos della stazione di São Bento e le cantine di Vila Nova de Gaia.",
+    highlights: ["Ponte Dom Luís I sul fiume Douro", "Azulejos di São Bento", "Degustazione nelle cantine di Porto"]
+  },
+  {
+    id: "trip-real-14",
+    country: "Guatemala & Messico",
+    countryCode: "GTM",
+    flag: "🇬🇹",
+    continent: "Americhe",
+    city: "Città del Guatemala, Flores (Tikal), Cancun",
+    mainCity: "Flores",
+    coordinates: [16.9248, -89.8927],
+    startDate: "2008-03-20",
+    endDate: "2008-04-02",
+    durationDays: 14,
+    companions: "Con compagni di spedizione",
+    category: "Spedizione Archeologica Maya",
+    imageUrl: "https://images.unsplash.com/photo-1518638150340-f706e86654de?auto=format&fit=crop&w=800&q=80",
+    description: "Grande spedizione: BGY ➔ FCO ➔ MAD ➔ Città del Messico ➔ Guatemala (GUA) ➔ volo interno su Flores (Tikal, FRS) ➔ Cancun (CUN) ➔ MEX ➔ MAD ➔ FCO ➔ BGY. Voli con Iberia (A340), TACA (A320/A319) e Aeromexico.",
+    highlights: ["Piramidi Maya di Tikal nella giungla", "Lago Petén Itzá a Flores", "Antigua Guatemala", "Cenotes dello Yucatan a Cancun"]
+  },
+  {
+    id: "trip-real-15",
+    country: "Danimarca",
+    countryCode: "DNK",
+    flag: "🇩🇰",
+    continent: "Europa",
+    city: "Billund",
+    mainCity: "Billund",
+    coordinates: [55.7303, 9.1158],
+    startDate: "2008-05-16",
+    endDate: "2008-05-18",
+    durationDays: 3,
+    companions: "Con amici",
+    category: "Weekend Danese",
+    imageUrl: "https://images.unsplash.com/photo-1513622470522-26c3c8a854bc?auto=format&fit=crop&w=800&q=80",
+    description: "Volo BGY ➔ Billund (BLL) (Ryanair FR4722/4723). Tre giorni nella penisola dello Jutland.",
+    highlights: ["Visita a Legoland Billund", "Campagne dello Jutland", "Design scandinavo"]
+  },
+  {
+    id: "trip-real-16",
+    country: "Germania",
+    countryCode: "DEU",
+    flag: "🇩🇪",
+    continent: "Europa",
+    city: "Francoforte",
+    mainCity: "Francoforte",
+    coordinates: [50.1109, 8.6821],
+    startDate: "2008-10-04",
+    endDate: "2008-10-05",
+    durationDays: 2,
+    companions: "Con amici",
+    category: "Weekend",
+    imageUrl: "https://images.unsplash.com/photo-1588668214407-6ea9a6d8c272?auto=format&fit=crop&w=800&q=80",
+    description: "Volo BGY ➔ Francoforte Hahn (HHN) (Ryanair FR5203/5208). Weekend tra la valle del Reno e il centro storico.",
+    highlights: ["Römerberg e centro storico", "Fiume Meno", "Cucina tradizionale dell'Assia"]
+  },
+  {
+    id: "trip-real-17",
+    country: "Danimarca",
+    countryCode: "DNK",
+    flag: "🇩🇰",
+    continent: "Europa",
+    city: "Copenaghen",
+    mainCity: "Copenaghen",
+    coordinates: [55.6761, 12.5683],
+    startDate: "2009-02-06",
+    endDate: "2009-02-09",
+    durationDays: 4,
+    companions: "In coppia",
+    category: "Capitale del Nord",
+    imageUrl: "https://images.unsplash.com/photo-1513622470522-26c3c8a854bc?auto=format&fit=crop&w=800&q=80",
+    description: "Volo MXP ➔ Copenaghen Kastrup (CPH) (EasyJet U2 2905/2906). Quattro giorni invernali tra Nyhavn, la Sirenetta e il design danese.",
+    highlights: ["Canale colorato di Nyhavn", "Quartiere di Christianshavn", "Giardini di Tivoli"]
+  },
+  {
+    id: "trip-real-18",
+    country: "Stati Uniti",
+    countryCode: "USA",
+    flag: "🇺🇸",
+    continent: "Americhe",
+    city: "Los Angeles, Las Vegas, San Francisco",
+    mainCity: "San Francisco",
+    coordinates: [37.7749, -122.4194],
+    startDate: "2009-04-02",
+    endDate: "2009-04-13",
+    durationDays: 12,
+    companions: "Con amici",
+    category: "West Coast Road Trip",
+    imageUrl: "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=800&q=80",
+    description: "Grande Road Trip negli USA occidentali: MXP ➔ Atlanta ➔ Los Angeles (LAX) ➔ Las Vegas (LAS) ➔ San Francisco (SFO) ➔ LAX ➔ MXP con Delta (Boeing 767/757) e Southwest (737).",
+    highlights: ["Golden Gate Bridge e Alcatraz a San Francisco", "The Strip e casinò a Las Vegas", "Hollywood, Beverly Hills e Venice Beach a Los Angeles"]
+  },
+  {
+    id: "trip-real-19",
+    country: "Francia",
+    countryCode: "FRA",
+    flag: "🇫🇷",
+    continent: "Europa",
+    city: "Parigi",
+    mainCity: "Parigi",
+    coordinates: [48.8566, 2.3522],
+    startDate: "2009-08-24",
+    endDate: "2009-08-30",
+    durationDays: 7,
+    companions: "In coppia",
+    category: "Cultura & Arte",
+    imageUrl: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=800&q=80",
+    description: "Volo Milano Linate (LIN) ➔ Parigi Orly (ORY) (EasyJet U2 4298/4297). Una settimana di fine estate tra le meraviglie della capitale francese.",
+    highlights: ["Passeggiata al Canal Saint-Martin", "Sainte-Chapelle e le vetrate gotiche", "Caffè a Le Marais"]
+  },
+  {
+    id: "trip-real-20",
+    country: "Spagna",
+    countryCode: "ESP",
+    flag: "🇪🇸",
+    continent: "Europa",
+    city: "Girona & Costa Brava",
+    mainCity: "Girona",
+    coordinates: [41.9794, 2.8214],
+    startDate: "2010-03-18",
+    endDate: "2010-03-22",
+    durationDays: 5,
+    companions: "Con amici",
+    category: "Catalogna On The Road",
+    imageUrl: "https://images.unsplash.com/photo-1583422409516-2895a77efded?auto=format&fit=crop&w=800&q=80",
+    description: "Volo BGY ➔ Girona Costa Brava (GRO) (Ryanair FR4275/4276). Le mura medievali di Girona, le case affacciate sul fiume Onyar e il litorale catalano.",
+    highlights: ["Case colorate sul fiume Onyar a Girona", "Quartiere ebraico El Call", "Cattedrale di Santa Maria"]
+  },
+  {
+    id: "trip-real-21",
+    country: "Giappone",
+    countryCode: "JPN",
+    flag: "🇯🇵",
+    continent: "Asia",
+    city: "Tokyo",
+    mainCity: "Tokyo",
+    coordinates: [35.6762, 139.6503],
+    startDate: "2010-11-04",
+    endDate: "2010-11-22",
+    durationDays: 19,
+    companions: "Con compagni di viaggio",
+    category: "Sol Levante Grand Tour",
+    imageUrl: "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=800&q=80",
+    description: "Grande viaggio transcontinentale in Giappone: volo diretto MXP ➔ Tokyo Narita (NRT) con Boeing 777-200 ER Alitalia (ITY786/787). Diciannove giorni immersi tra tradizione millenaria e metropoli futuristica.",
+    highlights: ["Shibuya Crossing e neon di Shinjuku", "Tempio Senso-ji ad Asakusa", "Esperienza autentica della cultura nipponica", "Mercato del pesce di Tsukiji"]
+  },
+  {
+    id: "trip-real-22",
+    country: "Marocco",
+    countryCode: "MAR",
+    flag: "🇲🇦",
+    continent: "Africa",
+    city: "Fès",
+    mainCity: "Fès",
+    coordinates: [34.0181, -5.0078],
+    startDate: "2011-10-15",
+    endDate: "2011-10-22",
+    durationDays: 8,
+    companions: "Con amici",
+    category: "Città Imperiale & Medina",
+    imageUrl: "https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=800&q=80",
+    description: "Volo BGY ➔ Fès Saïss (FEZ) (Ryanair FR4728/4729). Una settimana nell'antica capitale imperiale marocchina, nella più grande medina pedonale del mondo.",
+    highlights: ["Labirinto della medina di Fes el-Bali", "Concerie Chouara", "Architettura islamica della Medersa Bou Inania"]
+  },
+  {
+    id: "trip-real-23",
+    country: "Brasile",
+    countryCode: "BRA",
+    flag: "🇧🇷",
+    continent: "Americhe",
+    city: "San Paolo",
+    mainCity: "San Paolo",
+    coordinates: [-23.5505, -46.6333],
+    startDate: "2011-12-02",
+    endDate: "2011-12-12",
+    durationDays: 11,
+    companions: "Con amici",
+    category: "Sudamerica",
+    imageUrl: "https://images.unsplash.com/photo-1518638150340-f706e86654de?auto=format&fit=crop&w=800&q=80",
+    description: "Volo LIN ➔ Madrid ➔ San Paolo Guarulhos (GRU) con Iberia (Airbus A340, voli IB6821/6820). Undici giorni nella vibrante megalopoli paulista.",
+    highlights: ["Avenida Paulista e MASP", "Parco Ibirapuera", "Cultura e gastronomia brasiliana"]
+  },
+  {
+    id: "trip-real-24",
+    country: "Cina & Hong Kong",
+    countryCode: "CHN",
+    flag: "🇨🇳",
+    continent: "Asia",
+    city: "Pechino, Xi'an, Shanghai, Hong Kong",
+    mainCity: "Pechino",
+    coordinates: [39.9042, 116.4074],
+    startDate: "2012-03-02",
+    endDate: "2012-03-17",
+    durationDays: 16,
+    companions: "In gruppo di viaggio",
+    category: "Grand Tour della Cina",
+    imageUrl: "https://images.unsplash.com/photo-1508804185872-d7badad00f7d?auto=format&fit=crop&w=800&q=80",
+    description: "Straordinario itinerario asiatico: LIN ➔ FCO ➔ Pechino (PEK - Alitalia A330 ITY790/791) ➔ volo interno a Xi'an (XIY) ➔ Shanghai (PVG) ➔ Hong Kong (HKG) ➔ PEK ➔ FCO ➔ LIN.",
+    highlights: ["Grande Muraglia Cinese e Città Proibita a Pechino", "Esercito di Terracotta a Xi'an", "Skyline del Bund a Shanghai", "Victoria Harbour a Hong Kong"]
+  },
+  {
+    id: "trip-real-25",
+    country: "Brasile",
+    countryCode: "BRA",
+    flag: "🇧🇷",
+    continent: "Americhe",
+    city: "San Paolo & Rio de Janeiro",
+    mainCity: "Rio de Janeiro",
+    coordinates: [-22.9068, -43.1729],
+    startDate: "2012-04-24",
+    endDate: "2012-05-01",
+    durationDays: 8,
+    companions: "Con amici",
+    category: "Meraviglie Brasiliane",
+    imageUrl: "https://images.unsplash.com/photo-1483729558449-99ef09a8c325?auto=format&fit=crop&w=800&q=80",
+    description: "Ritorno in Brasile: MXP ➔ Lisbona ➔ San Paolo (GRU) ➔ volo navetta interno per Rio de Janeiro (Santos Dumont/Galeão) con TAP Portugal (A330/A320) e Gol (737).",
+    highlights: ["Cristo Redentore sul Corcovado a Rio", "Spiaggia di Copacabana e Ipanema", "Pan di Zucchero"]
+  },
+  {
+    id: "trip-real-26",
+    country: "Grecia",
+    countryCode: "GRC",
+    flag: "🇬🇷",
+    continent: "Europa",
+    city: "Creta (Chania)",
+    mainCity: "Chania",
+    coordinates: [35.5138, 24.0180],
+    startDate: "2012-08-06",
+    endDate: "2012-08-19",
+    durationDays: 14,
+    companions: "Con amici",
+    category: "Isole & Mare",
+    imageUrl: "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?auto=format&fit=crop&w=800&q=80",
+    description: "Volo BGY ➔ Chania (CHQ) (Ryanair FR4548/4549). Due settimane tra le lagune di Balos ed Elafonissi e il porto veneziano di Chania.",
+    highlights: ["Laguna rosa di Elafonissi", "Spiaggia di Balos", "Porto veneziano di Chania"]
+  },
+  {
+    id: "trip-real-27",
+    country: "Paesi Bassi",
+    countryCode: "NLD",
+    flag: "🇳🇱",
+    continent: "Europa",
+    city: "Amsterdam",
+    mainCity: "Amsterdam",
+    coordinates: [52.3676, 4.9041],
+    startDate: "2012-08-25",
+    endDate: "2012-08-27",
+    durationDays: 3,
+    companions: "Con amici",
+    category: "City Break",
+    imageUrl: "https://images.unsplash.com/photo-1512470876302-972faa2aa9a4?auto=format&fit=crop&w=800&q=80",
+    description: "Volo MXP ➔ Amsterdam Schiphol (AMS) (EasyJet U2 2723/2730). Weekend di fine estate lungo i canali.",
+    highlights: ["Canali di Amsterdam", "Vondelpark", "Vita notturna di Leidseplein"]
+  },
+  {
+    id: "trip-real-28",
+    country: "Regno Unito",
+    countryCode: "GBR",
+    flag: "🇬🇧",
+    continent: "Europa",
+    city: "Birmingham",
+    mainCity: "Birmingham",
+    coordinates: [52.4862, -1.8904],
+    startDate: "2012-12-01",
+    endDate: "2012-12-04",
+    durationDays: 4,
+    companions: "Con amici",
+    category: "Inghilterra Industriale",
+    imageUrl: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=800&q=80",
+    description: "Volo BGY ➔ Birmingham (BHX) (Ryanair FR1464/1463). Quattro giorni nel cuore delle Midlands inglesi.",
+    highlights: ["Canali di Gas Street Basin", "Mercatini di Natale di Birmingham", "Architettura moderna della biblioteca"]
+  },
+  {
+    id: "trip-real-29",
+    country: "Tunisia",
+    countryCode: "TUN",
+    flag: "🇹🇳",
+    continent: "Africa",
+    city: "Monastir & Sousse",
+    mainCity: "Monastir",
+    coordinates: [35.7643, 10.8113],
+    startDate: "2013-07-29",
+    endDate: "2013-08-12",
+    durationDays: 15,
+    companions: "In famiglia",
+    category: "Maghreb & Mare",
+    imageUrl: "https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=800&q=80",
+    description: "Volo MXP ➔ Monastir Habib Bourguiba (MIR) (Nouvelair BJ6805/6804). Due settimane lungo la costa tunisina del Sahel.",
+    highlights: ["Ribat di Monastir", "Medina di Sousse", "Spiagge del Mediterraneo meridionale"]
+  },
+  {
+    id: "trip-real-30",
+    country: "Belgio",
+    countryCode: "BEL",
+    flag: "🇧🇪",
+    continent: "Europa",
+    city: "Bruxelles & Fiandre",
+    mainCity: "Bruxelles",
+    coordinates: [50.8503, 4.3517],
+    startDate: "2013-08-23",
+    endDate: "2013-08-26",
+    durationDays: 4,
+    companions: "Con amici",
+    category: "Culturale",
+    imageUrl: "https://images.unsplash.com/photo-1509840841025-9088ba78a826?auto=format&fit=crop&w=800&q=80",
+    description: "Volo BGY ➔ Bruxelles Charleroi (CRL) (Ryanair FR4523/4526). Grand Place, birrifici artigianali e cioccolato belga.",
+    highlights: ["Grand Place illuminata", "Degustazione di birre trappiste", "Atomium"]
+  },
+  {
+    id: "trip-real-31",
+    country: "Malta",
+    countryCode: "MLT",
+    flag: "🇲🇹",
+    continent: "Europa",
+    city: "La Valletta & Mdina",
+    mainCity: "La Valletta",
+    coordinates: [35.8989, 14.5146],
+    startDate: "2013-10-04",
+    endDate: "2013-10-07",
+    durationDays: 4,
+    companions: "Con amici",
+    category: "Mediterraneo & Cavalieri",
+    imageUrl: "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?auto=format&fit=crop&w=800&q=80",
+    description: "Volo BGY ➔ Malta Luqa (MLA) (Ryanair FR7324/7325). Quattro giorni tra i bastioni de La Valletta, Mdina la città silenziosa e la Laguna Blu.",
+    highlights: ["Cattedrale di San Giovanni a La Valletta", "Mdina antica capitale", "Scogliere di Dingli"]
+  },
+  {
+    id: "trip-real-32",
+    country: "Stati Uniti",
+    countryCode: "USA",
+    flag: "🇺🇸",
+    continent: "Americhe",
+    city: "Boston, San Francisco, New England",
+    mainCity: "Boston",
+    coordinates: [42.3601, -71.0589],
+    startDate: "2014-08-08",
+    endDate: "2014-09-02",
+    durationDays: 26,
+    companions: "In viaggio con amici",
+    category: "Spedizione Coast to Coast",
+    imageUrl: "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=800&q=80",
+    description: "Quasi un mese negli Stati Uniti: MXP ➔ Istanbul ➔ Boston (BOS) con Turkish Airlines (TK81/82) ➔ volo JetBlue (B6 834) da San Francisco (SFO) a Boston ➔ Istanbul ➔ MXP.",
+    highlights: ["Freedom Trail e università di Harvard a Boston", "Coste del Massachusetts e New England", "Ritorno nella baia di San Francisco"]
+  },
+  {
+    id: "trip-real-33",
+    country: "Emirati Arabi Uniti & Romania",
+    countryCode: "ARE",
+    flag: "🇦🇪",
+    continent: "Asia",
+    city: "Dubai & Bucarest",
+    mainCity: "Dubai",
+    coordinates: [25.2048, 55.2708],
+    startDate: "2015-12-08",
+    endDate: "2015-12-13",
+    durationDays: 6,
+    companions: "Con amici",
+    category: "Oriente & Metropoli",
+    imageUrl: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=80",
+    description: "Rotta BGY ➔ Bucarest Otopeni (OTP) ➔ Dubai Al Maktoum (DWC) (Wizz Air W6 3132/3255). Burj Khalifa, deserto arabo e architettura moderna.",
+    highlights: ["Burj Khalifa e fontane danzanti", "Safari sulle dune del deserto", "Dubai Marina"]
+  },
+  {
+    id: "trip-real-34",
+    country: "Spagna & Grecia",
+    countryCode: "ESP",
+    flag: "🇪🇸",
+    continent: "Europa",
+    city: "Tenerife & Corfù",
+    mainCity: "Tenerife",
+    coordinates: [28.2916, -16.6291],
+    startDate: "2017-07-28",
+    endDate: "2017-08-16",
+    durationDays: 20,
+    companions: "Con amici e famiglia",
+    category: "Isole & Vulcano",
+    imageUrl: "https://images.unsplash.com/photo-1583422409516-2895a77efded?auto=format&fit=crop&w=800&q=80",
+    description: "Estate tra le isole: voli BGY ➔ Corfù (CFU) e BGY ➔ Tenerife Sud (TFS) con Ryanair (Boeing 737-800). Il Parco Nazionale del Teide alle Canarie e il mare delle isole ionie.",
+    highlights: ["Vulcano Teide a Tenerife", "Scogliere di Los Gigantes", "Paléokastritsa a Corfù"]
+  },
+  {
+    id: "trip-real-35",
+    country: "Australia",
+    countryCode: "AUS",
+    flag: "🇦🇺",
+    continent: "Oceania",
+    city: "Sydney, Melbourne, Adelaide, Cairns",
+    mainCity: "Sydney",
+    coordinates: [-33.8688, 151.2093],
+    startDate: "2018-04-22",
+    endDate: "2018-05-13",
+    durationDays: 22,
+    companions: "Grande Spedizione",
+    category: "Down Under Grand Tour",
+    imageUrl: "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=800&q=80",
+    description: "Spedizione australiana: MXP ➔ Doha ➔ Sydney con Airbus A380 Qatar Airways (QR908/909). Voli interni Jetstar tra Sydney ➔ Melbourne (AVV) ➔ Adelaide (ADL) ➔ Cairns (CNS - Grande Barriera Corallina) ➔ Sydney.",
+    highlights: ["Opera House e Harbour Bridge a Sydney", "Snorkeling sulla Grande Barriera Corallina a Cairns", "Great Ocean Road vicino a Melbourne", "Fauna selvatica: canguri e koala"]
+  },
+  {
+    id: "trip-real-36",
+    country: "Austria",
+    countryCode: "AUT",
+    flag: "🇦🇹",
+    continent: "Europa",
+    city: "Vienna",
+    mainCity: "Vienna",
+    coordinates: [48.2082, 16.3738],
+    startDate: "2018-08-24",
+    endDate: "2018-08-27",
+    durationDays: 4,
+    companions: "Con amici",
+    category: "Città Imperiale",
+    imageUrl: "https://images.unsplash.com/photo-1516550893923-42d28e5677af?auto=format&fit=crop&w=800&q=80",
+    description: "Volo MXP ➔ Vienna Schwechat (VIE) (Laudamotion / Austrian A321). Quattro giorni tra Schönbrunn, il Belvedere di Klimt e la Sachertorte.",
+    highlights: ["Palazzo di Schönbrunn", "Il Bacio di Gustav Klimt al Belvedere", "Caffè storici viennesi"]
+  },
+  {
+    id: "trip-real-37",
+    country: "Regno Unito",
+    countryCode: "GBR",
+    flag: "🇬🇧",
+    continent: "Europa",
+    city: "Edimburgo & Scozia",
+    mainCity: "Edimburgo",
+    coordinates: [55.9533, -3.1883],
+    startDate: "2019-04-02",
+    endDate: "2019-04-09",
+    durationDays: 8,
+    companions: "In famiglia",
+    category: "Castelli & Highlands",
+    imageUrl: "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?auto=format&fit=crop&w=800&q=80",
+    description: "Volo MXP ➔ Edimburgo (EDI) (EasyJet U2 2685/2686). Una settimana tra il Castello di Edimburgo, la Royal Mile e i paesaggi scozzesi.",
+    highlights: ["Castello di Edimburgo sulla roccia vulcanica", "Royal Mile e vicoli storici (Closes)", "Calton Hill al tramonto"]
+  },
+  {
+    id: "trip-real-38",
+    country: "Spagna",
+    countryCode: "ESP",
+    flag: "🇪🇸",
+    continent: "Europa",
+    city: "Siviglia & Andalusia",
+    mainCity: "Siviglia",
+    coordinates: [37.3891, -5.9845],
+    startDate: "2019-08-09",
+    endDate: "2019-08-26",
+    durationDays: 18,
+    companions: "Con amici",
+    category: "Andalusia On The Road",
+    imageUrl: "https://images.unsplash.com/photo-1583422409516-2895a77efded?auto=format&fit=crop&w=800&q=80",
+    description: "Volo BGY ➔ Siviglia San Pablo (SVQ) (Ryanair FR4635/4636). Diciotto giorni nel cuore dell'Andalusia: Real Alcázar, Plaza de España e villaggi bianchi.",
+    highlights: ["Plaza de España e Parco di María Luisa", "Real Alcázar di Siviglia", "Spettacoli di Flamenco nel quartiere Triana"]
+  },
+  {
+    id: "trip-real-39",
+    country: "Regno Unito",
+    countryCode: "GBR",
+    flag: "🇬🇧",
+    continent: "Europa",
+    city: "Londra",
+    mainCity: "Londra",
+    coordinates: [51.5074, -0.1278],
+    startDate: "2023-08-24",
+    endDate: "2023-08-28",
+    durationDays: 5,
+    companions: "In coppia",
+    category: "Capitale",
+    imageUrl: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=800&q=80",
+    description: "Volo BGY ➔ Londra Stansted (STN) con Boeing 737 MAX 8 Ryanair (FR2697/2696). Cinque giorni nella metropoli londinese.",
+    highlights: ["Passeggiata lungo il Tamigi da Southbank a Tower Bridge", "Borough Market", "British Museum"]
+  },
+  {
+    id: "trip-real-40",
+    country: "Emirati Arabi Uniti",
+    countryCode: "ARE",
+    flag: "🇦🇪",
+    continent: "Asia",
+    city: "Dubai",
+    mainCity: "Dubai",
+    coordinates: [25.2048, 55.2708],
+    startDate: "2024-02-22",
+    endDate: "2024-02-27",
+    durationDays: 6,
+    companions: "In viaggio con amici",
+    category: "Metropoli & Deserto",
+    imageUrl: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=80",
+    description: "Volo Milano Malpensa ➔ Dubai (DXB) a bordo dell'Airbus A380 di Emirates (EK92/91). Sei giorni tra grattacieli iconici e deserto arabo.",
+    highlights: ["Volo sull'Airbus A380 Emirates", "Museum of the Future", "Palm Jumeirah e Dubai Marina"]
+  },
+  {
+    id: "trip-real-41",
+    country: "Spagna",
+    countryCode: "ESP",
+    flag: "🇪🇸",
+    continent: "Europa",
+    city: "Santiago de Compostela & La Coruña",
+    mainCity: "Santiago de Compostela",
+    coordinates: [42.8782, -8.5448],
+    startDate: "2024-03-28",
+    endDate: "2024-04-04",
+    durationDays: 8,
+    companions: "In solitaria",
+    category: "Cammino di Santiago & Galizia",
+    imageUrl: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80",
+    description: "Volo MXP ➔ La Coruña (LCG) con EasyJet, rientro da Santiago de Compostela (SCQ) via Madrid con Iberia A320neo. Il fascino dell'oceano galiziano e l'arrivo alla cattedrale di Santiago.",
+    highlights: ["Piazza dell'Obradoiro e Cattedrale di Santiago", "Torre di Ercole a La Coruña", "Frutti di mare galiziani"]
+  },
+  {
+    id: "trip-real-42",
+    country: "Egitto",
+    countryCode: "EGY",
+    flag: "🇪🇬",
+    continent: "Africa",
+    city: "Il Cairo",
+    mainCity: "Il Cairo",
+    coordinates: [30.0444, 31.2357],
+    startDate: "2024-05-31",
+    endDate: "2024-06-03",
+    durationDays: 4,
+    companions: "Con amici",
+    category: "Civiltà Millenaria",
+    imageUrl: "https://images.unsplash.com/photo-1503177119275-0aa32b3a9368?auto=format&fit=crop&w=800&q=80",
+    description: "Volo MXP ➔ Sphinx International / Il Cairo (SPX) con Wizz Air Malta A321neo (W4 6367/6368). Le Piramidi di Giza, la Sfinge e il Museo Egizio.",
+    highlights: ["Piramidi di Cheope, Chefren e Micerino", "La Grande Sfinge di Giza", "Bazar di Khan el-Khalili"]
+  },
+  {
+    id: "trip-real-43",
+    country: "Stati Uniti & Francia",
+    countryCode: "USA",
+    flag: "🇺🇸",
+    continent: "Americhe",
+    city: "Miami & Florida",
+    mainCity: "Miami",
+    coordinates: [25.7617, -80.1918],
+    startDate: "2024-07-25",
+    endDate: "2024-08-09",
+    durationDays: 16,
+    companions: "In famiglia",
+    category: "Florida & Ocean Drive",
+    imageUrl: "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=800&q=80",
+    description: "Rotta MXP ➔ Parigi CDG ➔ Miami International (MIA) a bordo del modernissimo Airbus A350-900 di Air France (AF92/97). Due settimane tra Miami Beach, Wynwood e le Everglades.",
+    highlights: ["Ocean Drive e distretto Art Déco a South Beach", "Murales di Wynwood Walls", "Volo sull'Airbus A350 Air France"]
+  },
+  {
+    id: "trip-real-44",
+    country: "Regno Unito",
+    countryCode: "GBR",
+    flag: "🇬🇧",
+    continent: "Europa",
+    city: "Londra",
+    mainCity: "Londra",
+    coordinates: [51.5074, -0.1278],
+    startDate: "2025-01-11",
+    endDate: "2025-01-12",
+    durationDays: 2,
+    companions: "In solitaria",
+    category: "City Break",
+    imageUrl: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=800&q=80",
+    description: "Volo MXP ➔ Londra Gatwick (LGW) (Wizz Air A321neo W4 6301/6304). Weekend veloce nella capitale britannica.",
+    highlights: ["Passeggiata a Soho e Covent Garden", "Shopping a Regent Street"]
+  },
+  {
+    id: "trip-real-45",
+    country: "Indonesia, Singapore, Malesia",
+    countryCode: "IDN",
+    flag: "🇮🇩",
+    continent: "Asia",
+    city: "Giacarta, Yogyakarta, Singapore, Kuala Lumpur, Bali",
+    mainCity: "Bali",
+    coordinates: [-8.3405, 115.0920],
+    startDate: "2025-08-05",
+    endDate: "2025-08-26",
+    durationDays: 22,
+    companions: "Grande Spedizione Asiatica",
+    category: "Sud-Est Asiatico Grand Tour",
+    imageUrl: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=800&q=80",
+    description: "Incredibile tour del Sud-Est Asiatico: MXP ➔ Jeddah ➔ Giacarta (Saudia 777-300ER) ➔ Yogyakarta (Borobudur, Garuda) ➔ Singapore (Scoot A321neo) ➔ Kuala Lumpur (Scoot) ➔ Bali Denpasar (AirAsia X A330) ➔ Giacarta ➔ Jeddah ➔ MXP.",
+    highlights: ["Alba sul tempio millenario di Borobudur", "Marina Bay Sands e Gardens by the Bay a Singapore", "Petronas Towers a Kuala Lumpur", "Templi e risaie a terrazza di Ubud a Bali"]
+  },
+  {
+    id: "trip-real-46",
+    country: "Finlandia & Germania",
+    countryCode: "FIN",
+    flag: "🇫🇮",
+    continent: "Europa",
+    city: "Rovaniemi (Lapponia), Helsinki, Berlino",
+    mainCity: "Rovaniemi",
+    coordinates: [66.5039, 25.7294],
+    startDate: "2025-12-25",
+    endDate: "2026-01-02",
+    durationDays: 9,
+    companions: "In famiglia",
+    category: "Natale al Circolo Polare Artico",
+    imageUrl: "https://images.unsplash.com/photo-1517411032315-54ef2cb783bb?auto=format&fit=crop&w=800&q=80",
+    description: "Volo natalizio BGY ➔ Helsinki (HEL) con Norwegian 737 MAX, treno/volo verso Rovaniemi (RVN) al Circolo Polare Artico, volo EasyJet su Berlino (BER) e rientro con Ryanair a Bergamo.",
+    highlights: ["Villaggio di Babbo Natale a Rovaniemi", "Paesaggi artici innevati della Lapponia", "Capodanno e Porta di Brandeburgo a Berlino"]
+  },
+  {
+    id: "trip-real-47",
+    country: "Lituania & Lettonia",
+    countryCode: "LTU",
+    flag: "🇱🇹",
+    continent: "Europa",
+    city: "Vilnius & Riga",
+    mainCity: "Vilnius",
+    coordinates: [54.6872, 25.2797],
+    startDate: "2026-03-26",
+    endDate: "2026-03-30",
+    durationDays: 5,
+    companions: "Con amici",
+    category: "Paesi Baltici On The Road",
+    imageUrl: "https://images.unsplash.com/photo-1549918864-48ac978761a4?auto=format&fit=crop&w=800&q=80",
+    description: "Volo BGY ➔ Vilnius (VNO) con Ryanair (FR2872), attraversamento dei Paesi Baltici e rientro da Riga (RIX) su Bergamo (FR4715). Centri storici patrimonio UNESCO.",
+    highlights: ["Città vecchia barocca di Vilnius", "Quartiere Art Nouveau di Riga", "Castello sull'isola di Trakai"]
+  },
+  {
+    id: "trip-real-48",
+    country: "Italia",
+    countryCode: "ITA",
+    flag: "🇮🇹",
+    continent: "Europa",
+    city: "Cagliari & Costa Sud",
+    mainCity: "Cagliari",
+    coordinates: [39.2238, 9.1217],
+    startDate: "2026-07-03",
+    endDate: "2026-07-05",
+    durationDays: 3,
+    companions: "In coppia",
+    category: "Mare & Weekend",
+    imageUrl: "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800&q=80",
+    description: "Volo MXP ➔ Cagliari Elmas (CAG) con EasyJet (U2 3567) e rientro con Ryanair (FR4562). Weekend di mare sardo.",
+    highlights: ["Bastione di Saint Remy a Cagliari", "Spiaggia del Poetto", "Acque turchesi della costa"]
+  },
+  {
+    id: "trip-real-49",
+    country: "Thailandia & Corea del Sud",
+    countryCode: "THA",
+    flag: "🇹🇭",
+    continent: "Asia",
+    city: "Bangkok, Koh Samui, Chiang Mai, Seoul",
+    mainCity: "Bangkok",
+    coordinates: [13.7563, 100.5018],
+    startDate: "2026-08-05",
+    endDate: "2026-08-29",
+    durationDays: 25,
+    companions: "In viaggio con amici",
+    category: "Oriente & Isole Tropicali",
+    imageUrl: "https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=800&q=80",
+    description: "Viaggio straordinario di 25 giorni: MXP ➔ Bangkok (BKK) con Thai Airways Airbus A350-900 (TG941/940), volo Bangkok Airways su Koh Samui (USM), volo per Chiang Mai (CNX), volo internazionale Eastar Jet (737 MAX) verso Seoul Incheon (ICN, Corea del Sud) e rientro via Bangkok.",
+    highlights: ["Grande Palazzo Reale e Wat Arun a Bangkok", "Spiagge tropicali di Koh Samui", "Templi e natura a Chiang Mai", "Gangnam, palazzi reali e K-Culture a Seoul"]
+  },
+  {
+    id: "trip-real-50",
+    country: "Spagna",
+    countryCode: "ESP",
+    flag: "🇪🇸",
+    continent: "Europa",
+    city: "Valencia",
+    mainCity: "Valencia",
+    coordinates: [39.4699, -0.3763],
+    startDate: "2026-09-18",
+    endDate: "2026-09-20",
+    durationDays: 3,
+    companions: "Con amici",
+    category: "Città delle Arti e delle Scienze",
+    imageUrl: "https://images.unsplash.com/photo-1583422409516-2895a77efded?auto=format&fit=crop&w=800&q=80",
+    description: "Volo MXP ➔ Valencia (VLC) con Wizz Air A321neo (W4 6319/6414). La futuristica Città delle Arti e delle Scienze di Calatrava, il parco del Turia e la vera paella valenciana.",
+    highlights: ["Città delle Arti e delle Scienze", "Giardini del Turia in bicicletta", "Paella tradizionale a El Palmar"]
+  },
+  {
+    id: "trip-real-51",
+    country: "Regno Unito",
+    countryCode: "GBR",
+    flag: "🇬🇧",
+    continent: "Europa",
+    city: "Londra",
+    mainCity: "Londra",
+    coordinates: [51.5074, -0.1278],
+    startDate: "2026-12-04",
+    endDate: "2026-12-07",
+    durationDays: 4,
+    companions: "In coppia",
+    category: "Weekend Natalizio",
+    imageUrl: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=800&q=80",
+    description: "Volo MXP ➔ Londra Luton (LTN) con Wizz Air A321neo (W4 6301/6304). Quattro giorni pre-natalizi tra le luci di Oxford Street e Winter Wonderland.",
+    highlights: ["Luci di Natale a Carnaby Street e Regent Street", "Winter Wonderland ad Hyde Park", "Mercatini di Natale a Southbank"]
+  },
+  {
+    id: "trip-real-52",
+    country: "Cina & Svizzera",
+    countryCode: "CHN",
+    flag: "🇨🇳",
+    continent: "Asia",
+    city: "Shanghai & Zurigo",
+    mainCity: "Shanghai",
+    coordinates: [31.2304, 121.4737],
+    startDate: "2027-07-22",
+    endDate: "2027-08-16",
+    durationDays: 26,
+    companions: "Grande Spedizione",
+    category: "Metropoli del Futuro",
+    imageUrl: "https://images.unsplash.com/photo-1508804185872-d7badad00f7d?auto=format&fit=crop&w=800&q=80",
+    description: "Ritorno in Cina di quasi un mese: MXP ➔ Zurigo (ZRH) ➔ Shanghai Pudong (PVG) a bordo dell'Airbus A350-900 di Swiss International Air Lines (LX188/189) e Airbus A320neo.",
+    highlights: ["Skyline futuristico di Pudong e Shanghai Tower", "Giardino Yu e Città Vecchia", "Crociera notturna sul fiume Huangpu"]
+  }
+];
+
+// Travel Wish List (Partenza vuota per consentire all'utente di aggiungere le mete desiderate dal form)
+const DEFAULT_BUCKET_LIST = [];
+
+class TravelDataManager {
+  constructor() {
+    this.STORAGE_KEY = "giuseppe_ricatti_real_trips_v6";
+    this.BUCKET_KEY = "giuseppe_ricatti_wishlist_clean";
+    this.THEME_COLOR_KEY = "giuseppe_theme_color";
+    this.init();
+  }
+
+  init() {
+    // Rimuove tassativamente tutte le vecchie chiavi demo e di versioni precedenti
+    try {
+      localStorage.removeItem("giuseppe_ricatti_trips");
+      localStorage.removeItem("giuseppe_ricatti_trips_v2");
+      localStorage.removeItem("giuseppe_ricatti_trips_v3");
+      localStorage.removeItem("giuseppe_ricatti_trips_v4");
+      localStorage.removeItem("giuseppe_ricatti_real_trips_v5");
+      localStorage.removeItem("giuseppe_ricatti_bucket");
+      localStorage.removeItem("giuseppe_ricatti_bucket_v3");
+      localStorage.removeItem("giuseppe_ricatti_bucket_v5");
+      localStorage.removeItem("giuseppe_ricatti_bucket_v6");
+    } catch (e) {}
+
+    // Inizializza l'archivio con i 52 viaggi REALI dell'utente
+    if (!localStorage.getItem(this.STORAGE_KEY)) {
+      this.saveTrips(REAL_FLIGHT_TRIPS);
+    }
+    if (!localStorage.getItem(this.BUCKET_KEY)) {
+      this.saveBucketList([]);
+    }
+  }
+
+  // Verifica dinamica: un viaggio è in programma rispetto alla data del giorno?
+  isUpcoming(trip) {
+    if (!trip) return false;
+    if (trip.status === "upcoming") return true;
+    if (trip.status === "completed") return false;
+    const today = new Date().toISOString().slice(0, 10);
+    return (trip.startDate || "") > today;
+  }
+
+  getTrips() {
+    try {
+      const data = localStorage.getItem(this.STORAGE_KEY);
+      const trips = data ? JSON.parse(data) : REAL_FLIGHT_TRIPS;
+      // Assicura compatibilità con countryCodes multipli
+      return trips.map(t => {
+        if (!t.countryCodes || !Array.isArray(t.countryCodes) || t.countryCodes.length === 0) {
+          t.countryCodes = t.countryCode ? [t.countryCode] : [];
+        }
+        if (!t.countries || !Array.isArray(t.countries) || t.countries.length === 0) {
+          t.countries = t.country ? t.country.split(",").map(c => c.trim()) : [];
+        }
+        return t;
+      });
+    } catch (e) {
+      console.error("Errore lettura viaggi:", e);
+      return REAL_FLIGHT_TRIPS;
+    }
+  }
+
+  // Viaggi già effettuati ordinati dal più recente al meno recente (discendente)
+  getPastTrips() {
+    const trips = this.getTrips().filter(t => !this.isUpcoming(t));
+    return trips.sort((a, b) => {
+      const dateA = new Date(a.startDate || "1970-01-01").getTime();
+      const dateB = new Date(b.startDate || "1970-01-01").getTime();
+      return dateB - dateA;
+    });
+  }
+
+  // Viaggi già in programma ordinati dal prossimo all'ultimo in programma (ascendente)
+  getUpcomingTrips() {
+    const trips = this.getTrips().filter(t => this.isUpcoming(t));
+    return trips.sort((a, b) => {
+      const dateA = new Date(a.startDate || "2099-01-01").getTime();
+      const dateB = new Date(b.startDate || "2099-01-01").getTime();
+      return dateA - dateB;
+    });
+  }
+
+  saveTrips(trips) {
+    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(trips));
+  }
+
+  clearAllTrips() {
+    this.saveTrips([]);
+  }
+
+  addTrip(tripData) {
+    const trips = this.getTrips();
+    const newTrip = {
+      id: "trip-" + Date.now() + "-" + Math.floor(Math.random() * 1000),
+      ...tripData
+    };
+    trips.unshift(newTrip);
+    this.saveTrips(trips);
+    return newTrip;
+  }
+
+  updateTrip(tripId, updatedData) {
+    const trips = this.getTrips();
+    const index = trips.findIndex(t => t.id === tripId);
+    if (index !== -1) {
+      trips[index] = {
+        ...trips[index],
+        ...updatedData,
+        id: tripId
+      };
+      this.saveTrips(trips);
+      return trips[index];
+    }
+    return null;
+  }
+
+  deleteTrip(tripId) {
+    const trips = this.getTrips().filter(t => t.id !== tripId);
+    this.saveTrips(trips);
+    return trips;
+  }
+
+  // Statistiche separate per viaggi effettuati e in programma
+  getStats() {
+    const allTrips = this.getTrips();
+    const pastTrips = allTrips.filter(t => !this.isUpcoming(t));
+    const upcomingTrips = allTrips.filter(t => this.isUpcoming(t));
+
+    const visitedCountries = new Set();
+    const upcomingCountries = new Set();
+    const uniqueContinents = new Set();
+    let totalDays = 0;
+    const citiesSet = new Set();
+
+    // 1. Includi i 49 Paesi Ufficiali Certificati da TripAdvisor (UccelloGiraviti)
+    if (typeof window !== "undefined" && Array.isArray(window.TRIPADVISOR_COUNTRIES_LIST)) {
+      window.TRIPADVISOR_COUNTRIES_LIST.forEach(c => {
+        if (c.code) visitedCountries.add(c.code.toUpperCase().trim());
+        if (c.continent) {
+          const cont = c.continent === "Nord America" || c.continent === "Sud America" ? "Americhe" : c.continent;
+          uniqueContinents.add(cont);
+        }
+      });
+    }
+
+    // 2. Includi le 755 Città Ufficiali da TripAdvisor
+    if (typeof window !== "undefined" && Array.isArray(window.TRIPADVISOR_CITIES)) {
+      window.TRIPADVISOR_CITIES.forEach(c => {
+        citiesSet.add(c.name.trim());
+      });
+    }
+
+    // 3. Integra i dati dai viaggi passati
+    pastTrips.forEach(t => {
+      const codes = (t.countryCodes && t.countryCodes.length > 0) ? t.countryCodes : [t.countryCode];
+      codes.forEach(c => { if (c) visitedCountries.add(c.toUpperCase().trim()); });
+      if (t.continent) uniqueContinents.add(t.continent);
+      if (t.durationDays) totalDays += Number(t.durationDays);
+      if (t.mainCity) citiesSet.add(t.mainCity.trim());
+      else if (t.city) {
+        t.city.split(",").forEach(c => citiesSet.add(c.trim()));
+      }
+    });
+
+    // 4. Paesi e città dei viaggi in programma (futuri)
+    upcomingTrips.forEach(t => {
+      const codes = (t.countryCodes && t.countryCodes.length > 0) ? t.countryCodes : [t.countryCode];
+      codes.forEach(c => {
+        const upCode = c ? c.toUpperCase().trim() : "";
+        if (upCode && !visitedCountries.has(upCode)) {
+          upcomingCountries.add(upCode);
+        }
+      });
+    });
+
+    const totalWorldCountries = 195;
+    const countriesCount = visitedCountries.size > 0 ? visitedCountries.size : 49;
+    const percentage = ((countriesCount / totalWorldCountries) * 100).toFixed(1);
+    const computedCities = this.getCities();
+
+    return {
+      tripsCount: allTrips.length,
+      pastTripsCount: pastTrips.length,
+      upcomingTripsCount: upcomingTrips.length,
+      countriesCount: countriesCount,
+      upcomingCountriesCount: upcomingCountries.size,
+      continentsCount: Math.max(6, uniqueContinents.size),
+      citiesCount: computedCities.length,
+      totalDays,
+      worldPercentage: percentage
+    };
+  }
+
+  // Estrazione e raggruppamento dinamico di tutte le città visitate
+  // Unisce le 755 città di TripAdvisor con eventuali nuove città create o rimosse tramite le schede viaggio
+  getCities() {
+    const cityMap = new Map();
+
+    // 1. Inizializza con l'archivio completo di TripAdvisor se presente (755 città)
+    if (typeof window !== "undefined" && Array.isArray(window.TRIPADVISOR_CITIES)) {
+      window.TRIPADVISOR_CITIES.forEach(c => {
+        if (!c || !c.name) return;
+        const key = c.name.toLowerCase().trim();
+        cityMap.set(key, { ...c });
+      });
+    }
+
+    // 2. Integra reattivamente con i viaggi registrati (sia passati che futuri)
+    const allTrips = this.getTrips();
+    allTrips.forEach(trip => {
+      const isUp = this.isUpcoming(trip);
+      const year = trip.startDate ? trip.startDate.slice(0, 4) : "";
+      const cityList = trip.city ? trip.city.split(",").map(c => c.trim()).filter(Boolean) : [trip.mainCity];
+
+      cityList.forEach(cityName => {
+        if (!cityName) return;
+        const key = cityName.toLowerCase().trim();
+        if (!cityMap.has(key)) {
+          let coords = null;
+          if (window.CITY_COORDINATES && window.CITY_COORDINATES[cityName]) {
+            coords = window.CITY_COORDINATES[cityName];
+          } else if (trip.coordinates && trip.coordinates.length === 2) {
+            coords = trip.coordinates;
+          }
+          cityMap.set(key, {
+            id: `city-custom-${key}`,
+            name: cityName,
+            country: trip.country,
+            region: "",
+            flag: trip.flag || "📍",
+            continent: trip.continent || "Europa",
+            coordinates: coords,
+            contributions: 0,
+            status: isUp ? "In Programma" : "Ci sono stato",
+            isFavorite: false,
+            isUpcomingOnly: isUp,
+            hasPastVisit: !isUp,
+            tripIds: [trip.id],
+            trips: [trip]
+          });
+        } else {
+          const rec = cityMap.get(key);
+          if (!rec.trips) rec.trips = [];
+          if (!rec.tripIds) rec.tripIds = [];
+          rec.trips.push(trip);
+          rec.tripIds.push(trip.id);
+          if (!isUp) {
+            rec.hasPastVisit = true;
+            rec.isUpcomingOnly = false;
+          }
+        }
+      });
+    });
+
+    const list = Array.from(cityMap.values());
+    // Ordina: prima le città preferite, poi per contributi decrescenti, poi alfabeticamente
+    return list.sort((a, b) => {
+      if (a.isFavorite && !b.isFavorite) return -1;
+      if (!a.isFavorite && b.isFavorite) return 1;
+      if ((b.contributions || 0) !== (a.contributions || 0)) {
+        return (b.contributions || 0) - (a.contributions || 0);
+      }
+      return (a.name || "").localeCompare(b.name || "", 'it');
+    });
+  }
+
+  // Gestione Travel Wish List ("Cosa Voglio Fare")
+  getBucketList() {
+    try {
+      const data = localStorage.getItem(this.BUCKET_KEY);
+      return data ? JSON.parse(data) : DEFAULT_BUCKET_LIST;
+    } catch (e) {
+      return DEFAULT_BUCKET_LIST;
+    }
+  }
+
+  saveBucketList(list) {
+    localStorage.setItem(this.BUCKET_KEY, JSON.stringify(list));
+  }
+
+  addBucketItem(item) {
+    const list = this.getBucketList();
+    const newItem = {
+      id: "bucket-" + Date.now(),
+      ...item
+    };
+    list.unshift(newItem);
+    this.saveBucketList(list);
+    return newItem;
+  }
+
+  deleteBucketItem(id) {
+    const list = this.getBucketList().filter(b => b.id !== id);
+    this.saveBucketList(list);
+    return list;
+  }
+
+  exportData() {
+    const exportObj = {
+      version: "4.0",
+      exportDate: new Date().toISOString(),
+      author: "Giuseppe Ricatti",
+      trips: this.getTrips(),
+      bucketList: this.getBucketList()
+    };
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportObj, null, 2));
+    const downloadAnchor = document.createElement("a");
+    downloadAnchor.setAttribute("href", dataStr);
+    downloadAnchor.setAttribute("download", `viaggi_giuseppe_ricatti_${new Date().toISOString().slice(0, 10)}.json`);
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    downloadAnchor.remove();
+  }
+}
+
+// Istanza globale esportata
+window.travelManager = new TravelDataManager();

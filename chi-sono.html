@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chi Sono | Giuseppe Ricatti</title>
+  <meta name="description" content="Biografia, filosofia di viaggio e visione personale di Giuseppe Ricatti.">
+
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Stili Personalizzati Minimalisti -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="page-about">
+
+  <!-- ======================================================================
+       BARRA DI NAVIGAZIONE
+       ====================================================================== -->
+  <header class="navbar" id="main-navbar">
+    <div class="container navbar-inner">
+      <a href="index.html" class="brand-logo" title="Giuseppe Ricatti - Home">
+        <div class="brand-avatar">GR</div>
+        <div class="brand-text">
+          <h1>Giuseppe Ricatti</h1>
+          <span class="brand-subtitle">Personal Travel Explorer</span>
+        </div>
+      </a>
+
+      <nav class="navbar-box-nav" id="navbar-links">
+        <a href="index.html#mappa" class="nav-box-btn" title="Mappa del Mondo Interattiva">
+          <span class="nav-box-icon">🗺️</span>
+          <span class="nav-box-label">Mappa del Mondo</span>
+        </a>
+        <a href="viaggi.html?tab=upcoming" class="nav-box-btn nav-box-upcoming" title="Viaggi in Programma">
+          <span class="nav-box-icon">🗓️</span>
+          <span class="nav-box-label">In Programma</span>
+        </a>
+        <a href="viaggi.html?tab=past" class="nav-box-btn" title="Archivio Viaggi Passati">
+          <span class="nav-box-icon">🌍</span>
+          <span class="nav-box-label">Archivio Viaggi</span>
+        </a>
+        <a href="citta.html" class="nav-box-btn" title="755 Città Esplorate nel Mondo">
+          <span class="nav-box-icon">🏙️</span>
+          <span class="nav-box-label">755 Città</span>
+        </a>
+        <a href="wishlist.html" class="nav-box-btn" title="Travel Wish List (Cosa Voglio Fare)">
+          <span class="nav-box-icon">🌟</span>
+          <span class="nav-box-label">Wish List</span>
+        </a>
+        <a href="chi-sono.html" class="nav-box-btn active" title="Biografia & Visione">
+          <span class="nav-box-icon">👤</span>
+          <span class="nav-box-label">Chi Sono</span>
+        </a>
+      </nav>
+
+      <div class="navbar-actions">
+        <div class="theme-picker" title="Scegli la tonalità colore">
+          <span class="theme-dot theme-dot-amber active" data-theme="amber" onclick="window.travelApp.setTheme('amber')" title="Ambra Dorata"></span>
+          <span class="theme-dot theme-dot-sapphire" data-theme="sapphire" onclick="window.travelApp.setTheme('sapphire')" title="Blu Zaffiro"></span>
+          <span class="theme-dot theme-dot-platinum" data-theme="platinum" onclick="window.travelApp.setTheme('platinum')" title="Platino Monocromo"></span>
+          <span class="theme-dot theme-dot-terracotta" data-theme="terracotta" onclick="window.travelApp.setTheme('terracotta')" title="Terracotta"></span>
+        </div>
+
+        <button class="mobile-menu-btn" id="mobile-menu-toggle" aria-label="Menu di navigazione">
+          ☰
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ======================================================================
+       CONTENUTO PRINCIPALE: BIOGRAFIA & FILOSOFIA DI VIAGGIO
+       ====================================================================== -->
+  <main class="section-padding" style="padding-top: 100px;">
+    <div class="container">
+      
+      <!-- Barra di ritorno -->
+      <div class="back-to-home-bar">
+        <a href="index.html" class="back-home-link">
+          ← Torna alla Home / Mappa
+        </a>
+        <div class="badge badge-accent">
+          49 Nazioni • 755 Città nel Mondo
+        </div>
+      </div>
+
+      <div class="about-grid" style="margin-top: 20px;">
+        <div class="about-image-card">
+          <div class="about-image-wrapper">
+            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=80" 
+                 alt="Giuseppe Ricatti in viaggio" 
+                 loading="lazy">
+          </div>
+          <div class="about-floating-badge">
+            <div class="floating-badge-number">Viaggiatore</div>
+            <div class="floating-badge-text">Rotte aeree, città e culture attraverso il mondo.</div>
+          </div>
+        </div>
+
+        <div class="about-text">
+          <span class="section-tag">Biografia & Visione</span>
+          <h2 class="section-title" style="margin-bottom: 20px;">Piacere, sono Giuseppe Ricatti</h2>
+          
+          <p class="about-bio">
+            Considero il viaggio la forma più pura di conoscenza e arricchimento personale. Non si tratta semplicemente di spuntare destinazioni su una lista, ma di comprendere a fondo le realtà locali, ascoltare storie, ammirare patrimoni millenari e confrontarsi costantemente con modi diversi di abitare il nostro pianeta.
+          </p>
+          <p class="about-bio">
+            Questo portale cartografico personale raccoglie e documenta meticolosamente ogni tratta percorsa: dalle rotte di volo sincronizzate con il mio archivio Flighty, alle oltre 755 città geolocalizzate con recensioni e contributi storici di TripAdvisor, fino ai viaggi già programmati per i prossimi mesi.
+          </p>
+
+          <h4 style="color: var(--text-primary); margin-top: 28px; margin-bottom: 14px; font-size: 1.1rem;">
+            Il Mio Stile di Esplorazione:
+          </h4>
+          <div class="travel-style-pills">
+            <span class="style-pill">🎒 Zaino in Spalla</span>
+            <span class="style-pill">🚗 On The Road</span>
+            <span class="style-pill">🏛️ Storia & Civiltà</span>
+            <span class="style-pill">🍜 Gastronomia Locale</span>
+            <span class="style-pill">📸 Fotografia Geografica</span>
+            <span class="style-pill">🏔️ Natura & Avventura</span>
+          </div>
+
+          <div style="display: flex; gap: 14px; margin-top: 32px; flex-wrap: wrap;">
+            <a href="index.html#mappa" class="btn btn-accent">
+              🗺️ Esplora la Mappa del Mondo
+            </a>
+            <a href="viaggi.html?tab=past" class="btn btn-outline">
+              📖 Sfoglia l'Archivio Viaggi Passati
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ======================================================================
+       FOOTER
+       ====================================================================== -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="brand-logo mb-2">
+            <div class="brand-avatar">GR</div>
+            <div class="brand-text">
+              <h3>Giuseppe Ricatti</h3>
+              <span class="brand-subtitle">Diario & Cartografia Personale</span>
+            </div>
+          </div>
+          <p class="footer-desc">
+            Archivio di 755 città in 49 nazioni. Tracciamento continuo dei viaggi reali e futuri in programma.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-col-title">Navigazione Rapida</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#mappa">Mappa del Mondo Interattiva</a></li>
+            <li><a href="viaggi.html?tab=upcoming">Viaggi in Programma</a></li>
+            <li><a href="viaggi.html?tab=past">Archivio Viaggi Passati</a></li>
+            <li><a href="citta.html">Tutte le 755 Città</a></li>
+            <li><a href="wishlist.html">Travel Wish List</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-col-title">Esplorazione</h4>
+          <div class="footer-actions-group">
+            <a href="index.html#mappa" class="btn btn-sm btn-outline w-100 mb-2">
+              🗺️ Torna alla Mappa
+            </a>
+            <button class="btn btn-sm btn-outline w-100" onclick="window.travelApp.exportDataAsJson()">
+              💾 Scarica Backup (JSON)
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 Giuseppe Ricatti. Tutti i diritti riservati.</p>
+        <span class="privacy-note">Dati personali archiviati in locale nel tuo browser.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Notifiche -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- SCRIPTS -->
+  <script src="js/tripadvisor_cities.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      if (window.travelApp) {
+        window.travelApp.init();
+      }
+    });
+  </script>
+</body>
+</html>
