@@ -969,9 +969,31 @@ class TravelApp {
   }
 
   // ==========================================================================
+  // CONTROLLO DI SICUREZZA & PASSWORD PROTETTA
+  // Password richiesta per ogni operazione di modifica pagina o upload/download dati: C4rl422022022!
+  // ==========================================================================
+  requireAuth(actionDescription = "modificare la pagina o scaricare/caricare dati") {
+    const requiredPass = "C4rl422022022!";
+    const entered = prompt(`🔒 AREA RISERVATA - ACCESSO PROTETTO\n\nPer ${actionDescription}, inserisci la password di sicurezza:`);
+    if (entered === null) {
+      return false; // Utente ha annullato
+    }
+    if (entered.trim() === requiredPass) {
+      return true; // Password corretta
+    }
+    alert("❌ Password non corretta. Accesso negato.");
+    if (typeof this.showToast === "function") {
+      this.showToast("❌ Password non corretta. Operazione bloccata.");
+    }
+    return false;
+  }
+
+  // ==========================================================================
   // MODIFICA & AGGIUNTA SCHEDE VIAGGIO (EDIT TRIP FIX)
   // ==========================================================================
   openAddTripModal() {
+    if (!this.requireAuth("aggiungere una nuova tappa al diario")) return false;
+    this._tripModalAuthorized = true;
     this.editingTripId = null;
     document.getElementById("modal-trip-title").textContent = "Aggiungi Tappa / Viaggio";
     document.getElementById("trip-modal-form").reset();
@@ -980,10 +1002,11 @@ class TravelApp {
     this.selectedCountries = [];
     this.renderSelectedCountryTags();
     document.getElementById("modal-trip").classList.add("active");
+    return true;
   }
 
   openAddTripModalWithCountry(countryName, countryCode) {
-    this.openAddTripModal();
+    if (!this.openAddTripModal()) return;
     if (countryCode && window.getAllWorldCountries) {
       const match = window.getAllWorldCountries().find(c => c.code.toUpperCase() === countryCode.toUpperCase());
       if (match) {
@@ -996,6 +1019,8 @@ class TravelApp {
   }
 
   openEditTripModal(tripId) {
+    if (!this.requireAuth("modificare questa scheda di viaggio")) return;
+    this._tripModalAuthorized = true;
     if (!window.travelManager) return;
     const trips = window.travelManager.getTrips();
     const trip = trips.find(t => t.id === tripId);
@@ -1067,6 +1092,9 @@ class TravelApp {
   }
 
   handleSaveTripForm() {
+    if (!this._tripModalAuthorized && !this.requireAuth("salvare o modificare questa tappa")) return;
+    this._tripModalAuthorized = false;
+
     if (this.selectedCountries.length === 0) {
       alert("Seleziona almeno una nazione per questa tappa.");
       return;
@@ -1149,6 +1177,7 @@ class TravelApp {
   }
 
   confirmDeleteTrip(tripId) {
+    if (!this.requireAuth("eliminare questa tappa dal tuo diario")) return;
     if (confirm("Sei sicuro di voler eliminare questa tappa dal tuo diario?")) {
       window.travelManager.deleteTrip(tripId);
       this.renderStats();
@@ -1161,6 +1190,7 @@ class TravelApp {
   }
 
   confirmClearAllTrips() {
+    if (!this.requireAuth("cancellare tutte le tappe archiviate")) return;
     if (confirm("Vuoi cancellare tutte le tappe archiviate? Assicurati di aver scaricato un backup JSON.")) {
       window.travelManager.clearAllTrips();
       this.renderStats();
@@ -1380,12 +1410,17 @@ class TravelApp {
   }
 
   openAddWishModal() {
+    if (!this.requireAuth("aggiungere un desiderio alla Wish List")) return;
+    this._wishModalAuthorized = true;
     const form = document.getElementById("wishlist-modal-form");
     if (form) form.reset();
     document.getElementById("modal-wishlist").classList.add("active");
   }
 
   handleSaveWishForm() {
+    if (!this._wishModalAuthorized && !this.requireAuth("salvare questo desiderio nella Wish List")) return;
+    this._wishModalAuthorized = false;
+
     const destination = document.getElementById("wish-destination-input").value.trim();
     const country = document.getElementById("wish-country-input").value.trim();
     let flag = document.getElementById("wish-flag-input").value.trim();
@@ -1425,6 +1460,7 @@ class TravelApp {
   }
 
   deleteWishItem(id) {
+    if (!this.requireAuth("eliminare questa destinazione dalla Wish List")) return;
     if (confirm("Vuoi rimuovere questa destinazione dalla tua Wish List?")) {
       window.travelManager.deleteBucketItem(id);
       this.renderBucketList();
@@ -1433,7 +1469,7 @@ class TravelApp {
   }
 
   convertWishToTrip(country, destination) {
-    this.openAddTripModal();
+    if (!this.openAddTripModal()) return;
     const cityInput = document.getElementById("trip-city-input");
     if (cityInput) cityInput.value = destination;
 
@@ -1736,6 +1772,8 @@ class TravelApp {
   }
 
   openImportModal(tab = 'flighty') {
+    if (!this.requireAuth("caricare o importare dati sul sito")) return;
+    this._importAuthorized = true;
     this.switchImportTab(tab);
     document.getElementById("modal-import").classList.add("active");
   }
@@ -1760,6 +1798,9 @@ class TravelApp {
   }
 
   closeAllModals() {
+    this._tripModalAuthorized = false;
+    this._wishModalAuthorized = false;
+    this._importAuthorized = false;
     document.querySelectorAll(".custom-modal").forEach(m => m.classList.remove("active"));
   }
 
@@ -1796,16 +1837,25 @@ class TravelApp {
   }
 
   exportData() {
+    if (!this.requireAuth("scaricare il backup dei dati dal sito")) return;
     if (window.travelManager) {
       window.travelManager.exportData();
-      this.showToast("Backup JSON generato e scaricato.");
+      this.showToast("Backup JSON generato e scaricato. 💾");
     }
+  }
+
+  exportDataAsJson() {
+    return this.exportData();
   }
 
   // ==========================================================================
   // GESTORI IMPORTAZIONE FLIGHTY / TRIPADVISOR
   // ==========================================================================
   handleFlightyFileSelect(event) {
+    if (!this._importAuthorized && !this.requireAuth("caricare file CSV da Flighty")) {
+      if (event && event.target) event.target.value = "";
+      return;
+    }
     const file = event.target.files[0];
     if (!file) return;
     const reader = new FileReader();
@@ -1816,6 +1866,7 @@ class TravelApp {
   }
 
   handleFlightyPasteSubmit() {
+    if (!this._importAuthorized && !this.requireAuth("caricare dati di volo da Flighty")) return;
     const text = document.getElementById("flighty-paste-textarea").value.trim();
     if (!text) {
       alert("Incolla prima il contenuto del file CSV di Flighty.");
@@ -1825,6 +1876,7 @@ class TravelApp {
   }
 
   handleTripAdvisorTextSubmit() {
+    if (!this._importAuthorized && !this.requireAuth("caricare dati TripAdvisor")) return;
     const text = document.getElementById("tripadvisor-paste-textarea").value.trim();
     if (!text) {
       alert("Incolla prima l'elenco dei posti o il testo copiato da TripAdvisor.");

@@ -76,6 +76,12 @@ class TravelMap {
     window.addEventListener("resize", () => {
       if (this.map) this.map.invalidateSize();
     });
+
+    window.addEventListener("orientationchange", () => {
+      setTimeout(() => {
+        if (this.map) this.map.invalidateSize();
+      }, 200);
+    });
   }
 
   refreshVisitedData() {

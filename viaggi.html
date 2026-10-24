@@ -25,26 +25,29 @@
         <div class="brand-avatar">GR</div>
         <div class="brand-text">
           <h1>Giuseppe Ricatti</h1>
-          <span class="brand-subtitle">Personal Travel Explorer</span>
+          <span class="brand-subtitle">Diario di Bordo</span>
         </div>
       </a>
 
       <nav class="navbar-box-nav" id="navbar-links">
-        <a href="index.html#mappa" class="nav-box-btn" title="Mappa del Mondo Interattiva">
+        <a href="index.html#home" class="nav-box-btn nav-box-home" title="Home">
+          <span class="nav-box-icon">🏠</span>
+        </a>
+        <a href="index.html#mappa" class="nav-box-btn" title="Mappa Interattiva">
           <span class="nav-box-icon">🗺️</span>
-          <span class="nav-box-label">Mappa del Mondo</span>
+          <span class="nav-box-label">Mappa</span>
         </a>
         <a href="viaggi.html?tab=upcoming" class="nav-box-btn nav-box-upcoming" title="Viaggi in Programma">
           <span class="nav-box-icon">🗓️</span>
-          <span class="nav-box-label">In Programma</span>
+          <span class="nav-box-label">Next Stop</span>
         </a>
         <a href="viaggi.html?tab=past" class="nav-box-btn active" title="Archivio Viaggi Passati">
           <span class="nav-box-icon">🌍</span>
-          <span class="nav-box-label">Archivio Viaggi</span>
+          <span class="nav-box-label">Archivio</span>
         </a>
-        <a href="citta.html" class="nav-box-btn" title="755 Città Esplorate nel Mondo">
+        <a href="citta.html" class="nav-box-btn" title="Indice Città Esplorate nel Mondo">
           <span class="nav-box-icon">🏙️</span>
-          <span class="nav-box-label">755 Città</span>
+          <span class="nav-box-label">Città</span>
         </a>
         <a href="wishlist.html" class="nav-box-btn" title="Travel Wish List (Cosa Voglio Fare)">
           <span class="nav-box-icon">🌟</span>
@@ -55,28 +58,6 @@
           <span class="nav-box-label">Chi Sono</span>
         </a>
       </nav>
-
-      <div class="navbar-actions">
-        <!-- Selettore rapido palette colore -->
-        <div class="theme-picker" title="Scegli la tonalità colore">
-          <span class="theme-dot theme-dot-amber active" data-theme="amber" onclick="window.travelApp.setTheme('amber')" title="Ambra Dorata"></span>
-          <span class="theme-dot theme-dot-sapphire" data-theme="sapphire" onclick="window.travelApp.setTheme('sapphire')" title="Blu Zaffiro"></span>
-          <span class="theme-dot theme-dot-platinum" data-theme="platinum" onclick="window.travelApp.setTheme('platinum')" title="Platino Monocromo"></span>
-          <span class="theme-dot theme-dot-terracotta" data-theme="terracotta" onclick="window.travelApp.setTheme('terracotta')" title="Terracotta"></span>
-        </div>
-
-        <button class="btn btn-outline btn-sm" onclick="window.travelApp.openImportModal('flighty')" title="Importa voli da Flighty">
-          📥 Importa Dati
-        </button>
-
-        <button class="btn btn-accent btn-sm" onclick="window.travelApp.openAddTripModal()">
-          <span>+</span> Aggiungi Tappa
-        </button>
-
-        <button class="mobile-menu-btn" id="mobile-menu-toggle" aria-label="Menu di navigazione">
-          ☰
-        </button>
-      </div>
     </div>
   </header>
 
@@ -230,6 +211,16 @@
             <button class="btn btn-sm btn-outline w-100" onclick="window.travelApp.exportDataAsJson()">
               💾 Scarica Backup Archivio (JSON)
             </button>
+            <!-- Palette Colore del Sito -->
+            <div class="footer-theme-picker-block" style="margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--border-subtle);">
+              <span style="display: block; font-size: 0.74rem; color: var(--text-muted); margin-bottom: 6px;">🎨 Palette Colore:</span>
+              <div class="theme-picker" title="Scegli la tonalità colore">
+                <span class="theme-dot theme-dot-amber active" data-theme="amber" onclick="window.travelApp.setTheme('amber')" title="Ambra Dorata"></span>
+                <span class="theme-dot theme-dot-sapphire" data-theme="sapphire" onclick="window.travelApp.setTheme('sapphire')" title="Blu Zaffiro"></span>
+                <span class="theme-dot theme-dot-platinum" data-theme="platinum" onclick="window.travelApp.setTheme('platinum')" title="Platino Monocromo"></span>
+                <span class="theme-dot theme-dot-terracotta" data-theme="terracotta" onclick="window.travelApp.setTheme('terracotta')" title="Terracotta"></span>
+              </div>
+            </div>
           </div>
         </div>
       </div>

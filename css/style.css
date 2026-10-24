@@ -304,13 +304,17 @@ img {
 .navbar-inner {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  position: relative;
+  min-height: 52px;
 }
 
 .brand-logo {
   display: flex;
   align-items: center;
   gap: 10px;
+  position: absolute;
+  left: 20px;
 }
 
 .brand-avatar {
@@ -341,22 +345,50 @@ img {
   letter-spacing: 0.04em;
 }
 
-/* Menu di Navigazione a Box / Card */
+/* Menu di Navigazione a Box / Card (Centrato e Scorrevole) */
 .navbar-box-nav,
 .navbar-links {
   display: flex;
   align-items: center;
+  justify-content: center;
+  justify-content: safe center;
   gap: 8px;
   list-style: none;
-  margin: 0;
-  padding: 0;
+  margin: 0 auto;
+  padding: 4px 2px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent-theme) transparent;
+  max-width: 100%;
+}
+
+.navbar-box-nav::-webkit-scrollbar,
+.navbar-links::-webkit-scrollbar {
+  height: 3px;
+}
+
+.navbar-box-nav::-webkit-scrollbar-track,
+.navbar-links::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.navbar-box-nav::-webkit-scrollbar-thumb,
+.navbar-links::-webkit-scrollbar-thumb {
+  background: var(--accent-theme);
+  border-radius: 3px;
 }
 
 .nav-box-btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  text-align: center;
   gap: 7px;
-  padding: 6px 12px;
+  padding: 6px 14px;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--border-medium);
   border-radius: var(--radius-sm);
@@ -367,6 +399,20 @@ img {
   text-decoration: none;
   transition: all var(--transition-fast);
   white-space: nowrap;
+  flex-shrink: 0;
+  scroll-snap-align: start;
+}
+
+.nav-box-btn.nav-box-home {
+  padding: 6px 10px;
+  min-width: 36px;
+  justify-content: center;
+}
+
+.nav-box-btn.nav-box-home .nav-box-icon {
+  font-size: 1.05rem;
+  margin: 0;
+  line-height: 1;
 }
 
 .nav-box-btn:hover {
@@ -2268,11 +2314,57 @@ textarea.form-control {
 }
 
 /* ==========================================================================
-   RESPONSIVE DESIGN
+   RESPONSIVE DESIGN (MOBILE PORTRAIT, LANDSCAPE & TABLET)
    ========================================================================== */
+
+/* 1. TABLET / LAPTOP COMPATTI (<= 1180px): Organizza Header con Box Scorrevole */
+@media (max-width: 1180px) {
+  .navbar-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 6px 16px;
+    position: static;
+  }
+
+  .brand-logo {
+    position: static;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .navbar-box-nav,
+  .navbar-links {
+    width: 100%;
+    margin: 2px auto 0 auto;
+    padding: 4px 0 6px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    justify-content: safe center;
+    gap: 8px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+  }
+
+  .mobile-menu-btn {
+    display: none !important; /* Menu a box sempre visibili e scorrevoli orizzontalmente col dito */
+  }
+}
+
+/* 2. TABLET VERTICALE (<= 992px) */
 @media (max-width: 992px) {
   .stats-dashboard {
     grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
   }
   .about-grid {
     grid-template-columns: 1fr;
@@ -2284,42 +2376,393 @@ textarea.form-control {
     grid-template-columns: 1fr;
     gap: 28px;
   }
+  .continents-directory-grid {
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  }
 }
 
+/* 3. SMARTPHONE PORTRAIT & TABLET STRETTO (<= 768px) */
 @media (max-width: 768px) {
+  .navbar {
+    padding: 6px 0 8px 0;
+  }
+
   .navbar-links {
-    position: fixed;
-    top: 60px;
-    left: 0;
+    position: static;
+    transform: none;
+    background: transparent;
+    border: none;
+    padding: 4px 0;
+    flex-direction: row;
     width: 100%;
-    background: var(--bg-surface);
-    flex-direction: column;
-    padding: 24px;
-    gap: 18px;
-    border-bottom: 1px solid var(--border-subtle);
-    transform: translateY(-150%);
-    transition: transform var(--transition-fast);
   }
-  .navbar-links.mobile-active {
-    transform: translateY(0);
-  }
+
   .mobile-menu-btn {
-    display: block;
+    display: none !important;
   }
+
+  /* Dashboard Statistiche compatta */
   .stats-dashboard {
     grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
   }
+
+  .stat-card {
+    padding: 12px 10px;
+  }
+
+  .stat-value {
+    font-size: 1.35rem;
+  }
+
+  .stat-label {
+    font-size: 0.72rem;
+  }
+
+  /* Mappa Interattiva Leaflet */
+  #world-map {
+    height: 360px;
+  }
+
+  .map-header-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .continent-filters {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+  }
+
+  /* Viaggi in Programma & Archivio */
   .trips-grid {
     grid-template-columns: 1fr;
+    gap: 16px;
   }
+
+  .upcoming-header-actions {
+    width: 100%;
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .upcoming-header-actions .btn {
+    flex: 1;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .directory-block-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .directory-block-title {
+    font-size: 1.15rem;
+  }
+
+  .continents-directory-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+  }
+
+  .years-directory-grid {
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    gap: 8px;
+  }
+
+  /* Tabs delle gallerie scorrevoli orizzontalmente col dito */
+  .gallery-tabs-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    padding-bottom: 6px;
+  }
+
+  .gallery-tabs {
+    flex-wrap: nowrap;
+    width: max-content;
+  }
+
+  .gallery-tab-btn {
+    flex-shrink: 0;
+    white-space: nowrap;
+    padding: 6px 14px;
+    font-size: 0.8rem;
+  }
+
+  /* Filtri Città scorrevoli col dito */
+  #cities-continent-filters {
+    display: flex;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap;
+    width: 100%;
+    padding-bottom: 6px;
+  }
+
+  .continent-btn {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  /* Form & Modali */
   .form-grid {
     grid-template-columns: 1fr;
   }
+
   .form-group.col-span-2 {
     grid-column: span 1;
   }
+
+  .modal-dialog {
+    max-width: 95%;
+    margin: 16px auto;
+    max-height: 90vh;
+    padding: 16px;
+  }
+
+  .page-content-padding,
+  main.section-padding {
+    padding-top: 95px !important;
+  }
+}
+
+/* 4. SMARTPHONE VERTICALE STRETTO (<= 480px) */
+@media (max-width: 480px) {
+  .container {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .brand-text h1 {
+    font-size: 0.88rem;
+  }
+
+  .brand-subtitle {
+    font-size: 0.65rem;
+  }
+
+  .brand-avatar {
+    width: 28px;
+    height: 28px;
+    font-size: 0.75rem;
+  }
+
+  .navbar-actions {
+    gap: 4px;
+  }
+
+  .navbar-actions .btn-sm {
+    padding: 5px 8px;
+    font-size: 0.74rem;
+  }
+
+  .theme-dot {
+    width: 13px;
+    height: 13px;
+  }
+
+  .nav-box-btn {
+    padding: 5px 10px;
+    font-size: 0.78rem;
+    gap: 5px;
+  }
+
+  .hero-title {
+    font-size: 1.6rem;
+  }
+
+  .hero-description {
+    font-size: 0.84rem;
+  }
+
+  .stats-dashboard {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .continents-directory-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .continent-dir-card {
+    padding: 14px 10px;
+  }
+
+  .continent-dir-icon {
+    font-size: 1.5rem;
+    margin-bottom: 6px;
+  }
+
+  .continent-dir-name {
+    font-size: 0.95rem;
+  }
+
+  .continent-dir-stats {
+    font-size: 0.72rem;
+  }
+
+  .continent-dir-link {
+    font-size: 0.72rem;
+  }
+
+  .years-directory-grid {
+    grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
+    gap: 6px;
+  }
+
+  .year-card {
+    padding: 8px 6px;
+  }
+
+  .year-card-number {
+    font-size: 1.05rem;
+  }
+
   #world-map {
-    height: 380px;
+    height: 320px;
+  }
+}
+
+/* 5. SMARTPHONE LANDSCAPE (ORIZZONTALE DA CELLULARE) */
+/* Rileva l'orientamento orizzontale o l'altezza ridotta tipica dei display smartphone */
+@media (max-height: 520px) and (orientation: landscape) {
+  .navbar {
+    padding: 4px 0 !important;
+  }
+
+  .navbar-inner {
+    padding: 2px 14px !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+  }
+
+  .brand-logo {
+    width: auto !important;
+    flex-shrink: 0 !important;
+    gap: 6px;
+  }
+
+  .brand-avatar {
+    width: 24px;
+    height: 24px;
+    font-size: 0.7rem;
+  }
+
+  .brand-text h1 {
+    font-size: 0.82rem;
+  }
+
+  .brand-subtitle {
+    display: none !important; /* Risparmia prezioso spazio verticale in landscape */
+  }
+
+  .navbar-box-nav,
+  .navbar-links {
+    width: auto !important;
+    flex: 1 1 auto !important;
+    border-top: none !important;
+    margin-top: 0 !important;
+    padding: 2px 0 !important;
+    gap: 6px !important;
+  }
+
+  .nav-box-btn {
+    padding: 4px 8px !important;
+    font-size: 0.74rem !important;
+    gap: 5px !important;
+  }
+
+  .nav-box-icon {
+    font-size: 0.82rem !important;
+  }
+
+  /* Hero Section compatta in landscape per arrivare subito a statistiche e mappa */
+  .hero-section {
+    padding: 16px 0 12px 0 !important;
+  }
+
+  .hero-tagline-pill {
+    display: none !important;
+  }
+
+  .hero-title {
+    font-size: 1.35rem !important;
+    margin-bottom: 6px !important;
+    line-height: 1.2 !important;
+  }
+
+  .hero-description {
+    display: none !important;
+  }
+
+  /* Dashboard orizzontale a 6 colonne su un'unica comoda striscia */
+  .stats-dashboard {
+    grid-template-columns: repeat(6, 1fr) !important;
+    gap: 6px !important;
+    margin-top: 10px !important;
+  }
+
+  .stat-card {
+    padding: 6px 4px !important;
+  }
+
+  .stat-value {
+    font-size: 1.05rem !important;
+  }
+
+  .stat-label {
+    font-size: 0.62rem !important;
+    letter-spacing: 0;
+  }
+
+  /* Mappa comoda e visibile interamente nello schermo orizzontale */
+  #world-map {
+    height: 270px !important;
+  }
+
+  .map-wrapper {
+    margin-top: 10px;
+  }
+
+  .section-padding {
+    padding: 24px 0 !important;
+  }
+
+  .page-content-padding,
+  main.section-padding {
+    padding-top: 75px !important;
+  }
+
+  /* Modali adatti a landscape con scroll interno */
+  .custom-modal {
+    padding: 10px;
+  }
+
+  .modal-dialog {
+    max-height: 86vh !important;
+    max-width: 620px !important;
+    overflow-y: auto !important;
+    padding: 14px 18px !important;
+  }
+
+  .trips-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  .continents-directory-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)) !important;
+    gap: 10px !important;
   }
 }
 
