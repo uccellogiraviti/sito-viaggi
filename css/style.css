@@ -52,25 +52,69 @@
   --transition-normal: 0.25s ease;
 }
 
-/* TEMI DI COLORE SELEZIONABILI DALL'UTENTE */
-body.theme-sapphire {
-  --accent-theme: #38bdf8;
-  --accent-theme-hover: #7dd3fc;
-  --accent-theme-subtle: rgba(56, 189, 248, 0.12);
-  --accent-theme-border: rgba(56, 189, 248, 0.3);
+/* TEMI DI COLORE SELEZIONABILI DALL'UTENTE (Verde, Azzurro, Rosso, Oro, Argento, Ambra, Terracotta) */
+
+/* 1. Oro Regale (Dorata Calda ed Editoriale) */
+body.theme-gold {
+  --accent-theme: #eab308;
+  --accent-theme-hover: #fde047;
+  --accent-theme-subtle: rgba(234, 179, 8, 0.14);
+  --accent-theme-border: rgba(234, 179, 8, 0.35);
+  --text-accent: #facc15;
+  --marker-core: #38bdf8;
+}
+
+/* 2. Argento Puro (Argentata Satinata, Luminosa e Futuristica) */
+body.theme-silver, body.theme-platinum {
+  --accent-theme: #e2e8f0;
+  --accent-theme-hover: #ffffff;
+  --accent-theme-subtle: rgba(226, 232, 240, 0.12);
+  --accent-theme-border: rgba(226, 232, 240, 0.32);
+  --text-accent: #f8fafc;
+  --marker-core: #38bdf8;
+}
+
+/* 3. Verde Smeraldo (Verde Nobile, Riposante, Raffinato ed Altamente Leggibile) */
+body.theme-emerald {
+  --accent-theme: #10b981;
+  --accent-theme-hover: #34d399;
+  --accent-theme-subtle: rgba(16, 185, 129, 0.14);
+  --accent-theme-border: rgba(16, 185, 129, 0.35);
+  --text-accent: #34d399;
+  --marker-core: #38bdf8;
+}
+
+/* 4. Azzurro Ceruleo (Azzurro Cielo Intenso, Regale e Brillante) */
+body.theme-azure, body.theme-sapphire {
+  --accent-theme: #0ea5e9;
+  --accent-theme-hover: #38bdf8;
+  --accent-theme-subtle: rgba(14, 165, 233, 0.14);
+  --accent-theme-border: rgba(14, 165, 233, 0.35);
   --text-accent: #38bdf8;
   --marker-core: #f59e0b;
 }
 
-body.theme-platinum {
-  --accent-theme: #e4e4e7;
-  --accent-theme-hover: #ffffff;
-  --accent-theme-subtle: rgba(255, 255, 255, 0.08);
-  --accent-theme-border: rgba(255, 255, 255, 0.25);
-  --text-accent: #f4f4f5;
+/* 5. Rosso Rubino (Rosso Pregiato, Caldo, Sofisticato e Morbido per la Vista) */
+body.theme-ruby {
+  --accent-theme: #f43f5e;
+  --accent-theme-hover: #fb7185;
+  --accent-theme-subtle: rgba(244, 63, 94, 0.14);
+  --accent-theme-border: rgba(244, 63, 94, 0.35);
+  --text-accent: #fb7185;
   --marker-core: #38bdf8;
 }
 
+/* 6. Ambra Dorata (Classico Caldo) */
+body.theme-amber {
+  --accent-theme: #f59e0b;
+  --accent-theme-hover: #fbbf24;
+  --accent-theme-subtle: rgba(245, 158, 11, 0.12);
+  --accent-theme-border: rgba(245, 158, 11, 0.3);
+  --text-accent: #fbbf24;
+  --marker-core: #38bdf8;
+}
+
+/* 7. Terracotta (Tonalità Terrosa Calda) */
 body.theme-terracotta {
   --accent-theme: #f97316;
   --accent-theme-hover: #fb923c;
@@ -79,6 +123,7 @@ body.theme-terracotta {
   --text-accent: #fb923c;
   --marker-core: #38bdf8;
 }
+
 
 /* --- RESET & BASE --- */
 *, *::before, *::after {
@@ -502,10 +547,16 @@ img {
   border-color: #ffffff;
 }
 
+.theme-dot-gold { background: linear-gradient(135deg, #f59e0b, #fde047); box-shadow: 0 0 5px rgba(234, 179, 8, 0.35); }
+.theme-dot-silver { background: linear-gradient(135deg, #94a3b8, #f8fafc); box-shadow: 0 0 5px rgba(226, 232, 240, 0.35); }
+.theme-dot-emerald { background: linear-gradient(135deg, #059669, #34d399); box-shadow: 0 0 5px rgba(16, 185, 129, 0.35); }
+.theme-dot-azure { background: linear-gradient(135deg, #0284c7, #38bdf8); box-shadow: 0 0 5px rgba(14, 165, 233, 0.35); }
+.theme-dot-ruby { background: linear-gradient(135deg, #be123c, #fb7185); box-shadow: 0 0 5px rgba(244, 63, 94, 0.35); }
 .theme-dot-amber { background: #f59e0b; }
 .theme-dot-sapphire { background: #38bdf8; }
 .theme-dot-platinum { background: #e4e4e7; }
 .theme-dot-terracotta { background: #f97316; }
+
 
 .mobile-menu-btn {
   display: none;

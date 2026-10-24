@@ -182,7 +182,11 @@ class TravelMap {
   }
 
   getAccentColor() {
-    return document.documentElement.style.getPropertyValue('--accent-theme').trim() || "#f59e0b";
+    if (typeof window !== "undefined" && typeof getComputedStyle === "function") {
+      const col = getComputedStyle(document.body).getPropertyValue('--accent-theme').trim();
+      if (col) return col;
+    }
+    return "#f59e0b";
   }
 
   getCountryStyle(feature) {

@@ -98,19 +98,26 @@ class TravelApp {
   }
 
   setTheme(themeName, shouldRefreshMap = true) {
+    if (themeName === "sapphire") themeName = "azure";
+    if (themeName === "platinum") themeName = "silver";
     this.currentTheme = themeName;
     try {
       localStorage.setItem("giuseppe_theme", themeName);
     } catch (e) {}
 
-    document.body.classList.remove("theme-sapphire", "theme-platinum", "theme-terracotta");
-    if (themeName !== "amber") {
+    const allThemes = [
+      "theme-gold", "theme-silver", "theme-emerald", "theme-azure", 
+      "theme-ruby", "theme-amber", "theme-terracotta", "theme-sapphire", "theme-platinum"
+    ];
+    document.body.classList.remove(...allThemes);
+    if (themeName && themeName !== "default") {
       document.body.classList.add(`theme-${themeName}`);
     }
 
     document.querySelectorAll(".theme-dot").forEach(dot => {
       dot.classList.toggle("active", dot.dataset.theme === themeName);
     });
+
 
     if (shouldRefreshMap && window.travelMap) {
       setTimeout(() => {
