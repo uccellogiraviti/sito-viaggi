@@ -114,12 +114,16 @@
             <div class="stat-label" id="stat-continents-label">Continenti</div>
           </div>
         </div>
-        <!-- Pulsante Centrale Aggiungi Tappa -->
-        <div class="hero-actions-center" style="display: flex; justify-content: center; margin-top: 24px;">
+        <!-- Pulsante Centrale Aggiungi Tappa & Link Paesi da Visitare -->
+        <div class="hero-actions-center" style="display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 24px;">
           <button class="btn btn-accent btn-md" onclick="window.travelApp.openAddTripModal()" title="Pianifica o registra una nuova tappa di viaggio">
             <span>+</span> Aggiungi Tappa
           </button>
+          <a href="paesi-non-visitati.html" style="font-size: 0.85rem; color: #F87171; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; padding: 6px 16px; background: rgba(238, 51, 78, 0.08); border: 1px solid rgba(238, 51, 78, 0.25); border-radius: 99px; transition: all 0.2s;" onmouseover="this.style.background='rgba(238, 51, 78, 0.16)'" onmouseout="this.style.background='rgba(238, 51, 78, 0.08)'">
+            🧭 Scopri i 146 Paesi del Mondo non ancora visitati →
+          </a>
         </div>
+
 
       </div>
     </div>
@@ -570,7 +574,8 @@ New York, Stati Uniti (2023)"></textarea>
           <ul>
             <li><a href="index.html#home">Home Page</a></li>
             <li><a href="#mappa">Mappa del Mondo</a></li>
-            <li><a href="paesi.html">Paesi Visitati</a></li>
+            <li><a href="paesi.html">Paesi Visitati (49)</a></li>
+            <li><a href="paesi-non-visitati.html" style="color: var(--accent); font-weight: 600;">Paesi Non Ancora Visitati (146)</a></li>
             <li><a href="statistiche.html">Percentuale Mondo Esplorato</a></li>
             <li><a href="continenti.html">Mappa dei Continenti</a></li>
             <li><a href="viaggi.html?tab=upcoming">Next Stop</a></li>
@@ -618,6 +623,7 @@ New York, Stati Uniti (2023)"></textarea>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script src="data/countries-data.js"></script>
   <script src="js/tripadvisor_cities.js"></script>
+  <script src="js/sovereign_countries.js"></script>
   <script src="js/data.js"></script>
   <script src="js/map.js"></script>
   <script src="js/app.js"></script>

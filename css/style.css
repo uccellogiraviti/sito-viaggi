@@ -3992,4 +3992,299 @@ textarea.form-control {
   display: none !important;
 }
 
+/* ==========================================================================
+   PAGINA PAESI NON ANCORA VISITATI & SUBTOTALE AMERICHE
+   ========================================================================== */
+
+.unvisited-hero-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.unvisited-stat-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  padding: 16px 18px;
+  position: relative;
+  overflow: hidden;
+  transition: all var(--transition-fast);
+}
+
+.unvisited-stat-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-card);
+}
+
+.unvisited-stat-card .stat-icon-top {
+  font-size: 1.6rem;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.unvisited-stat-card .stat-val-huge {
+  font-family: var(--font-display);
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.1;
+  margin-bottom: 4px;
+}
+
+.unvisited-stat-card .stat-label-sub {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.unvisited-stat-card .stat-progress-bar {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 99px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+
+.unvisited-stat-card .stat-progress-fill {
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.6s ease;
+}
+
+/* Card Speciale Declinazione Nazioni Americane (Sub-Totale) */
+.americhe-subtotal-panel {
+  background: linear-gradient(135deg, rgba(238, 51, 78, 0.08) 0%, rgba(249, 115, 22, 0.08) 100%);
+  border: 1px solid rgba(238, 51, 78, 0.25);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  margin-bottom: 30px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.35);
+  position: relative;
+  overflow: hidden;
+}
+
+.americhe-subtotal-panel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #EE334E 0%, #F97316 100%);
+}
+
+.americhe-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.americhe-panel-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.americhe-panel-title .americhe-badge-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  background: rgba(238, 51, 78, 0.15);
+  border: 1px solid rgba(238, 51, 78, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.americhe-panel-title h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.americhe-panel-title p {
+  margin: 2px 0 0 0;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.americhe-subtotal-pills {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+  margin-top: 14px;
+}
+
+.americhe-sub-card {
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: all var(--transition-fast);
+}
+
+.americhe-sub-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.americhe-sub-card.sub-north {
+  border-left: 4px solid #EE334E;
+}
+
+.americhe-sub-card.sub-south {
+  border-left: 4px solid #F97316;
+}
+
+.americhe-sub-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.americhe-sub-top h4 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.americhe-sub-counts {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.americhe-sub-counts .unvisited-num {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #F87171;
+}
+
+.americhe-sub-counts .sub-denom {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.americhe-sub-desc {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* Griglia Schede Paesi Non Visitati */
+.unvisited-countries-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 18px;
+}
+
+.unvisited-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all var(--transition-fast);
+  position: relative;
+  overflow: hidden;
+}
+
+.unvisited-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+  box-shadow: var(--shadow-card);
+}
+
+.unvisited-card-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.unvisited-card-flag {
+  font-size: 2.4rem;
+  line-height: 1;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+  flex-shrink: 0;
+}
+
+.unvisited-card-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.unvisited-card-info h3 {
+  margin: 0 0 4px 0;
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.unvisited-card-capital {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 6px;
+}
+
+.unvisited-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-subtle);
+  margin-top: auto;
+  gap: 8px;
+}
+
+.btn-wishlist-add {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  border-radius: var(--radius-xs);
+  padding: 5px 10px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all var(--transition-fast);
+}
+
+.btn-wishlist-add:hover {
+  background: var(--accent);
+  color: #0b101b;
+  border-color: var(--accent);
+}
+
+
 

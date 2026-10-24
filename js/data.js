@@ -1674,6 +1674,127 @@ class TravelDataManager {
     });
   }
 
+  // Estrazione di tutti i Paesi del Mondo non ancora visitati (146 stati sovrani su 195)
+  getUnvisitedCountriesList() {
+    const visited = this.getVisitedCountriesList();
+    const visitedCodes = new Set(visited.map(v => v.code.toUpperCase()));
+    const visitedNames = new Set(visited.map(v => v.name.toLowerCase().trim()));
+
+    const allCountries = (typeof window !== "undefined" && Array.isArray(window.ALL_SOVEREIGN_COUNTRIES))
+      ? window.ALL_SOVEREIGN_COUNTRIES
+      : [];
+
+    return allCountries
+      .filter(c => !visitedCodes.has(c.code.toUpperCase()) && !visitedNames.has(c.name.toLowerCase().trim()))
+      .map(c => ({
+        ...c,
+        isVisited: false
+      }))
+      .sort((a, b) => a.name.localeCompare(b.name, 'it'));
+  }
+
+  // Ripartizione continentale dei paesi non ancora visitati, con declinazione e subtotale Americhe
+  getUnvisitedContinentalBreakdown() {
+    const breakdown = this.getContinentalBreakdown();
+    const unvisited = this.getUnvisitedCountriesList();
+
+    const continents = breakdown.map(b => {
+      const cUnvisited = unvisited.filter(u => u.continent === b.name);
+      const unvisitedCount = b.totalCountries - b.visitedCountriesCount;
+      const unvisitedPercentage = b.totalCountries > 0
+        ? ((unvisitedCount / b.totalCountries) * 100).toFixed(1)
+        : "0.0";
+
+      return {
+        ...b,
+        unvisitedCount: Math.max(0, unvisitedCount),
+        unvisitedPercentage: unvisitedPercentage,
+        unvisitedCountries: cUnvisited
+      };
+    });
+
+    // Subtotale speciale nazioni americane (Nord America + Sud America)
+    const northAm = continents.find(c => c.name === "Nord America") || { totalCountries: 23, visitedCountriesCount: 5, unvisitedCount: 18 };
+    const southAm = continents.find(c => c.name === "Sud America") || { totalCountries: 12, visitedCountriesCount: 1, unvisitedCount: 11 };
+    
+    const americheTotal = northAm.totalCountries + southAm.totalCountries; // 35
+    const americheVisited = northAm.visitedCountriesCount + southAm.visitedCountriesCount; // 6
+    const americheUnvisited = northAm.unvisitedCount + southAm.unvisitedCount; // 29
+    const americheVisitedPct = ((americheVisited / americheTotal) * 100).toFixed(1); // 17.1%
+    const americheUnvisitedPct = ((americheUnvisited / americheTotal) * 100).toFixed(1); // 82.9%
+
+    const americheSubTotal = {
+      name: "Americhe",
+      icon: "🌎",
+      totalCountries: americheTotal,
+      visitedCountriesCount: americheVisited,
+      unvisitedCount: americheUnvisited,
+      visitedPercentage: americheVisitedPct,
+      unvisitedPercentage: americheUnvisitedPct,
+      northAmerica: {
+        name: "Nord America",
+        total: northAm.totalCountries,
+        visited: northAm.visitedCountriesCount,
+        unvisited: northAm.unvisitedCount,
+        visitedPercentage: ((northAm.visitedCountriesCount / northAm.totalCountries) * 100).toFixed(1),
+        unvisitedPercentage: ((northAm.unvisitedCount / northAm.totalCountries) * 100).toFixed(1),
+        countries: unvisited.filter(u => u.continent === "Nord America")
+      },
+      southAmerica: {
+        name: "Sud America",
+        total: southAm.totalCountries,
+        visited: southAm.visitedCountriesCount,
+        unvisited: southAm.unvisitedCount,
+        visitedPercentage: ((southAm.visitedCountriesCount / southAm.totalCountries) * 100).toFixed(1),
+        unvisitedPercentage: ((southAm.unvisitedCount / southAm.totalCountries) * 100).toFixed(1),
+        countries: unvisited.filter(u => u.continent === "Sud America")
+      }
+    };
+
+    return {
+      continents: continents,
+      americheSubTotal: americheSubTotal,
+      totalWorldSovereign: 195,
+      totalVisited: 49,
+      totalUnvisited: 146,
+      worldUnvisitedPercentage: "74.9",
+      worldVisitedPercentage: "25.1"
+    };
+  }
+
+  // Declinazione e Sub-totale specifico dei 50 Stati degli Stati Uniti d'America (USA)
+  getUSAStatesBreakdown() {
+    const rawData = (typeof window !== "undefined" && Array.isArray(window.USA_STATES_DATA))
+      ? window.USA_STATES_DATA
+      : [];
+
+    const statesOnly = rawData.filter(s => !s.isDistrict);
+    const visited = statesOnly.filter(s => s.visited);
+    const unvisited = statesOnly.filter(s => !s.visited);
+    const dc = rawData.find(s => s.isDistrict);
+
+    const total = statesOnly.length; // 50
+    const visitedCount = visited.length; // 17
+    const unvisitedCount = unvisited.length; // 33
+    const visitedPct = ((visitedCount / total) * 100).toFixed(1); // 34.0%
+    const unvisitedPct = ((unvisitedCount / total) * 100).toFixed(1); // 66.0%
+
+    return {
+      countryName: "Stati Uniti d'America",
+      totalStates: total,
+      visitedCount: visitedCount,
+      unvisitedCount: unvisitedCount,
+      visitedPercentage: visitedPct,
+      unvisitedPercentage: unvisitedPct,
+      visitedStates: visited,
+      unvisitedStates: unvisited,
+      districtOfColumbia: dc,
+      totalCitiesInUSA: 67
+    };
+  }
+
+
+
   exportData() {
     const exportObj = {
       version: "4.0",

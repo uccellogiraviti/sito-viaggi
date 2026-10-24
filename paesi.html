@@ -71,15 +71,22 @@
   <main class="page-main-content">
     <div class="container">
 
-      <!-- Barra di Ritorno alla Home -->
-      <div class="back-to-home-bar">
-        <a href="index.html#home" class="back-home-link">
-          ← Torna alla Home & Mappa
-        </a>
+      <!-- Barra di Ritorno alla Home & Switch Non Visitati -->
+      <div class="back-to-home-bar" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+        <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+          <a href="index.html#home" class="back-home-link">
+            ← Torna alla Home & Mappa
+          </a>
+          <span style="color: var(--border-medium);">|</span>
+          <a href="paesi-non-visitati.html" class="back-home-link" style="color: #F87171; font-weight: 600;">
+            🧭 Vedi i 146 Paesi Non Ancora Visitati →
+          </a>
+        </div>
         <div id="countries-summary-badge" class="badge badge-accent">
           Caricamento nazioni...
         </div>
       </div>
+
 
       <!-- Intestazione Sezione -->
       <div class="section-header" style="text-align: left; margin-bottom: 24px;">
@@ -142,6 +149,8 @@
           <ul class="footer-links">
             <li><a href="index.html#home">Home Page</a></li>
             <li><a href="index.html#mappa">Mappa Interattiva</a></li>
+            <li><a href="paesi.html">Paesi Già Visitati (49)</a></li>
+            <li><a href="paesi-non-visitati.html" style="color: var(--accent); font-weight: 600;">Paesi Non Ancora Visitati (146)</a></li>
             <li><a href="viaggi.html?tab=past">Archivio Viaggi Passati</a></li>
             <li><a href="citta.html">Tutte le Città</a></li>
             <li><a href="statistiche.html">Percentuale Mondo Esplorato</a></li>
@@ -181,6 +190,7 @@
 
   <!-- SCRIPTS -->
   <script src="js/tripadvisor_cities.js"></script>
+  <script src="js/sovereign_countries.js"></script>
   <script src="js/data.js"></script>
   <script src="js/app.js"></script>
   <script>

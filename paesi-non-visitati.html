@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paesi Non Ancora Visitati • Giuseppe Ricatti</title>
+  <meta name="description" content="Tutti i paesi e le nazioni del mondo non ancora visitati da Giuseppe Ricatti, divisi per continente con declinazione e sub-totale per i 50 Stati degli Stati Uniti d'America (USA).">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧭</text></svg>">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Foglio di Stile Principale -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ======================================================================
+       HEADER & NAVBAR SUPERIORE
+       ====================================================================== -->
+  <header class="main-header" id="main-navbar">
+    <div class="container navbar-inner">
+      <a href="index.html#home" class="brand-logo" title="Giuseppe Ricatti - Home">
+        <div class="brand-avatar">GR</div>
+        <div class="brand-text">
+          <h1>Giuseppe Ricatti</h1>
+          <span class="brand-subtitle">Diario di Bordo</span>
+        </div>
+      </a>
+
+      <!-- Menu a Blocchi -->
+      <nav class="navbar-box-nav" id="navbar-links">
+        <a href="index.html#home" class="nav-box-btn nav-box-home" title="Home">
+          <span class="nav-box-icon">🏠</span>
+        </a>
+        <a href="index.html#mappa" class="nav-box-btn" title="Mappa Interattiva">
+          <span class="nav-box-icon">🗺️</span>
+          <span class="nav-box-label">Mappa</span>
+        </a>
+        <a href="viaggi.html?tab=upcoming" class="nav-box-btn nav-box-upcoming" title="Viaggi in Programma">
+          <span class="nav-box-icon">🗓️</span>
+          <span class="nav-box-label">Next Stop</span>
+        </a>
+        <a href="viaggi.html?tab=past" class="nav-box-btn" title="Archivio Viaggi Passati">
+          <span class="nav-box-icon">🌍</span>
+          <span class="nav-box-label">Archivio</span>
+        </a>
+        <a href="citta.html" class="nav-box-btn" title="Indice Città Esplorate nel Mondo">
+          <span class="nav-box-icon">🏙️</span>
+          <span class="nav-box-label">Città</span>
+        </a>
+        <a href="wishlist.html" class="nav-box-btn" title="Travel Wish List (Cosa Voglio Fare)">
+          <span class="nav-box-icon">🌟</span>
+          <span class="nav-box-label">Wish List</span>
+        </a>
+        <a href="chi-sono.html" class="nav-box-btn" title="Biografia & Visione">
+          <span class="nav-box-icon">👤</span>
+          <span class="nav-box-label">Chi Sono</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ======================================================================
+       MAIN CONTENT: ELENCO PAESI NON ANCORA VISITATI
+       ====================================================================== -->
+  <main class="page-main-content">
+    <div class="container">
+
+      <!-- Barra di Ritorno e Switch Veloce -->
+      <div class="back-to-home-bar" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+        <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+          <a href="paesi.html" class="back-home-link" style="color: var(--accent); font-weight: 600;">
+            ← Vedi Paesi Già Visitati (49)
+          </a>
+          <span style="color: var(--border-medium);">|</span>
+          <a href="index.html#home" class="back-home-link">
+            🏠 Torna alla Home & Mappa
+          </a>
+        </div>
+        <div id="unvisited-summary-badge" class="badge badge-accent" style="font-size: 0.85rem; padding: 6px 14px;">
+          146 Paesi da Esplorare (74.9% del Mondo)
+        </div>
+      </div>
+
+      <!-- Intestazione Sezione -->
+      <div class="section-header" style="text-align: left; margin-bottom: 24px;">
+        <span class="section-tag">Orizzonti Futuri & Cartografia Globale</span>
+        <h2 class="section-title">Paesi Non Ancora Visitati</h2>
+        <p class="section-subtitle" style="margin: 0; max-width: 880px;">
+          Tutte le <strong>146 nazioni sovrane</strong> del pianeta non ancora esplorate (sui 195 stati riconosciuti al mondo), classificate per continente con la <strong>declinazione e sub-totale per i 50 Stati degli Stati Uniti d'America (USA)</strong>.
+        </p>
+      </div>
+
+      <!-- Griglia Hero Statistiche Continenti -->
+      <div class="unvisited-hero-stats" id="unvisited-hero-stats">
+        <!-- Renderizzato via JavaScript -->
+      </div>
+
+      <!-- ==================================================================
+           PANNELLO SPECIALE: DECLINAZIONE SUB-TOTALE STATI DEGLI STATI UNITI D'AMERICA (USA)
+           ================================================================== -->
+      <div class="americhe-subtotal-panel" id="usa-states-subtotal-panel" style="background: linear-gradient(135deg, rgba(14, 116, 144, 0.12) 0%, rgba(220, 38, 38, 0.12) 100%); border-color: rgba(220, 38, 38, 0.3);">
+        <div class="americhe-panel-header">
+          <div class="americhe-panel-title">
+            <div class="americhe-badge-icon" style="background: rgba(220, 38, 38, 0.15); border-color: rgba(220, 38, 38, 0.35);">🇺🇸</div>
+            <div>
+              <h3 style="display: flex; align-items: center; gap: 8px;">
+                Declinazione Sub-Totale: 50 Stati degli Stati Uniti d'America (USA)
+              </h3>
+              <p>
+                Gli Stati Uniti d'America sono già conteggiati come nazione sovrana visitata (tra i tuoi 49 paesi nel mondo). Al loro interno, la federazione conta <strong>50 Stati</strong> (+ Washington D.C.):
+              </p>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+            <button class="btn btn-sm btn-accent" onclick="filterUnvisited('USA_STATES', document.querySelector('[data-continent=USA_STATES]'))">
+              🇺🇸 Esplora i 33 Stati USA da Visitare
+            </button>
+          </div>
+        </div>
+
+        <!-- Progress bar USA a strisce / bandiera -->
+        <div style="background: rgba(255, 255, 255, 0.08); height: 8px; border-radius: 99px; overflow: hidden; display: flex; margin-bottom: 14px;" title="Progresso Stati Uniti: 34.0% Visitato (17 Stati + DC), 66.0% Da Visitare (33 Stati)">
+          <div style="width: 34.0%; background: #38BDF8;" title="17 Stati USA Visitati + DC (34.0%)"></div>
+          <div style="width: 66.0%; background: rgba(239, 68, 68, 0.65);" title="33 Stati USA Da Visitare (66.0%)"></div>
+        </div>
+
+        <!-- Pillole Sub-Totale: Stati USA Visitati vs Stati USA da Visitare -->
+        <div class="americhe-subtotal-pills">
+          <!-- Card Stati USA Visitati -->
+          <div class="americhe-sub-card" style="border-left: 4px solid #38BDF8;">
+            <div class="americhe-sub-top">
+              <h4 style="color: #38BDF8;">✅ 17 Stati Visitati (+ DC)</h4>
+              <div class="americhe-sub-counts">
+                <span class="unvisited-num" style="color: #38BDF8;">17</span>
+                <span class="sub-denom">su 50 Stati (34.0%)</span>
+              </div>
+            </div>
+            <p class="americhe-sub-desc">
+              <strong>67 Località & Attrazioni esplorate in:</strong><br>
+              <em>California</em> (14 città tra cui LA e San Francisco), <em>Florida</em> (18 tra cui Miami e Orlando), <em>New York</em> (NYC, Cascate del Niagara), <em>Wyoming</em> (Parco Yellowstone), <em>Arizona</em> (Grand Canyon), <em>Illinois</em> (Chicago), <em>Nevada</em> (Las Vegas), <em>Utah</em> (Salt Lake City, Monument Valley), <em>Massachusetts</em> (Boston), <em>South Dakota</em> (Mount Rushmore / Custer), <em>Georgia</em>, <em>Pennsylvania</em>, <em>Michigan</em>, <em>Virginia</em>, <em>Maryland</em>, <em>Iowa</em>, <em>Nebraska</em>, e il <em>Distretto di Columbia</em> (Washington D.C.).
+            </p>
+          </div>
+
+          <!-- Card 33 Stati USA Non Visitati (Cliccabile) -->
+          <div class="americhe-sub-card sub-north" style="cursor: pointer; border-left: 4px solid #EF4444;" onclick="filterUnvisited('USA_STATES', document.querySelector('[data-continent=USA_STATES]'))" title="Clicca per visualizzare l'elenco dei 33 Stati USA ancora da visitare">
+            <div class="americhe-sub-top">
+              <h4 style="color: #F87171;">🧭 33 Stati USA da Visitare</h4>
+              <div class="americhe-sub-counts">
+                <span class="unvisited-num" style="color: #F87171;">33</span>
+                <span class="sub-denom">su 50 Stati (66.0%)</span>
+              </div>
+            </div>
+            <p class="americhe-sub-desc">
+              <strong>Mondi e territori americani ancora da scoprire:</strong><br>
+              Texas, Hawaii, Alaska, Colorado, Washington, Louisiana, New Mexico, Oregon, Tennessee, Montana, Carolina del Nord, Minnesota, Missouri, Maine, Vermont, ecc.
+            </p>
+            <div style="margin-top: auto; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem; color: #F87171; font-weight: 600;">
+              <span>Sub-totale non visitati: 33 Stati</span>
+              <span>Visualizza elenco 33 Stati →</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Barra Ricerca e Filtri Continente -->
+      <div class="cities-toolbar" style="margin-bottom: 24px;">
+        <div class="cities-search-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="unvisited-search-input" placeholder="Cerca nazione o stato USA (es. Islanda, Texas, Hawaii, Argentina, Oslo, Austin, Cuba)...">
+        </div>
+        
+        <div class="continent-filters" id="unvisited-continent-filters">
+          <button class="continent-btn active" data-continent="all" onclick="filterUnvisited('all', this)">Tutti i Paesi (146)</button>
+          <button class="continent-btn" data-continent="Europa" onclick="filterUnvisited('Europa', this)">Europa (15)</button>
+          <button class="continent-btn" data-continent="Nord America" onclick="filterUnvisited('Nord America', this)">Nord America (18)</button>
+          <button class="continent-btn" data-continent="Sud America" onclick="filterUnvisited('Sud America', this)">Sud America (11)</button>
+          <button class="continent-btn" data-continent="Asia" onclick="filterUnvisited('Asia', this)">Asia (38)</button>
+          <button class="continent-btn" data-continent="Africa" onclick="filterUnvisited('Africa', this)">Africa (51)</button>
+          <button class="continent-btn" data-continent="Oceania" onclick="filterUnvisited('Oceania', this)">Oceania (13)</button>
+          <button class="continent-btn" data-continent="USA_STATES" onclick="filterUnvisited('USA_STATES', this)" style="border-left: 3px solid #EF4444; background: rgba(239, 68, 68, 0.08);">
+            🇺🇸 Sub-Tot: 33 Stati USA
+          </button>
+        </div>
+
+        <span class="badge badge-duration" id="unvisited-count-badge">146 Paesi</span>
+      </div>
+
+      <!-- Griglia Schede Paesi Non Visitati / Stati USA -->
+      <div class="unvisited-countries-grid" id="unvisited-grid">
+        <!-- Renderizzato via JavaScript -->
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ======================================================================
+       FOOTER
+       ====================================================================== -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="brand-logo mb-2">
+            <div class="brand-avatar">GR</div>
+            <div class="brand-text">
+              <h3>Giuseppe Ricatti</h3>
+              <span class="brand-subtitle">Diario di Bordo</span>
+            </div>
+          </div>
+          <p class="footer-desc">
+            Tracciamento cartografico dei paesi visitati e delle rotte mondiali esplorate.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-col-title">Navigazione Diretta</h4>
+          <ul class="footer-links">
+            <li><a href="index.html#home">Home Page</a></li>
+            <li><a href="index.html#mappa">Mappa Interattiva</a></li>
+            <li><a href="paesi.html">Paesi Già Visitati (49)</a></li>
+            <li><a href="paesi-non-visitati.html" style="color: var(--accent); font-weight: 600;">Paesi Non Ancora Visitati (146)</a></li>
+            <li><a href="viaggi.html?tab=past">Archivio Viaggi Passati</a></li>
+            <li><a href="citta.html">Tutte le Città</a></li>
+            <li><a href="statistiche.html">Percentuale Mondo Esplorato</a></li>
+            <li><a href="continenti.html">Mappa dei Continenti</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-col-title">Azioni Rapide</h4>
+          <div class="footer-actions-group">
+            <button class="btn btn-sm btn-outline w-100 mb-2" onclick="window.travelApp.openAddTripModal()">
+              <span>+</span> Aggiungi Nuova Tappa
+            </button>
+            <button class="btn btn-sm btn-outline w-100" onclick="window.travelApp.exportDataAsJson()">
+              💾 Scarica Backup (JSON)
+            </button>
+            <!-- Palette Colore del Sito -->
+            <div class="footer-theme-picker-block" style="margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--border-subtle);">
+              <span style="display: block; font-size: 0.74rem; color: var(--text-muted); margin-bottom: 6px;">🎨 Palette Colore:</span>
+              <div class="theme-picker" title="Scegli la tonalità colore">
+                <span class="theme-dot theme-dot-amber active" data-theme="amber" onclick="window.travelApp.setTheme('amber')" title="Ambra Dorata"></span>
+                <span class="theme-dot theme-dot-sapphire" data-theme="sapphire" onclick="window.travelApp.setTheme('sapphire')" title="Blu Zaffiro"></span>
+                <span class="theme-dot theme-dot-platinum" data-theme="platinum" onclick="window.travelApp.setTheme('platinum')" title="Platino Monocromo"></span>
+                <span class="theme-dot theme-dot-terracotta" data-theme="terracotta" onclick="window.travelApp.setTheme('terracotta')" title="Terracotta"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 Giuseppe Ricatti. Tutti i diritti riservati.</p>
+        <span class="privacy-note">Dati personali archiviati in locale nel tuo browser.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script src="js/tripadvisor_cities.js"></script>
+  <script src="js/sovereign_countries.js"></script>
+  <script src="js/usa_states.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    let activeFilter = "all";
+    let searchQuery = "";
+
+    function initUnvisitedPage() {
+      if (!window.travelManager) {
+        setTimeout(initUnvisitedPage, 100);
+        return;
+      }
+      renderHeroStats();
+      renderUnvisitedList();
+
+      const searchInput = document.getElementById("unvisited-search-input");
+      if (searchInput) {
+        searchInput.addEventListener("input", (e) => {
+          searchQuery = e.target.value.toLowerCase().trim();
+          renderUnvisitedList();
+        });
+      }
+    }
+
+    function renderHeroStats() {
+      const heroContainer = document.getElementById("unvisited-hero-stats");
+      if (!heroContainer) return;
+
+      const breakdown = window.travelManager.getUnvisitedContinentalBreakdown();
+      const usaData = window.travelManager.getUSAStatesBreakdown ? window.travelManager.getUSAStatesBreakdown() : { unvisitedCount: 33, visitedCount: 17 };
+
+      const cardsData = [
+        {
+          icon: "🌍",
+          title: "Mondo da Visitare",
+          val: `${breakdown.totalUnvisited}`,
+          sub: `su ${breakdown.totalWorldSovereign} Nazioni (${breakdown.worldUnvisitedPercentage}%)`,
+          color: "var(--accent)"
+        },
+        {
+          icon: "🇪🇺",
+          title: "Europa",
+          val: `${breakdown.continents.find(c => c.name === 'Europa')?.unvisitedCount || 15}`,
+          sub: `su 44 Stati (15 da visitare)`,
+          color: "#0081C8"
+        },
+        {
+          icon: "🗽",
+          title: "Nord America",
+          val: `${breakdown.continents.find(c => c.name === 'Nord America')?.unvisitedCount || 18}`,
+          sub: `su 23 Stati (18 da visitare)`,
+          color: "#EE334E"
+        },
+        {
+          icon: "🌴",
+          title: "Sud America",
+          val: `${breakdown.continents.find(c => c.name === 'Sud America')?.unvisitedCount || 11}`,
+          sub: `su 12 Stati (11 da visitare)`,
+          color: "#F97316"
+        },
+        {
+          icon: "⛩️",
+          title: "Asia",
+          val: `${breakdown.continents.find(c => c.name === 'Asia')?.unvisitedCount || 38}`,
+          sub: `su 48 Stati (38 da visitare)`,
+          color: "#FCB131"
+        },
+        {
+          icon: "🦁",
+          title: "Africa",
+          val: `${breakdown.continents.find(c => c.name === 'Africa')?.unvisitedCount || 51}`,
+          sub: `su 54 Stati (51 da visitare)`,
+          color: "#94A3B8"
+        },
+        {
+          icon: "🦘",
+          title: "Oceania",
+          val: `${breakdown.continents.find(c => c.name === 'Oceania')?.unvisitedCount || 13}`,
+          sub: `su 14 Stati (13 da visitare)`,
+          color: "#00A651"
+        }
+      ];
+
+      heroContainer.innerHTML = cardsData.map(c => `
+        <div class="unvisited-stat-card">
+          <span class="stat-icon-top">${c.icon}</span>
+          <div class="stat-val-huge" style="color: ${c.color};">${c.val}</div>
+          <div class="stat-label-sub">${c.title}</div>
+          <div style="font-size: 0.76rem; color: var(--text-secondary); margin-top: 4px;">${c.sub}</div>
+          <div class="stat-progress-bar">
+            <div class="stat-progress-fill" style="width: 100%; background: ${c.color};"></div>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function filterUnvisited(filterKey, btnElement) {
+      activeFilter = filterKey;
+
+      const buttons = document.querySelectorAll("#unvisited-continent-filters .continent-btn");
+      buttons.forEach(b => b.classList.remove("active"));
+      if (btnElement) {
+        btnElement.classList.add("active");
+      } else {
+        const found = Array.from(buttons).find(b => b.getAttribute("data-continent") === filterKey);
+        if (found) found.classList.add("active");
+      }
+
+      renderUnvisitedList();
+    }
+
+    function renderUnvisitedList() {
+      const grid = document.getElementById("unvisited-grid");
+      const countBadge = document.getElementById("unvisited-count-badge");
+      if (!grid || !window.travelManager) return;
+
+      // MODALITÀ SUB-TOTALE: STATI DEGLI STATI UNITI D'AMERICA (USA)
+      if (activeFilter === "USA_STATES") {
+        const usaData = window.travelManager.getUSAStatesBreakdown ? window.travelManager.getUSAStatesBreakdown() : null;
+        let states = usaData ? usaData.unvisitedStates : [];
+
+        if (searchQuery) {
+          states = states.filter(s => 
+            s.name.toLowerCase().includes(searchQuery) ||
+            s.capital.toLowerCase().includes(searchQuery) ||
+            s.code.toLowerCase().includes(searchQuery)
+          );
+        }
+
+        if (countBadge) {
+          countBadge.textContent = `${states.length} Stati USA`;
+        }
+
+        if (states.length === 0) {
+          grid.innerHTML = `
+            <div class="empty-state" style="grid-column: 1 / -1; padding: 40px; text-align: center;">
+              <div style="font-size: 2.5rem; margin-bottom: 12px;">🔍</div>
+              <h3>Nessuno stato USA trovato</h3>
+              <p style="color: var(--text-muted);">Nessuno stato non visitato corrisponde alla ricerca "${searchQuery}".</p>
+              <button class="btn btn-sm btn-outline" onclick="document.getElementById('unvisited-search-input').value=''; searchQuery=''; renderUnvisitedList();">
+                Azzera ricerca
+              </button>
+            </div>
+          `;
+          return;
+        }
+
+        grid.innerHTML = states.map(s => `
+          <div class="unvisited-card" style="border-top: 3px solid #EF4444;">
+            <div class="unvisited-card-top">
+              <span class="unvisited-card-flag">🇺🇸</span>
+              <div class="unvisited-card-info">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-bottom: 4px;">
+                  <span class="continent-badge cont-NordAmerica" style="font-size: 0.7rem; padding: 2px 7px;">
+                    Stati Uniti d'America
+                  </span>
+                  <span style="font-size: 0.72rem; font-family: monospace; font-weight: 700; color: #EF4444; background: rgba(239, 68, 68, 0.1); padding: 1px 6px; border-radius: 4px;">
+                    ${s.code}
+                  </span>
+                </div>
+                <h3>${s.name}</h3>
+                <div class="unvisited-card-capital">
+                  <span>🏛️</span>
+                  <span>Capitale: <strong>${s.capital}</strong></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="unvisited-card-footer">
+              <span style="font-size: 0.75rem; color: #F87171; display: inline-flex; align-items: center; gap: 4px; font-weight: 500;">
+                <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #EF4444;"></span>
+                Stato USA da Visitare
+              </span>
+
+              <button class="btn-wishlist-add" onclick="addCountryToWishlist('${s.name.replace(/'/g, "\\'")}', 'Nord America', 'Stati Uniti')" title="Aggiungi ${s.name} (USA) alla Wish List">
+                <span>+</span> Wish List
+              </button>
+            </div>
+          </div>
+        `).join("");
+        return;
+      }
+
+      // MODALITÀ ORDINARIA: 146 PAESI DEL MONDO NON VISITATI
+      const allUnvisited = window.travelManager.getUnvisitedCountriesList();
+
+      let filtered = allUnvisited;
+
+      if (activeFilter !== "all") {
+        filtered = filtered.filter(c => c.continent === activeFilter);
+      }
+
+      if (searchQuery) {
+        filtered = filtered.filter(c => 
+          c.name.toLowerCase().includes(searchQuery) ||
+          c.capital.toLowerCase().includes(searchQuery) ||
+          c.code.toLowerCase().includes(searchQuery) ||
+          c.continent.toLowerCase().includes(searchQuery)
+        );
+      }
+
+      if (countBadge) {
+        countBadge.textContent = `${filtered.length} ${filtered.length === 1 ? 'Paese' : 'Paesi'}`;
+      }
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="empty-state" style="grid-column: 1 / -1; padding: 40px; text-align: center;">
+            <div style="font-size: 2.5rem; margin-bottom: 12px;">🔍</div>
+            <h3>Nessun paese trovato</h3>
+            <p style="color: var(--text-muted);">Nessun paese non visitato corrisponde alla ricerca "${searchQuery}".</p>
+            <button class="btn btn-sm btn-outline" onclick="document.getElementById('unvisited-search-input').value=''; searchQuery=''; renderUnvisitedList();">
+              Azzera ricerca
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(c => {
+        let contBadgeClass = "cont-Europa";
+        if (c.continent === "Asia") contBadgeClass = "cont-Asia";
+        else if (c.continent === "Africa") contBadgeClass = "cont-Africa";
+        else if (c.continent === "Nord America") contBadgeClass = "cont-NordAmerica";
+        else if (c.continent === "Sud America") contBadgeClass = "cont-SudAmerica";
+        else if (c.continent === "Oceania") contBadgeClass = "cont-Oceania";
+
+        return `
+          <div class="unvisited-card">
+            <div class="unvisited-card-top">
+              <span class="unvisited-card-flag">${c.flag || '📍'}</span>
+              <div class="unvisited-card-info">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-bottom: 4px;">
+                  <span class="continent-badge ${contBadgeClass}" style="font-size: 0.7rem; padding: 2px 7px;">
+                    ${c.continent}
+                  </span>
+                  <span style="font-size: 0.72rem; font-family: monospace; color: var(--text-muted); background: rgba(255, 255, 255, 0.05); padding: 1px 5px; border-radius: 4px;">
+                    ${c.code}
+                  </span>
+                </div>
+                <h3>${c.name}</h3>
+                <div class="unvisited-card-capital">
+                  <span>🏛️</span>
+                  <span>Capitale: <strong>${c.capital}</strong></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="unvisited-card-footer">
+              <span style="font-size: 0.75rem; color: #F87171; display: inline-flex; align-items: center; gap: 4px; font-weight: 500;">
+                <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #F87171;"></span>
+                Non ancora visitato
+              </span>
+
+              <button class="btn-wishlist-add" onclick="addCountryToWishlist('${c.name.replace(/'/g, "\\'")}', '${c.continent.replace(/'/g, "\\'")}')" title="Aggiungi ${c.name} alla Travel Wish List">
+                <span>+</span> Wish List
+              </button>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function addCountryToWishlist(name, continent, parentCountry) {
+      if (!window.travelApp) {
+        alert("Travel App non ancora inizializzata.");
+        return;
+      }
+      
+      const pwd = prompt("🔐 Per aggiungere una meta alla Wish List inserisci la password di autorizzazione:");
+      if (pwd === null) return;
+      if (pwd !== "C4rl422022022!") {
+        alert("❌ Password errata. Operazione annullata.");
+        return;
+      }
+
+      const note = prompt(`Aggiungi una nota o motivo per visitare ${name} (opzionale):`, "Da esplorare");
+      if (note === null) return;
+
+      const title = parentCountry ? `Viaggio in USA: ${name}` : `Esplorare ${name}`;
+      const desc = parentCountry ? `Tappa nello Stato di ${name} (${parentCountry}) - ${note || 'Da visitare'}` : (note || `Viaggio alla scoperta di ${name}`);
+
+      const newItem = {
+        title: title,
+        destination: name,
+        country: parentCountry || name,
+        continent: continent,
+        category: "Cultura & Natura",
+        description: desc,
+        priority: "Media",
+        completed: false
+      };
+
+      if (window.travelManager && typeof window.travelManager.addBucketListItem === "function") {
+        window.travelManager.addBucketListItem(newItem);
+        alert(`✅ "${name}" aggiunto con successo alla tua Travel Wish List!`);
+      } else {
+        alert("Errore nell'aggiunta alla Wish List.");
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", initUnvisitedPage);
+  </script>
+</body>
+</html>
