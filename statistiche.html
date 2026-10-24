@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Percentuale Mondo Esplorato • Giuseppe Ricatti</title>
+  <meta name="description" content="Grafico a torta della percentuale di mondo visitata da Giuseppe Ricatti e spiegazione dettagliata del metodo di calcolo geopolitico.">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Foglio di Stile Principale -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ======================================================================
+       HEADER & NAVBAR SUPERIORE
+       ====================================================================== -->
+  <header class="main-header" id="main-navbar">
+    <div class="container navbar-inner">
+      <a href="index.html#home" class="brand-logo" title="Giuseppe Ricatti - Home">
+        <div class="brand-avatar">GR</div>
+        <div class="brand-text">
+          <h1>Giuseppe Ricatti</h1>
+          <span class="brand-subtitle">Diario di Bordo</span>
+        </div>
+      </a>
+
+      <!-- Menu a Blocchi -->
+      <nav class="navbar-box-nav" id="navbar-links">
+        <a href="index.html#home" class="nav-box-btn nav-box-home" title="Home">
+          <span class="nav-box-icon">🏠</span>
+        </a>
+        <a href="index.html#mappa" class="nav-box-btn" title="Mappa Interattiva">
+          <span class="nav-box-icon">🗺️</span>
+          <span class="nav-box-label">Mappa</span>
+        </a>
+        <a href="viaggi.html?tab=upcoming" class="nav-box-btn nav-box-upcoming" title="Viaggi in Programma">
+          <span class="nav-box-icon">🗓️</span>
+          <span class="nav-box-label">Next Stop</span>
+        </a>
+        <a href="viaggi.html?tab=past" class="nav-box-btn" title="Archivio Viaggi Passati">
+          <span class="nav-box-icon">🌍</span>
+          <span class="nav-box-label">Archivio</span>
+        </a>
+        <a href="citta.html" class="nav-box-btn" title="Indice Città Esplorate nel Mondo">
+          <span class="nav-box-icon">🏙️</span>
+          <span class="nav-box-label">Città</span>
+        </a>
+        <a href="wishlist.html" class="nav-box-btn" title="Travel Wish List (Cosa Voglio Fare)">
+          <span class="nav-box-icon">🌟</span>
+          <span class="nav-box-label">Wish List</span>
+        </a>
+        <a href="chi-sono.html" class="nav-box-btn" title="Biografia & Visione">
+          <span class="nav-box-icon">👤</span>
+          <span class="nav-box-label">Chi Sono</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ======================================================================
+       MAIN CONTENT: GRAFICO A TORTA & FORMULA DI CALCOLO
+       ====================================================================== -->
+  <main class="page-main-content">
+    <div class="container">
+
+      <!-- Barra di Ritorno alla Home -->
+      <div class="back-to-home-bar">
+        <a href="index.html#home" class="back-home-link">
+          ← Torna alla Home & Mappa
+        </a>
+        <div id="stats-summary-badge" class="badge badge-accent">
+          Metrica Geopolitica Globale
+        </div>
+      </div>
+
+      <!-- Intestazione Sezione -->
+      <div class="section-header" style="text-align: left; margin-bottom: 24px;">
+        <span class="section-tag">Statistiche & Analisi Geografica</span>
+        <h2 class="section-title">Percentuale del Mondo Esplorato</h2>
+        <p class="section-subtitle" style="margin: 0; max-width: 820px;">
+          Rappresentazione grafica a torta della quota di pianeta visitata e spiegazione trasparente del modello di calcolo geopolitico adottato.
+        </p>
+      </div>
+
+      <!-- Griglia Principale: Grafico a Torta + Spiegazione Formula -->
+      <div class="stats-page-grid">
+
+        <!-- 1. Colonna Grafico a Torta -->
+        <div class="chart-card-box">
+          <h3 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 18px; color: var(--text-primary);">
+            Ripartizione Superficie Mondiale
+          </h3>
+
+          <div class="pie-chart-wrap">
+            <svg class="pie-chart-svg" viewBox="0 0 42 42">
+              <!-- Cerchio di Sfondo: Non Visitato (74.9%) -->
+              <circle
+                class="donut-hole"
+                cx="21" cy="21" r="15.91549430918954"
+                fill="transparent">
+              </circle>
+              <circle
+                class="donut-ring"
+                cx="21" cy="21" r="15.91549430918954"
+                fill="transparent"
+                stroke="#334155"
+                stroke-width="5.5"
+                stroke-dasharray="100 0"
+                stroke-dashoffset="0">
+              </circle>
+              <!-- Segmento Visitato (Dinamico) -->
+              <circle
+                id="donut-segment-visited"
+                class="donut-segment"
+                cx="21" cy="21" r="15.91549430918954"
+                fill="transparent"
+                stroke="var(--accent-theme)"
+                stroke-width="5.5"
+                stroke-dasharray="25.1 74.9"
+                stroke-dashoffset="0"
+                stroke-linecap="round">
+              </circle>
+            </svg>
+
+            <!-- Testo Centrale -->
+            <div class="chart-center-label">
+              <div class="chart-center-percent" id="chart-percentage-val">25.1%</div>
+              <div class="chart-center-subtext">Mondo Esplorato</div>
+            </div>
+          </div>
+
+          <!-- Legenda Dati -->
+          <div class="chart-legend-box">
+            <div class="legend-item">
+              <span>
+                <span class="legend-color-dot legend-color-visited"></span>
+                <strong>Mondo Visitato:</strong>
+              </span>
+              <span id="legend-visited-text" style="color: var(--accent-theme); font-weight: 700;">
+                49 Paesi (25.1%)
+              </span>
+            </div>
+            <div class="legend-item">
+              <span>
+                <span class="legend-color-dot legend-color-unvisited"></span>
+                <strong>Mondo Non Visitato:</strong>
+              </span>
+              <span id="legend-unvisited-text" style="color: var(--text-muted); font-weight: 600;">
+                146 Paesi (74.9%)
+              </span>
+            </div>
+            <div class="legend-item" style="border-top: 1px solid var(--border-subtle); padding-top: 8px; margin-top: 4px;">
+              <span>
+                <span style="display: inline-block; margin-right: 8px;">🌐</span>
+                <strong>Totale Standard ONU:</strong>
+              </span>
+              <span style="color: var(--text-primary); font-weight: 700;">
+                195 Stati Sovrani (100%)
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Colonna Spiegazione Metodo di Calcolo -->
+        <div class="formula-card-box">
+          <h3>Come Viene Calcolata la % di Mondo Visitato?</h3>
+
+          <!-- Banner Formula Matematica -->
+          <div class="formula-display-banner">
+            <div class="formula-math">
+              % Esplorata = ( Paesi Visitati ÷ 195 Stati Sovrani ) × 100
+            </div>
+            <div class="formula-math-numbers" id="formula-concrete-calc">
+              Calcolo Attuale: ( 49 ÷ 195 ) × 100 = <strong>25.1%</strong>
+            </div>
+          </div>
+
+          <!-- Spiegazione Criteri Passo-Passo -->
+          <div class="formula-steps-list">
+
+            <div class="formula-step-item">
+              <div class="formula-step-num">1</div>
+              <div class="formula-step-text">
+                <h4>Denominatore Ufficiale: 195 Stati Sovrani Riconosciuti ONU</h4>
+                <p>
+                  Come base universale di riferimento viene adottato lo standard delle Nazioni Unite, composto da <strong>193 Stati Membri effettivi</strong> a cui si aggiungono i <strong>2 Stati Osservatori Permanenti</strong> (la Santa Sede / Città del Vaticano e lo Stato di Palestina). Questo costituisce il gold standard internazionale utilizzato dai più prestigiosi club di viaggiatori al mondo (NomadMania, Most Traveled People).
+                </p>
+              </div>
+            </div>
+
+            <div class="formula-step-item">
+              <div class="formula-step-num">2</div>
+              <div class="formula-step-text">
+                <h4>Criterio di Permanenza Reale (Esclusione Scali Tecnici)</h4>
+                <p>
+                  Perché un paese venga accreditato come visitato, deve esservi stata una permanenza effettiva con esplorazione di città, pernottamento o attività turistica/lavorativa. Sono <strong>rigorosamente esclusi i meri scali aeroportuali di transito</strong> in cui non si è varcato il controllo passaporti (ad esempio uno scalo aereo a Zurigo o Doha senza uscire dalla zona transiti).
+                </p>
+              </div>
+            </div>
+
+            <div class="formula-step-item">
+              <div class="formula-step-num">3</div>
+              <div class="formula-step-text">
+                <h4>Certificazione TripAdvisor & Diario di Bordo</h4>
+                <p>
+                  Il numeratore include sia le 49 nazioni storiche certificate dal profilo ufficiale TripAdvisor (UccelloGiraviti) e le sue 755 città geolocalizzate, sia tutte le nuove tappe aggiunte o aggiornate in tempo reale nel presente diario cartografico.
+                </p>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Pulsanti di Azione -->
+          <div style="display: flex; gap: 12px; margin-top: 24px;">
+            <a href="paesi.html" class="btn btn-accent btn-sm">
+              🌍 Esplora i 49 Paesi Visitati
+            </a>
+            <a href="continenti.html" class="btn btn-outline btn-sm">
+              🗺️ Mappa dei 7 Continenti
+            </a>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Sezione Inferiore: Progresso per Singolo Continente -->
+      <div style="margin-top: 40px;">
+        <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 8px; color: var(--text-primary);">
+          Ripartizione della Percentuale per Continente
+        </h3>
+        <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 20px;">
+          Percentuale di nazioni esplorate all'interno di ciascuna macro-area geografica continentale.
+        </p>
+
+        <div class="continent-progress-grid" id="continents-progress-container">
+          <!-- Renderizzato via JavaScript -->
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ======================================================================
+       FOOTER
+       ====================================================================== -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="brand-logo mb-2">
+            <div class="brand-avatar">GR</div>
+            <div class="brand-text">
+              <h3>Giuseppe Ricatti</h3>
+              <span class="brand-subtitle">Diario di Bordo</span>
+            </div>
+          </div>
+          <p class="footer-desc">
+            Tracciamento cartografico dei paesi visitati e delle rotte mondiali esplorate.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-col-title">Navigazione Diretta</h4>
+          <ul class="footer-links">
+            <li><a href="index.html#home">Home Page</a></li>
+            <li><a href="index.html#mappa">Mappa Interattiva</a></li>
+            <li><a href="paesi.html">Elenco Paesi Visitati</a></li>
+            <li><a href="citta.html">Tutte le Città</a></li>
+            <li><a href="continenti.html">Mappa dei Continenti</a></li>
+            <li><a href="viaggi.html?tab=past">Archivio Viaggi Passati</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-col-title">Azioni Rapide</h4>
+          <div class="footer-actions-group">
+            <button class="btn btn-sm btn-outline w-100 mb-2" onclick="window.travelApp.openAddTripModal()">
+              <span>+</span> Aggiungi Nuova Tappa
+            </button>
+            <button class="btn btn-sm btn-outline w-100" onclick="window.travelApp.exportDataAsJson()">
+              💾 Scarica Backup (JSON)
+            </button>
+            <!-- Palette Colore del Sito -->
+            <div class="footer-theme-picker-block" style="margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--border-subtle);">
+              <span style="display: block; font-size: 0.74rem; color: var(--text-muted); margin-bottom: 6px;">🎨 Palette Colore:</span>
+              <div class="theme-picker" title="Scegli la tonalità colore">
+                <span class="theme-dot theme-dot-amber active" data-theme="amber" onclick="window.travelApp.setTheme('amber')" title="Ambra Dorata"></span>
+                <span class="theme-dot theme-dot-sapphire" data-theme="sapphire" onclick="window.travelApp.setTheme('sapphire')" title="Blu Zaffiro"></span>
+                <span class="theme-dot theme-dot-platinum" data-theme="platinum" onclick="window.travelApp.setTheme('platinum')" title="Platino Monocromo"></span>
+                <span class="theme-dot theme-dot-terracotta" data-theme="terracotta" onclick="window.travelApp.setTheme('terracotta')" title="Terracotta"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 Giuseppe Ricatti. Tutti i diritti riservati.</p>
+        <span class="privacy-note">Dati personali archiviati in locale nel tuo browser.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script src="js/tripadvisor_cities.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    function renderStatsPage() {
+      if (!window.travelManager) return;
+      const stats = window.travelManager.getStats();
+      const visitedCount = stats.countriesCount || 49;
+      const totalCountries = 195;
+      const unvisitedCount = totalCountries - visitedCount;
+      const percentage = ((visitedCount / totalCountries) * 100).toFixed(1);
+      const unvisitedPercentage = (100 - parseFloat(percentage)).toFixed(1);
+
+      // Aggiorna Donut Chart
+      const donutVisited = document.getElementById("donut-segment-visited");
+      const centerPercent = document.getElementById("chart-percentage-val");
+      if (donutVisited) {
+        donutVisited.setAttribute("stroke-dasharray", `${percentage} ${unvisitedPercentage}`);
+      }
+      if (centerPercent) {
+        centerPercent.textContent = `${percentage}%`;
+      }
+
+      // Aggiorna Legenda
+      const legVisited = document.getElementById("legend-visited-text");
+      const legUnvisited = document.getElementById("legend-unvisited-text");
+      if (legVisited) legVisited.textContent = `${visitedCount} Paesi (${percentage}%)`;
+      if (legUnvisited) legUnvisited.textContent = `${unvisitedCount} Paesi (${unvisitedPercentage}%)`;
+
+      // Aggiorna Formula
+      const formulaEl = document.getElementById("formula-concrete-calc");
+      if (formulaEl) {
+        formulaEl.innerHTML = `Calcolo Attuale: ( ${visitedCount} ÷ ${totalCountries} ) × 100 = <strong>${percentage}%</strong>`;
+      }
+
+      // Aggiorna Ripartizione Continenti
+      const contContainer = document.getElementById("continents-progress-container");
+      if (contContainer) {
+        const breakdown = window.travelManager.getContinentalBreakdown();
+        let contHtml = "";
+        breakdown.forEach(b => {
+          const isVisited = b.isVisited;
+          const statusColor = isVisited ? (b.olympicColor === '#1E293B' ? '#cbd5e1' : b.olympicColor) : '#64748b';
+          const fillColor = isVisited ? (b.olympicColor === '#1E293B' ? '#94a3b8' : b.olympicColor) : '#334155';
+          const nationsText = b.totalCountries > 0 ? `${b.visitedCountriesCount} di ${b.totalCountries} nazioni` : '0 nazioni (Non visitato)';
+
+          contHtml += `
+            <div class="continent-progress-card" style="${isVisited ? '' : 'opacity: 0.8; border-style: dashed;'}">
+              <div class="cont-prog-header">
+                <h5>${b.icon} ${b.name}</h5>
+                <strong style="color: ${statusColor};">${b.percentage}%</strong>
+              </div>
+              <div class="cont-prog-bar-track">
+                <div class="cont-prog-bar-fill" style="width: ${b.percentage}%; background: ${fillColor};"></div>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 0.74rem; color: var(--text-muted);">
+                <span>${nationsText}</span>
+                <span style="color: ${statusColor}; font-weight: 600;">${b.ringName}</span>
+              </div>
+            </div>
+          `;
+        });
+        contContainer.innerHTML = contHtml;
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      setTimeout(renderStatsPage, 100);
+    });
+  </script>
+</body>
+</html>

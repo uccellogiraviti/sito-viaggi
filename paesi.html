@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paesi Visitati nel Mondo • Giuseppe Ricatti</title>
+  <meta name="description" content="Elenco completo di tutti i paesi e nazioni visitate da Giuseppe Ricatti, classificate per continente di appartenenza.">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌍</text></svg>">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Foglio di Stile Principale -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ======================================================================
+       HEADER & NAVBAR SUPERIORE
+       ====================================================================== -->
+  <header class="main-header" id="main-navbar">
+    <div class="container navbar-inner">
+      <a href="index.html#home" class="brand-logo" title="Giuseppe Ricatti - Home">
+        <div class="brand-avatar">GR</div>
+        <div class="brand-text">
+          <h1>Giuseppe Ricatti</h1>
+          <span class="brand-subtitle">Diario di Bordo</span>
+        </div>
+      </a>
+
+      <!-- Menu a Blocchi -->
+      <nav class="navbar-box-nav" id="navbar-links">
+        <a href="index.html#home" class="nav-box-btn nav-box-home" title="Home">
+          <span class="nav-box-icon">🏠</span>
+        </a>
+        <a href="index.html#mappa" class="nav-box-btn" title="Mappa Interattiva">
+          <span class="nav-box-icon">🗺️</span>
+          <span class="nav-box-label">Mappa</span>
+        </a>
+        <a href="viaggi.html?tab=upcoming" class="nav-box-btn nav-box-upcoming" title="Viaggi in Programma">
+          <span class="nav-box-icon">🗓️</span>
+          <span class="nav-box-label">Next Stop</span>
+        </a>
+        <a href="viaggi.html?tab=past" class="nav-box-btn" title="Archivio Viaggi Passati">
+          <span class="nav-box-icon">🌍</span>
+          <span class="nav-box-label">Archivio</span>
+        </a>
+        <a href="citta.html" class="nav-box-btn" title="Indice Città Esplorate nel Mondo">
+          <span class="nav-box-icon">🏙️</span>
+          <span class="nav-box-label">Città</span>
+        </a>
+        <a href="wishlist.html" class="nav-box-btn" title="Travel Wish List (Cosa Voglio Fare)">
+          <span class="nav-box-icon">🌟</span>
+          <span class="nav-box-label">Wish List</span>
+        </a>
+        <a href="chi-sono.html" class="nav-box-btn" title="Biografia & Visione">
+          <span class="nav-box-icon">👤</span>
+          <span class="nav-box-label">Chi Sono</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ======================================================================
+       MAIN CONTENT: ELENCO PAESI VISITATI CON CONTINENTE
+       ====================================================================== -->
+  <main class="page-main-content">
+    <div class="container">
+
+      <!-- Barra di Ritorno alla Home -->
+      <div class="back-to-home-bar">
+        <a href="index.html#home" class="back-home-link">
+          ← Torna alla Home & Mappa
+        </a>
+        <div id="countries-summary-badge" class="badge badge-accent">
+          Caricamento nazioni...
+        </div>
+      </div>
+
+      <!-- Intestazione Sezione -->
+      <div class="section-header" style="text-align: left; margin-bottom: 24px;">
+        <span class="section-tag">Cartografia & Geopolitica</span>
+        <h2 class="section-title">Paesi & Nazioni Visitate</h2>
+        <p class="section-subtitle" style="margin: 0; max-width: 820px;">
+          L'elenco completo di tutti i paesi del mondo visitati e certificati, con l'indicazione precisa del rispettivo continente di appartenenza, codice ISO e città toccate.
+        </p>
+      </div>
+
+      <!-- Barra Ricerca e Filtri Continente -->
+      <div class="cities-toolbar" style="margin-bottom: 24px;">
+        <div class="cities-search-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="countries-search-input" placeholder="Cerca nazione o continente (es. Italia, Giappone, Stati Uniti, Europa, Asia)...">
+        </div>
+        
+        <div class="continent-filters" id="countries-continent-filters">
+          <button class="continent-btn active" data-continent="all" onclick="filterCountries('all', this)">Tutti</button>
+          <button class="continent-btn" data-continent="Europa" onclick="filterCountries('Europa', this)">Europa</button>
+          <button class="continent-btn" data-continent="Asia" onclick="filterCountries('Asia', this)">Asia</button>
+          <button class="continent-btn" data-continent="Nord America" onclick="filterCountries('Nord America', this)">Nord America</button>
+          <button class="continent-btn" data-continent="Africa" onclick="filterCountries('Africa', this)">Africa</button>
+          <button class="continent-btn" data-continent="Sud America" onclick="filterCountries('Sud America', this)">Sud America</button>
+          <button class="continent-btn" data-continent="Oceania" onclick="filterCountries('Oceania', this)">Oceania</button>
+        </div>
+
+        <span class="badge badge-duration" id="countries-count-badge">49 Paesi</span>
+      </div>
+
+      <!-- Griglia Schede Paesi -->
+      <div class="countries-grid" id="countries-grid">
+        <!-- Renderizzato via JavaScript -->
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ======================================================================
+       FOOTER
+       ====================================================================== -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="brand-logo mb-2">
+            <div class="brand-avatar">GR</div>
+            <div class="brand-text">
+              <h3>Giuseppe Ricatti</h3>
+              <span class="brand-subtitle">Diario di Bordo</span>
+            </div>
+          </div>
+          <p class="footer-desc">
+            Tracciamento cartografico dei paesi visitati e delle rotte mondiali esplorate.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-col-title">Navigazione Diretta</h4>
+          <ul class="footer-links">
+            <li><a href="index.html#home">Home Page</a></li>
+            <li><a href="index.html#mappa">Mappa Interattiva</a></li>
+            <li><a href="viaggi.html?tab=past">Archivio Viaggi Passati</a></li>
+            <li><a href="citta.html">Tutte le Città</a></li>
+            <li><a href="statistiche.html">Percentuale Mondo Esplorato</a></li>
+            <li><a href="continenti.html">Mappa dei Continenti</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-col-title">Azioni Rapide</h4>
+          <div class="footer-actions-group">
+            <button class="btn btn-sm btn-outline w-100 mb-2" onclick="window.travelApp.openAddTripModal()">
+              <span>+</span> Aggiungi Nuova Tappa
+            </button>
+            <button class="btn btn-sm btn-outline w-100" onclick="window.travelApp.exportDataAsJson()">
+              💾 Scarica Backup (JSON)
+            </button>
+            <!-- Palette Colore del Sito -->
+            <div class="footer-theme-picker-block" style="margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--border-subtle);">
+              <span style="display: block; font-size: 0.74rem; color: var(--text-muted); margin-bottom: 6px;">🎨 Palette Colore:</span>
+              <div class="theme-picker" title="Scegli la tonalità colore">
+                <span class="theme-dot theme-dot-amber active" data-theme="amber" onclick="window.travelApp.setTheme('amber')" title="Ambra Dorata"></span>
+                <span class="theme-dot theme-dot-sapphire" data-theme="sapphire" onclick="window.travelApp.setTheme('sapphire')" title="Blu Zaffiro"></span>
+                <span class="theme-dot theme-dot-platinum" data-theme="platinum" onclick="window.travelApp.setTheme('platinum')" title="Platino Monocromo"></span>
+                <span class="theme-dot theme-dot-terracotta" data-theme="terracotta" onclick="window.travelApp.setTheme('terracotta')" title="Terracotta"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 Giuseppe Ricatti. Tutti i diritti riservati.</p>
+        <span class="privacy-note">Dati personali archiviati in locale nel tuo browser.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script src="js/tripadvisor_cities.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    let activeContinentFilter = "all";
+    let activeSearchQuery = "";
+
+    function renderCountriesList() {
+      const grid = document.getElementById("countries-grid");
+      const summaryBadge = document.getElementById("countries-summary-badge");
+      const countBadge = document.getElementById("countries-count-badge");
+      if (!grid || !window.travelManager) return;
+
+      const allCountries = window.travelManager.getVisitedCountriesList();
+      
+      let filtered = allCountries;
+      if (activeContinentFilter !== "all") {
+        filtered = filtered.filter(c => c.continent === activeContinentFilter);
+      }
+      if (activeSearchQuery.trim()) {
+        const q = activeSearchQuery.toLowerCase().trim();
+        filtered = filtered.filter(c => 
+          (c.name && c.name.toLowerCase().includes(q)) ||
+          (c.code && c.code.toLowerCase().includes(q)) ||
+          (c.continent && c.continent.toLowerCase().includes(q))
+        );
+      }
+
+      if (summaryBadge) {
+        summaryBadge.textContent = `${allCountries.length} Paesi Visitati nel Mondo`;
+      }
+      if (countBadge) {
+        countBadge.textContent = `${filtered.length} di ${allCountries.length} Paesi`;
+      }
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-all text-muted" style="text-align: center; padding: 48px; background: var(--bg-card); border-radius: var(--radius-sm); border: 1px dashed var(--border-medium);">
+            Nessun paese corrisponde ai criteri di ricerca selezionati.
+          </div>
+        `;
+        return;
+      }
+
+      let html = "";
+      filtered.forEach(c => {
+        const contClass = `cont-${c.continent.replace(/\s+/g, '')}`;
+        const citiesText = c.citiesCount > 0 ? `${c.citiesCount} città esplorate` : "Città registrate";
+
+        html += `
+          <div class="country-card">
+            <div>
+              <div class="country-card-header">
+                <div class="country-flag-box">${c.flag || "📍"}</div>
+                <div class="country-info">
+                  <h3>${c.name}</h3>
+                  <span class="country-continent-badge ${contClass}">
+                    🌍 ${c.continent}
+                  </span>
+                </div>
+              </div>
+
+              <div class="country-stats-row">
+                <span>Codice ISO: <strong>${c.code}</strong></span>
+                <span>${citiesText}</span>
+              </div>
+            </div>
+
+            <div class="country-card-actions">
+              <a href="citta.html" class="btn btn-xs btn-outline w-100" style="text-align: center;">
+                🏙️ Vedi Città
+              </a>
+              <a href="viaggi.html?cerca=${encodeURIComponent(c.name)}" class="btn btn-xs btn-accent w-100" style="text-align: center;">
+                📖 Diario
+              </a>
+            </div>
+          </div>
+        `;
+      });
+
+      grid.innerHTML = html;
+    }
+
+    function filterCountries(continentKey, btnElement) {
+      activeContinentFilter = continentKey;
+      const parent = document.getElementById("countries-continent-filters");
+      if (parent) {
+        parent.querySelectorAll(".continent-btn").forEach(b => b.classList.remove("active"));
+      }
+      if (btnElement) btnElement.classList.add("active");
+      renderCountriesList();
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const searchInput = document.getElementById("countries-search-input");
+      if (searchInput) {
+        searchInput.addEventListener("input", (e) => {
+          activeSearchQuery = e.target.value;
+          renderCountriesList();
+        });
+      }
+      setTimeout(renderCountriesList, 100);
+    });
+  </script>
+</body>
+</html>

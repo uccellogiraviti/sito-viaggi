@@ -310,9 +310,14 @@ img {
 }
 
 .brand-logo {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 10px;
+  text-decoration: none;
+}
+
+.main-header .brand-logo,
+.navbar-inner .brand-logo {
   position: absolute;
   left: 20px;
 }
@@ -1821,43 +1826,86 @@ textarea.form-control {
   margin-bottom: 36px;
 }
 
-.footer-brand h4 {
+.footer-brand h4,
+.footer-col h3,
+.footer-col h4 {
   font-size: 1.15rem;
-  margin-bottom: 10px;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  color: var(--text-primary);
 }
 
-.footer-brand p {
+.footer-brand p,
+.footer-desc {
   color: var(--text-secondary);
   font-size: 0.88rem;
-  max-width: 340px;
+  max-width: 360px;
   line-height: 1.6;
+  margin: 0;
 }
 
-.footer-nav h5, .footer-backup h5 {
+.footer .brand-logo,
+.footer-brand .brand-logo,
+.footer-col .brand-logo {
+  position: static !important;
+  display: inline-flex !important;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.footer .brand-text h1,
+.footer .brand-text h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.footer .brand-subtitle {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.footer-nav h5,
+.footer-backup h5,
+.footer-col-title {
   font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--text-accent);
   margin-bottom: 12px;
+  font-weight: 700;
 }
 
-.footer-nav ul {
+.footer-nav ul,
+.footer-links {
   list-style: none;
   display: flex;
   flex-direction: column;
   gap: 8px;
+  padding: 0;
+  margin: 0;
 }
 
-.footer-nav a {
+.footer-nav a,
+.footer-links a {
   color: var(--text-secondary);
   font-size: 0.85rem;
+  text-decoration: none;
+  transition: color var(--transition-fast);
 }
 
-.footer-nav a:hover {
+.footer-nav a:hover,
+.footer-links a:hover {
   color: var(--text-primary);
 }
 
-.backup-buttons {
+.backup-buttons,
+.footer-actions-group {
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -3192,4 +3240,756 @@ textarea.form-control {
   margin-bottom: 16px;
   font-size: 0.95rem;
 }
+
+/* ==========================================================================
+   STAT CARD CLICKABLE
+   ========================================================================== */
+.stat-card.stat-card-clickable {
+  cursor: pointer;
+  position: relative;
+  transition: all var(--transition-fast);
+  text-decoration: none;
+}
+
+.stat-card.stat-card-clickable:hover {
+  background: rgba(245, 158, 11, 0.08);
+  border-color: var(--accent-theme);
+  transform: translateY(-2px);
+  z-index: 2;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+}
+
+.stat-card.stat-card-clickable:hover .stat-value {
+  color: var(--accent-theme);
+}
+
+.stat-card.stat-card-clickable:hover .stat-label {
+  color: var(--text-primary);
+}
+
+.stat-card.stat-card-clickable::after {
+  content: "↗";
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  font-size: 0.62rem;
+  color: var(--text-muted);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.stat-card.stat-card-clickable:hover::after {
+  opacity: 0.9;
+  color: var(--accent-theme);
+}
+
+/* ==========================================================================
+   METADATA GEO CITTA' (CITTA', REGIONE, NAZIONE, CONTINENTE)
+   ========================================================================== */
+.city-geo-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 6px;
+  margin-bottom: 4px;
+}
+
+.geo-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 0.72rem;
+  padding: 2px 7px;
+  border-radius: var(--radius-xs);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.geo-tag.geo-region {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.geo-tag.geo-country {
+  color: #38bdf8;
+  border-color: rgba(56, 189, 248, 0.25);
+  background: rgba(56, 189, 248, 0.08);
+}
+
+.geo-tag.geo-continent {
+  color: var(--accent-theme);
+  border-color: var(--accent-theme-subtle);
+  background: rgba(245, 158, 11, 0.08);
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   PAGINA PAESI VISITATI (paesi.html)
+   ========================================================================== */
+.countries-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.country-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all var(--transition-fast);
+}
+
+.country-card:hover {
+  border-color: var(--accent-theme);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card);
+}
+
+.country-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.country-flag-box {
+  font-size: 2rem;
+  line-height: 1;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--border-subtle);
+}
+
+.country-info h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0 0 3px 0;
+  color: var(--text-primary);
+}
+
+.country-continent-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+}
+
+.country-continent-badge.cont-Europa {
+  background: rgba(0, 129, 200, 0.15);
+  color: #38bdf8;
+  border: 1px solid rgba(0, 129, 200, 0.35);
+}
+
+.country-continent-badge.cont-Asia {
+  background: rgba(252, 177, 49, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(252, 177, 49, 0.35);
+}
+
+.country-continent-badge.cont-Americhe {
+  background: rgba(238, 51, 78, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(238, 51, 78, 0.35);
+}
+
+.country-continent-badge.cont-NordAmerica {
+  background: rgba(238, 51, 78, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(238, 51, 78, 0.35);
+}
+
+.country-continent-badge.cont-SudAmerica {
+  background: rgba(249, 115, 22, 0.15);
+  color: #fb923c;
+  border: 1px solid rgba(249, 115, 22, 0.35);
+}
+
+.country-continent-badge.cont-Africa {
+  background: rgba(148, 163, 184, 0.15);
+  color: #cbd5e1;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+}
+
+.country-continent-badge.cont-Oceania {
+  background: rgba(0, 166, 81, 0.15);
+  color: #4ade80;
+  border: 1px solid rgba(0, 166, 81, 0.35);
+}
+
+.country-continent-badge.cont-Antartide {
+  background: rgba(148, 163, 184, 0.12);
+  color: #94a3b8;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+}
+
+.country-stats-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: var(--radius-xs);
+  margin-bottom: 12px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.country-stats-row strong {
+  color: var(--text-primary);
+}
+
+.country-card-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+/* ==========================================================================
+   PAGINA PERCENTUALE & STATISTICHE (statistiche.html)
+   ========================================================================== */
+.stats-page-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  gap: 32px;
+  align-items: start;
+  margin-top: 28px;
+}
+
+@media (max-width: 900px) {
+  .stats-page-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.chart-card-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  padding: 32px 24px;
+  text-align: center;
+  box-shadow: var(--shadow-card);
+}
+
+.pie-chart-wrap {
+  position: relative;
+  width: 250px;
+  height: 250px;
+  margin: 0 auto 24px auto;
+}
+
+.pie-chart-svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+  border-radius: 50%;
+}
+
+.chart-center-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+}
+
+.chart-center-percent {
+  font-family: var(--font-heading);
+  font-size: 2.3rem;
+  font-weight: 800;
+  color: var(--accent-theme);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.chart-center-subtext {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  margin-top: 4px;
+}
+
+.chart-legend-box {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.85rem;
+}
+
+.legend-color-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  display: inline-block;
+  margin-right: 8px;
+}
+
+.legend-color-visited {
+  background: var(--accent-theme);
+  box-shadow: 0 0 8px var(--accent-theme-glow);
+}
+
+.legend-color-unvisited {
+  background: #334155;
+}
+
+.formula-card-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  padding: 28px;
+  box-shadow: var(--shadow-card);
+}
+
+.formula-card-box h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 16px 0;
+  color: var(--text-primary);
+}
+
+.formula-display-banner {
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid var(--accent-theme);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.formula-math {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--accent-theme);
+  margin-bottom: 6px;
+}
+
+.formula-math-numbers {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.formula-steps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.formula-step-item {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.formula-step-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--accent-theme-subtle);
+  color: var(--text-accent);
+  border: 1px solid var(--accent-theme);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.formula-step-text h4 {
+  font-size: 0.92rem;
+  font-weight: 600;
+  margin: 0 0 4px 0;
+  color: var(--text-primary);
+}
+
+.formula-step-text p {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.continent-progress-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.continent-progress-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+}
+
+.cont-prog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.cont-prog-header h5 {
+  margin: 0;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.cont-prog-bar-track {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.cont-prog-bar-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width 1s ease-out;
+}
+
+/* ==========================================================================
+   PAGINA CONTINENTI OLIMPICI (continenti.html)
+   ========================================================================== */
+.olympic-banner-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.olympic-rings-graphic {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.olympic-ring-circle {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 4px solid;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+  transition: transform var(--transition-fast);
+}
+
+.olympic-ring-circle:hover {
+  transform: scale(1.15);
+}
+
+.ring-blue { border-color: #0081C8; box-shadow: 0 0 10px rgba(0, 129, 200, 0.4); }
+.ring-yellow { border-color: #FCB131; box-shadow: 0 0 10px rgba(252, 177, 49, 0.4); }
+.ring-black { border-color: #1E293B; background: #0F172A; border-color: #94A3B8; box-shadow: 0 0 10px rgba(255, 255, 255, 0.15); }
+.ring-red { border-color: #EE334E; box-shadow: 0 0 10px rgba(238, 51, 78, 0.4); }
+.ring-orange { border-color: #F97316; box-shadow: 0 0 10px rgba(249, 115, 22, 0.4); }
+.ring-green { border-color: #00A651; box-shadow: 0 0 10px rgba(0, 166, 81, 0.4); }
+.ring-neutral { border-color: #475569; background: #1E293B; border-style: dashed; box-shadow: 0 0 8px rgba(255, 255, 255, 0.08); }
+
+/* ==========================================================================
+   LEGENDA DEI 7 CONTINENTI (continenti.html)
+   ========================================================================== */
+.continents-legend-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-card);
+}
+
+.continents-legend-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.continents-legend-header h4 {
+  margin: 4px 0 0 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.legend-badge-count {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent-theme);
+}
+
+.legend-summary-pills {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.legend-pill {
+  font-size: 0.76rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+}
+
+.legend-pill.pill-visited {
+  background: rgba(0, 166, 81, 0.15);
+  color: #4ade80;
+  border: 1px solid rgba(0, 166, 81, 0.35);
+}
+
+.legend-pill.pill-unvisited {
+  background: rgba(148, 163, 184, 0.12);
+  color: #94a3b8;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+}
+
+.continents-legend-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
+  gap: 12px;
+}
+
+.legend-item-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-decoration: none;
+  user-select: none;
+}
+
+.legend-item-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--accent-theme);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.legend-item-card.is-unvisited {
+  opacity: 0.75;
+  border-style: dashed;
+}
+
+.legend-item-card.is-unvisited:hover {
+  opacity: 1;
+}
+
+.legend-color-indicator {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  box-shadow: 0 0 8px currentColor;
+}
+
+.legend-item-card.is-unvisited .legend-color-indicator {
+  box-shadow: none;
+}
+
+.legend-item-info {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.legend-item-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.legend-item-name {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.legend-item-status-dot {
+  font-size: 0.68rem;
+  font-weight: 700;
+  border-radius: 3px;
+  padding: 1px 5px;
+}
+
+.status-visited {
+  background: rgba(0, 166, 81, 0.15);
+  color: #4ade80;
+}
+
+.status-unvisited {
+  background: rgba(148, 163, 184, 0.15);
+  color: #94a3b8;
+}
+
+.legend-item-sub {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.continents-legend-footer {
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-subtle);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.continents-map-wrapper {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  margin-bottom: 32px;
+}
+
+.continents-map-container {
+  height: 520px;
+  width: 100%;
+  background: #0b101b;
+}
+
+.continents-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 18px;
+}
+
+.continent-detail-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  transition: all var(--transition-fast);
+}
+
+.continent-detail-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card);
+}
+
+.continent-card-stripe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+}
+
+.continent-detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.continent-detail-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.continent-detail-title h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.continent-countries-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 10px;
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+.country-chip {
+  font-size: 0.72rem;
+  padding: 2px 7px;
+  border-radius: var(--radius-xs);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+}
+
+/* Eliminazione totale controlli attribution e watermark su tutte le mappe Leaflet */
+.leaflet-control-attribution {
+  display: none !important;
+}
+
 

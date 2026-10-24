@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mappa dei 7 Continenti • Giuseppe Ricatti</title>
+  <meta name="description" content="Mappa dei 7 continenti del mondo con i 6 continenti visitati da Giuseppe Ricatti colorati con le tonalità olimpiche e la legenda ufficiale.">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌐</text></svg>">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+  <!-- Foglio di Stile Principale -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ======================================================================
+       HEADER & NAVBAR SUPERIORE
+       ====================================================================== -->
+  <header class="main-header" id="main-navbar">
+    <div class="container navbar-inner">
+      <a href="index.html#home" class="brand-logo" title="Giuseppe Ricatti - Home">
+        <div class="brand-avatar">GR</div>
+        <div class="brand-text">
+          <h1>Giuseppe Ricatti</h1>
+          <span class="brand-subtitle">Diario di Bordo</span>
+        </div>
+      </a>
+
+      <!-- Menu a Blocchi -->
+      <nav class="navbar-box-nav" id="navbar-links">
+        <a href="index.html#home" class="nav-box-btn nav-box-home" title="Home">
+          <span class="nav-box-icon">🏠</span>
+        </a>
+        <a href="index.html#mappa" class="nav-box-btn" title="Mappa Interattiva">
+          <span class="nav-box-icon">🗺️</span>
+          <span class="nav-box-label">Mappa</span>
+        </a>
+        <a href="viaggi.html?tab=upcoming" class="nav-box-btn nav-box-upcoming" title="Viaggi in Programma">
+          <span class="nav-box-icon">🗓️</span>
+          <span class="nav-box-label">Next Stop</span>
+        </a>
+        <a href="viaggi.html?tab=past" class="nav-box-btn" title="Archivio Viaggi Passati">
+          <span class="nav-box-icon">🌍</span>
+          <span class="nav-box-label">Archivio</span>
+        </a>
+        <a href="citta.html" class="nav-box-btn" title="Indice Città Esplorate nel Mondo">
+          <span class="nav-box-icon">🏙️</span>
+          <span class="nav-box-label">Città</span>
+        </a>
+        <a href="wishlist.html" class="nav-box-btn" title="Travel Wish List (Cosa Voglio Fare)">
+          <span class="nav-box-icon">🌟</span>
+          <span class="nav-box-label">Wish List</span>
+        </a>
+        <a href="chi-sono.html" class="nav-box-btn" title="Biografia & Visione">
+          <span class="nav-box-icon">👤</span>
+          <span class="nav-box-label">Chi Sono</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ======================================================================
+       MAIN CONTENT: MAPPA DEI 7 CONTINENTI
+       ====================================================================== -->
+  <main class="page-main-content">
+    <div class="container">
+
+      <!-- Barra di Ritorno alla Home -->
+      <div class="back-to-home-bar">
+        <a href="index.html#home" class="back-home-link">
+          ← Torna alla Home & Mappa
+        </a>
+        <div id="continents-summary-badge" class="badge badge-accent">
+          7 Continenti nel Mondo • 6 Continenti Visitati (Colorati) • 1 Non Visitato (Neutro)
+        </div>
+      </div>
+
+      <!-- Intestazione Sezione -->
+      <div class="section-header" style="text-align: left; margin-bottom: 24px;">
+        <span class="section-tag">Cartografia & Modello a 7 Continenti</span>
+        <h2 class="section-title">Mappa dei Continenti del Mondo</h2>
+        <p class="section-subtitle" style="margin: 0; max-width: 860px;">
+          Il modello geografico universale riconosce <strong>7 Continenti</strong>. Solo i <strong>6 continenti visitati</strong> sono accesi e colorati con la tavolozza olimpica dedicata (Blu Europa, Giallo Asia, Nero Africa, Rosso Nord America, Arancione Sud America, Verde Oceania). Il 7° continente (<strong>Antartide</strong>) non è stato ancora visitato e rimane neutro ed incolore.
+        </p>
+      </div>
+
+      <!-- Banner Grafico Cerchi Olimpici & Tonalità dei Continenti -->
+      <div class="olympic-banner-card">
+        <div>
+          <h3 style="font-size: 1.15rem; font-weight: 700; margin: 0 0 6px 0; color: var(--text-primary);">
+            La Tavolozza Cromatica dei 7 Continenti
+          </h3>
+          <p style="margin: 0; font-size: 0.85rem; color: var(--text-secondary);">
+            6 continenti esplorati con i rispettivi colori distintivi, più l'incolore Antartide polare.
+          </p>
+        </div>
+
+        <!-- Rappresentazione Grafica Anelli & Continenti -->
+        <div class="olympic-rings-graphic">
+          <div class="olympic-ring-circle ring-blue" title="Europa • Cerchio Blu (#0081C8) • Visitato">
+            <span style="font-size: 0.65rem; font-weight: 800; color: #38bdf8;">EU</span>
+          </div>
+          <div class="olympic-ring-circle ring-yellow" title="Asia • Cerchio Giallo (#FCB131) • Visitato">
+            <span style="font-size: 0.65rem; font-weight: 800; color: #fbbf24;">AS</span>
+          </div>
+          <div class="olympic-ring-circle ring-black" title="Africa • Cerchio Nero (#1E293B) • Visitato">
+            <span style="font-size: 0.65rem; font-weight: 800; color: #e2e8f0;">AF</span>
+          </div>
+          <div class="olympic-ring-circle ring-red" title="Nord America • Cerchio Rosso (#EE334E) • Visitato">
+            <span style="font-size: 0.65rem; font-weight: 800; color: #f87171;">NA</span>
+          </div>
+          <div class="olympic-ring-circle ring-orange" title="Sud America • Cerchio Arancione (#F97316) • Visitato">
+            <span style="font-size: 0.65rem; font-weight: 800; color: #fb923c;">SA</span>
+          </div>
+          <div class="olympic-ring-circle ring-green" title="Oceania • Cerchio Verde (#00A651) • Visitato">
+            <span style="font-size: 0.65rem; font-weight: 800; color: #4ade80;">OC</span>
+          </div>
+          <div class="olympic-ring-circle ring-neutral" title="Antartide • Incolore / Neutro • Non Visitato">
+            <span style="font-size: 0.65rem; font-weight: 800; color: #94a3b8;">AN</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           PANNELLO LEGENDA UFFICIALE DEI 7 CONTINENTI
+           ==================================================================== -->
+      <div class="continents-legend-panel">
+        <div class="continents-legend-header">
+          <div>
+            <span class="legend-badge-count">Modello Geografico Standard</span>
+            <h4>Legenda Ufficiale dei 7 Continenti</h4>
+          </div>
+          <div class="legend-summary-pills">
+            <span class="legend-pill pill-visited">🎨 6 Continenti Colorati (Visitati)</span>
+            <span class="legend-pill pill-unvisited">⚪ 1 Continente Neutro (Non Visitato)</span>
+          </div>
+        </div>
+
+        <!-- Griglia Voci Legenda dei 7 Continenti -->
+        <div class="continents-legend-grid" id="continents-legend-items">
+          <!-- Renderizzato dinamicamente via JS -->
+        </div>
+
+        <div class="continents-legend-footer">
+          <span>💡 <strong>Interattività:</strong> Fai clic su una scheda della legenda per volare e centrare la mappa sul continente corrispondente.</span>
+        </div>
+      </div>
+
+      <!-- Wrapper Mappa Leaflet -->
+      <div class="continents-map-wrapper">
+        <div id="continents-leaflet-map" class="continents-map-container"></div>
+      </div>
+
+      <!-- Schede Dettaglio Continenti -->
+      <div style="margin-top: 36px;">
+        <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 8px; color: var(--text-primary);">
+          Dettaglio Geografico dei 7 Continenti
+        </h3>
+        <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 20px;">
+          Panoramica delle nazioni visitate per ciascuna delle 7 macro-aree continentali.
+        </p>
+
+        <div class="continents-cards-grid" id="continents-details-grid">
+          <!-- Renderizzato via JavaScript -->
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ======================================================================
+       FOOTER
+       ====================================================================== -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="brand-logo mb-2">
+            <div class="brand-avatar">GR</div>
+            <div class="brand-text">
+              <h3>Giuseppe Ricatti</h3>
+              <span class="brand-subtitle">Diario di Bordo</span>
+            </div>
+          </div>
+          <p class="footer-desc">
+            Tracciamento cartografico dei paesi visitati e delle rotte mondiali esplorate.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-col-title">Navigazione Diretta</h4>
+          <ul class="footer-links">
+            <li><a href="index.html#home">Home Page</a></li>
+            <li><a href="index.html#mappa">Mappa Interattiva Generale</a></li>
+            <li><a href="paesi.html">Elenco Paesi Visitati</a></li>
+            <li><a href="statistiche.html">Percentuale Mondo Esplorato</a></li>
+            <li><a href="citta.html">Tutte le Città</a></li>
+            <li><a href="viaggi.html?tab=past">Archivio Viaggi Passati</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-col-title">Azioni Rapide</h4>
+          <div class="footer-actions-group">
+            <button class="btn btn-sm btn-outline w-100 mb-2" onclick="window.travelApp.openAddTripModal()">
+              <span>+</span> Aggiungi Nuova Tappa
+            </button>
+            <button class="btn btn-sm btn-outline w-100" onclick="window.travelApp.exportDataAsJson()">
+              💾 Scarica Backup (JSON)
+            </button>
+            <!-- Palette Colore del Sito -->
+            <div class="footer-theme-picker-block" style="margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--border-subtle);">
+              <span style="display: block; font-size: 0.74rem; color: var(--text-muted); margin-bottom: 6px;">🎨 Palette Colore:</span>
+              <div class="theme-picker" title="Scegli la tonalità colore">
+                <span class="theme-dot theme-dot-amber active" data-theme="amber" onclick="window.travelApp.setTheme('amber')" title="Ambra Dorata"></span>
+                <span class="theme-dot theme-dot-sapphire" data-theme="sapphire" onclick="window.travelApp.setTheme('sapphire')" title="Blu Zaffiro"></span>
+                <span class="theme-dot theme-dot-platinum" data-theme="platinum" onclick="window.travelApp.setTheme('platinum')" title="Platino Monocromo"></span>
+                <span class="theme-dot theme-dot-terracotta" data-theme="terracotta" onclick="window.travelApp.setTheme('terracotta')" title="Terracotta"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 Giuseppe Ricatti. Tutti i diritti riservati.</p>
+        <span class="privacy-note">Dati personali archiviati in locale nel tuo browser.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <!-- SCRIPTS DATI & MAPPA -->
+  <script src="data/countries-data.js"></script>
+  <script src="js/tripadvisor_cities.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+
+  <script>
+    let continentMapInstance = null;
+
+    // Coordinate di zoom per ciascuno dei 7 continenti
+    const CONTINENT_COORDINATES = {
+      "Europa": { center: [52, 16], zoom: 4 },
+      "Asia": { center: [35, 95], zoom: 3 },
+      "Africa": { center: [4, 21], zoom: 3 },
+      "Nord America": { center: [44, -100], zoom: 3 },
+      "Sud America": { center: [-18, -60], zoom: 3 },
+      "Oceania": { center: [-25, 135], zoom: 4 },
+      "Antartide": { center: [-75, 0], zoom: 3 }
+    };
+
+    // Mappatura Colori Ufficiali dei Continenti
+    // 6 Colorati (Visitati) + 1 Incolore/Neutro (Antartide - Non Visitato)
+    const OLYMPIC_COLORS = {
+      "Europa": {
+        color: "#0081C8",
+        fillColor: "#0081C8",
+        fillOpacity: 0.72,
+        borderColor: "#38bdf8",
+        ringName: "Cerchio Blu"
+      },
+      "Asia": {
+        color: "#FCB131",
+        fillColor: "#FCB131",
+        fillOpacity: 0.72,
+        borderColor: "#fde047",
+        ringName: "Cerchio Giallo"
+      },
+      "Africa": {
+        color: "#94a3b8",
+        fillColor: "#1E293B",
+        fillOpacity: 0.90,
+        borderColor: "#64748b",
+        ringName: "Cerchio Nero"
+      },
+      "Nord America": {
+        color: "#EE334E",
+        fillColor: "#EE334E",
+        fillOpacity: 0.72,
+        borderColor: "#f87171",
+        ringName: "Cerchio Rosso"
+      },
+      "Sud America": {
+        color: "#F97316",
+        fillColor: "#F97316",
+        fillOpacity: 0.72,
+        borderColor: "#fb923c",
+        ringName: "Cerchio Arancione"
+      },
+      "Oceania": {
+        color: "#00A651",
+        fillColor: "#00A651",
+        fillOpacity: 0.72,
+        borderColor: "#4ade80",
+        ringName: "Cerchio Verde"
+      },
+      "Antartide": {
+        color: "#64748b",
+        fillColor: "#111827",
+        fillOpacity: 0.25,
+        borderColor: "rgba(255, 255, 255, 0.08)",
+        ringName: "Incolore / Neutro"
+      }
+    };
+
+    function focusContinent(contName) {
+      if (!continentMapInstance) return;
+      const target = CONTINENT_COORDINATES[contName];
+      if (target) {
+        continentMapInstance.flyTo(target.center, target.zoom, { duration: 1.2 });
+      }
+    }
+
+    function initContinentsMap() {
+      const mapContainer = document.getElementById("continents-leaflet-map");
+      if (!mapContainer || !window.L) return;
+
+      continentMapInstance = L.map("continents-leaflet-map", {
+        center: [22, 10],
+        zoom: 2,
+        minZoom: 2,
+        maxZoom: 7,
+        zoomControl: true,
+        scrollWheelZoom: true,
+        attributionControl: false
+      });
+
+      // Tessere Cartografiche Esri World Dark Gray Base (100% Gratuito, Nessuna API Key Richiesta, Nessun Watermark)
+      L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}", {
+        attribution: '&copy; Esri, HERE, Garmin',
+        maxZoom: 16
+      }).addTo(continentMapInstance);
+
+      if (!window.WORLD_GEOJSON) {
+        console.warn("WORLD_GEOJSON non disponibile.");
+        return;
+      }
+
+      // Ricava la ripartizione dei 7 continenti
+      const breakdown = window.travelManager ? window.travelManager.getContinentalBreakdown() : [];
+      const visitedContinentsSet = new Set();
+      breakdown.forEach(b => {
+        if (b.isVisited) visitedContinentsSet.add(b.name);
+      });
+
+      // Layer GeoJSON con colorazione SOLO per i 6 continenti visitati
+      L.geoJSON(window.WORLD_GEOJSON, {
+        style: function(feature) {
+          const p = feature.properties || {};
+          let cont = p.continent || "";
+          if (cont === "Europe") cont = "Europa";
+          else if (cont === "North America") cont = "Nord America";
+          else if (cont === "South America") cont = "Sud America";
+          else if (cont === "Antarctica") cont = "Antartide";
+
+          // Regola: Colorati SOLO I 6 CONTINENTI VISITATI (Antartide è neutro/non colorato)
+          if (cont !== "Antartide" && visitedContinentsSet.has(cont) && OLYMPIC_COLORS[cont]) {
+            const oc = OLYMPIC_COLORS[cont];
+            return {
+              fillColor: oc.fillColor,
+              fillOpacity: oc.fillOpacity,
+              color: oc.borderColor,
+              weight: 1,
+              opacity: 0.85
+            };
+          } else {
+            // Continente NON visitato (es. Antartide) o territori neutri: INCOLORE
+            return {
+              fillColor: "#111827",
+              fillOpacity: 0.25,
+              color: "rgba(255, 255, 255, 0.08)",
+              weight: 0.6,
+              opacity: 0.4
+            };
+          }
+        },
+        onEachFeature: function(feature, layer) {
+          const p = feature.properties || {};
+          let cont = p.continent || "Mondo";
+          if (cont === "Europe") cont = "Europa";
+          else if (cont === "North America") cont = "Nord America";
+          else if (cont === "South America") cont = "Sud America";
+          else if (cont === "Antarctica") cont = "Antartide";
+
+          const isVisitedContinent = cont !== "Antartide" && visitedContinentsSet.has(cont);
+          const oc = OLYMPIC_COLORS[cont];
+
+          let popupContent = `
+            <div style="font-family: var(--font-sans); color: #fff; padding: 4px;">
+              <strong style="font-size: 0.95rem; display: block; margin-bottom: 4px;">${p.name || "Territorio"}</strong>
+              <div style="font-size: 0.78rem; color: #94a3b8; margin-bottom: 6px;">Continente: <strong>${cont}</strong></div>
+          `;
+
+          if (isVisitedContinent && oc) {
+            popupContent += `
+              <div style="display: inline-flex; align-items: center; gap: 4px; font-size: 0.72rem; font-weight: 700; color: ${oc.color}; background: rgba(255,255,255,0.06); padding: 3px 8px; border-radius: 4px; border: 1px solid ${oc.color};">
+                🏅 ${oc.ringName} (Continente Visitato)
+              </div>
+            `;
+          } else {
+            popupContent += `
+              <span style="font-size: 0.72rem; color: #64748b;">
+                ⏳ Continente non ancora visitato (Incolore)
+              </span>
+            `;
+          }
+
+          popupContent += `</div>`;
+          layer.bindTooltip(popupContent, { sticky: true });
+
+          layer.on({
+            mouseover: function(e) {
+              const l = e.target;
+              l.setStyle({
+                weight: 2,
+                opacity: 1,
+                fillOpacity: 0.88
+              });
+            },
+            mouseout: function(e) {
+              const l = e.target;
+              if (isVisitedContinent && oc) {
+                l.setStyle({
+                  fillColor: oc.fillColor,
+                  fillOpacity: oc.fillOpacity,
+                  color: oc.borderColor,
+                  weight: 1,
+                  opacity: 0.85
+                });
+              } else {
+                l.setStyle({
+                  fillColor: "#111827",
+                  fillOpacity: 0.25,
+                  color: "rgba(255, 255, 255, 0.08)",
+                  weight: 0.6,
+                  opacity: 0.4
+                });
+              }
+            }
+          });
+        }
+      }).addTo(continentMapInstance);
+
+      renderLegend(breakdown);
+      renderContinentsDetails(breakdown);
+    }
+
+    // Renderizza la Legenda dei 7 Continenti
+    function renderLegend(breakdown) {
+      const legendContainer = document.getElementById("continents-legend-items");
+      if (!legendContainer) return;
+
+      let html = "";
+      breakdown.forEach(b => {
+        const oc = OLYMPIC_COLORS[b.name] || { color: "#38bdf8", ringName: "Cerchio" };
+        const isVisited = b.isVisited;
+        const colorIndicator = isVisited
+          ? `<div class="legend-color-indicator" style="background: ${oc.color}; color: ${oc.color}; border: 1px solid ${oc.borderColor};"></div>`
+          : `<div class="legend-color-indicator" style="background: #334155; color: #64748b; border: 1px dashed #94a3b8;"></div>`;
+
+        const statusPill = isVisited
+          ? `<span class="legend-item-status-dot status-visited">✅ Visitato</span>`
+          : `<span class="legend-item-status-dot status-unvisited">⏳ Non visitato</span>`;
+
+        const subInfo = isVisited
+          ? `${b.visitedCountriesCount} Paesi • ${b.citiesCount} Città`
+          : `0 Paesi • Non esplorato`;
+
+        html += `
+          <div class="legend-item-card ${isVisited ? 'is-visited' : 'is-unvisited'}" onclick="focusContinent('${b.name}')" title="Fai clic per visualizzare ${b.name} sulla mappa">
+            ${colorIndicator}
+            <div class="legend-item-info">
+              <div class="legend-item-top">
+                <span class="legend-item-name">${b.icon} ${b.name}</span>
+                ${statusPill}
+              </div>
+              <div class="legend-item-sub">
+                <span style="color: ${isVisited ? oc.color : '#94a3b8'}; font-weight: 600;">${b.ringName}</span> • ${subInfo}
+              </div>
+            </div>
+          </div>
+        `;
+      });
+
+      legendContainer.innerHTML = html;
+    }
+
+    // Renderizza le Schede Dettagliate dei 7 Continenti
+    function renderContinentsDetails(breakdown) {
+      const container = document.getElementById("continents-details-grid");
+      if (!container) return;
+
+      let html = "";
+      breakdown.forEach(b => {
+        const oc = OLYMPIC_COLORS[b.name] || { color: "#38bdf8", ringName: "Cerchio" };
+        const stripeColor = b.isVisited ? oc.color : "rgba(255,255,255,0.1)";
+        const statusBadge = b.isVisited
+          ? `<span class="badge" style="background: rgba(0, 166, 81, 0.15); color: #4ade80; border: 1px solid rgba(0, 166, 81, 0.35); font-weight: 700;">✅ Visitato</span>`
+          : `<span class="badge" style="background: rgba(148, 163, 184, 0.1); color: #94a3b8; border: 1px solid rgba(148, 163, 184, 0.25);">⏳ Non Visitato</span>`;
+
+        let chipsHtml = "";
+        if (b.visitedCountries && b.visitedCountries.length > 0) {
+          b.visitedCountries.forEach(vc => {
+            chipsHtml += `<span class="country-chip">${vc.flag || "📍"} ${vc.name}</span>`;
+          });
+        } else {
+          chipsHtml = `<span style="font-size: 0.78rem; color: var(--text-muted); font-style: italic;">Nessuna nazione ancora visitata in questo continente.</span>`;
+        }
+
+        html += `
+          <div class="continent-detail-card ${b.isVisited ? '' : 'is-unvisited-card'}" style="${b.isVisited ? '' : 'opacity: 0.85; border-style: dashed;'}">
+            <div class="continent-card-stripe" style="background: ${stripeColor};"></div>
+            
+            <div class="continent-detail-header">
+              <div class="continent-detail-title">
+                <span style="font-size: 1.4rem;">${b.icon}</span>
+                <div>
+                  <h3>${b.name}</h3>
+                  <span style="font-size: 0.72rem; color: ${b.isVisited ? oc.color : 'var(--text-muted)'}; font-weight: 700;">
+                    🏅 ${b.ringName}
+                  </span>
+                </div>
+              </div>
+              ${statusBadge}
+            </div>
+
+            <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0 0 10px 0; line-height: 1.4;">
+              ${b.desc}
+            </p>
+
+            <div style="display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--text-muted); padding: 8px 10px; background: rgba(255,255,255,0.02); border-radius: var(--radius-xs); margin-bottom: 10px;">
+              <span>Nazioni: <strong style="color: var(--text-primary);">${b.visitedCountriesCount} ${b.totalCountries > 0 ? '/ ' + b.totalCountries : ''}</strong></span>
+              <span>Quota: <strong style="color: ${b.isVisited ? oc.color : 'var(--text-muted)'};">${b.percentage}%</strong></span>
+            </div>
+
+            <div style="font-size: 0.74rem; font-weight: 600; color: var(--text-muted); margin-bottom: 4px;">
+              ${b.isVisited ? `Nazioni Visitate (${b.visitedCountriesCount}):` : 'Stato:'}
+            </div>
+            <div class="continent-countries-chips">
+              ${chipsHtml}
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      setTimeout(initContinentsMap, 150);
+    });
+  </script>
+</body>
+</html>

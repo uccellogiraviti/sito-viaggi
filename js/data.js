@@ -102,24 +102,24 @@ const CITY_COORDINATES = {
 // Dizionario Completo Nomi Paesi (Italiano, ISO, Continente, Bandiera)
 const COUNTRY_NAME_MAP = {
   "italia": { iso: "ITA", name: "Italia", continent: "Europa", flag: "🇮🇹" },
-  "repubblica dominicana": { iso: "DOM", name: "Repubblica Dominicana", continent: "Americhe", flag: "🇩🇴" },
+  "repubblica dominicana": { iso: "DOM", name: "Repubblica Dominicana", continent: "Nord America", flag: "🇩🇴" },
   "egitto": { iso: "EGY", name: "Egitto", continent: "Africa", flag: "🇪🇬" },
   "svezia": { iso: "SWE", name: "Svezia", continent: "Europa", flag: "🇸🇪" },
   "francia": { iso: "FRA", name: "Francia", continent: "Europa", flag: "🇫🇷" },
   "grecia": { iso: "GRC", name: "Grecia", continent: "Europa", flag: "🇬🇷" },
   "irlanda": { iso: "IRL", name: "Irlanda", continent: "Europa", flag: "🇮🇪" },
   "spagna": { iso: "ESP", name: "Spagna", continent: "Europa", flag: "🇪🇸" },
-  "stati uniti": { iso: "USA", name: "Stati Uniti d'America", continent: "Americhe", flag: "🇺🇸" },
-  "stati uniti d'america": { iso: "USA", name: "Stati Uniti d'America", continent: "Americhe", flag: "🇺🇸" },
+  "stati uniti": { iso: "USA", name: "Stati Uniti d'America", continent: "Nord America", flag: "🇺🇸" },
+  "stati uniti d'america": { iso: "USA", name: "Stati Uniti d'America", continent: "Nord America", flag: "🇺🇸" },
   "paesi bassi": { iso: "NLD", name: "Paesi Bassi", continent: "Europa", flag: "🇳🇱" },
   "portogallo": { iso: "PRT", name: "Portogallo", continent: "Europa", flag: "🇵🇹" },
-  "guatemala": { iso: "GTM", name: "Guatemala", continent: "Americhe", flag: "🇬🇹" },
-  "messico": { iso: "MEX", name: "Messico", continent: "Americhe", flag: "🇲🇽" },
+  "guatemala": { iso: "GTM", name: "Guatemala", continent: "Nord America", flag: "🇬🇹" },
+  "messico": { iso: "MEX", name: "Messico", continent: "Nord America", flag: "🇲🇽" },
   "danimarca": { iso: "DNK", name: "Danimarca", continent: "Europa", flag: "🇩🇰" },
   "germania": { iso: "DEU", name: "Germania", continent: "Europa", flag: "🇩🇪" },
   "giappone": { iso: "JPN", name: "Giappone", continent: "Asia", flag: "🇯🇵" },
   "marocco": { iso: "MAR", name: "Marocco", continent: "Africa", flag: "🇲🇦" },
-  "brasile": { iso: "BRA", name: "Brasile", continent: "Americhe", flag: "🇧🇷" },
+  "brasile": { iso: "BRA", name: "Brasile", continent: "Sud America", flag: "🇧🇷" },
   "cina": { iso: "CHN", name: "Cina", continent: "Asia", flag: "🇨🇳" },
   "hong kong": { iso: "HKG", name: "Hong Kong", continent: "Asia", flag: "🇭🇰" },
   "regno unito": { iso: "GBR", name: "Regno Unito", continent: "Europa", flag: "🇬🇧" },
@@ -142,17 +142,17 @@ const COUNTRY_NAME_MAP = {
   "svizzera": { iso: "CHE", name: "Svizzera", continent: "Europa", flag: "🇨🇭" },
   "norvegia": { iso: "NOR", name: "Norvegia", continent: "Europa", flag: "🇳🇴" },
   "islanda": { iso: "ISL", name: "Islanda", continent: "Europa", flag: "🇮🇸" },
-  "argentina": { iso: "ARG", name: "Argentina", continent: "Americhe", flag: "🇦🇷" },
-  "cile": { iso: "CHL", name: "Cile", continent: "Americhe", flag: "🇨🇱" },
+  "argentina": { iso: "ARG", name: "Argentina", continent: "Sud America", flag: "🇦🇷" },
+  "cile": { iso: "CHL", name: "Cile", continent: "Sud America", flag: "🇨🇱" },
   "namibia": { iso: "NAM", name: "Namibia", continent: "Africa", flag: "🇳🇦" },
   "sudafrica": { iso: "ZAF", name: "Sudafrica", continent: "Africa", flag: "🇿🇦" },
   "kenya": { iso: "KEN", name: "Kenya", continent: "Africa", flag: "🇰🇪" },
   "tanzania": { iso: "TZA", name: "Tanzania", continent: "Africa", flag: "🇹🇿" },
-  "peru": { iso: "PER", name: "Perù", continent: "Americhe", flag: "🇵🇪" },
-  "colombia": { iso: "COL", name: "Colombia", continent: "Americhe", flag: "🇨🇴" },
-  "canada": { iso: "CAN", name: "Canada", continent: "Americhe", flag: "🇨🇦" },
-  "cuba": { iso: "CUB", name: "Cuba", continent: "Americhe", flag: "🇨🇺" },
-  "costa rica": { iso: "CRI", name: "Costa Rica", continent: "Americhe", flag: "🇨🇷" },
+  "peru": { iso: "PER", name: "Perù", continent: "Sud America", flag: "🇵🇪" },
+  "colombia": { iso: "COL", name: "Colombia", continent: "Sud America", flag: "🇨🇴" },
+  "canada": { iso: "CAN", name: "Canada", continent: "Nord America", flag: "🇨🇦" },
+  "cuba": { iso: "CUB", name: "Cuba", continent: "Nord America", flag: "🇨🇺" },
+  "costa rica": { iso: "CRI", name: "Costa Rica", continent: "Nord America", flag: "🇨🇷" },
   "turchia": { iso: "TUR", name: "Turchia", continent: "Europa", flag: "🇹🇷" },
   "croazia": { iso: "HRV", name: "Croazia", continent: "Europa", flag: "🇭🇷" },
   "polonia": { iso: "POL", name: "Polonia", continent: "Europa", flag: "🇵🇱" },
@@ -201,7 +201,9 @@ window.getAllWorldCountries = function() {
       if (code && !map.has(code) && p.name) {
         let cont = p.continent || "Mondo";
         if (cont === "Europe") cont = "Europa";
-        if (cont === "North America" || cont === "South America") cont = "Americhe";
+        else if (cont === "North America") cont = "Nord America";
+        else if (cont === "South America") cont = "Sud America";
+        else if (cont === "Antarctica") cont = "Antartide";
         map.set(code, {
           name: p.name,
           code: code,
@@ -279,7 +281,7 @@ const REAL_FLIGHT_TRIPS = [
     country: "Repubblica Dominicana",
     countryCode: "DOM",
     flag: "🇩🇴",
-    continent: "Americhe",
+    continent: "Nord America",
     city: "Punta Cana",
     mainCity: "Punta Cana",
     coordinates: [18.5820, -68.4055],
@@ -459,7 +461,7 @@ const REAL_FLIGHT_TRIPS = [
     country: "Stati Uniti",
     countryCode: "USA",
     flag: "🇺🇸",
-    continent: "Americhe",
+    continent: "Nord America",
     city: "New York",
     mainCity: "New York",
     coordinates: [40.7128, -74.0060],
@@ -513,7 +515,7 @@ const REAL_FLIGHT_TRIPS = [
     country: "Guatemala & Messico",
     countryCode: "GTM",
     flag: "🇬🇹",
-    continent: "Americhe",
+    continent: "Nord America",
     city: "Città del Guatemala, Flores (Tikal), Cancun",
     mainCity: "Flores",
     coordinates: [16.9248, -89.8927],
@@ -585,7 +587,7 @@ const REAL_FLIGHT_TRIPS = [
     country: "Stati Uniti",
     countryCode: "USA",
     flag: "🇺🇸",
-    continent: "Americhe",
+    continent: "Nord America",
     city: "Los Angeles, Las Vegas, San Francisco",
     mainCity: "San Francisco",
     coordinates: [37.7749, -122.4194],
@@ -675,7 +677,7 @@ const REAL_FLIGHT_TRIPS = [
     country: "Brasile",
     countryCode: "BRA",
     flag: "🇧🇷",
-    continent: "Americhe",
+    continent: "Sud America",
     city: "San Paolo",
     mainCity: "San Paolo",
     coordinates: [-23.5505, -46.6333],
@@ -711,7 +713,7 @@ const REAL_FLIGHT_TRIPS = [
     country: "Brasile",
     countryCode: "BRA",
     flag: "🇧🇷",
-    continent: "Americhe",
+    continent: "Sud America",
     city: "San Paolo & Rio de Janeiro",
     mainCity: "Rio de Janeiro",
     coordinates: [-22.9068, -43.1729],
@@ -837,7 +839,7 @@ const REAL_FLIGHT_TRIPS = [
     country: "Stati Uniti",
     countryCode: "USA",
     flag: "🇺🇸",
-    continent: "Americhe",
+    continent: "Nord America",
     city: "Boston, San Francisco, New England",
     mainCity: "Boston",
     coordinates: [42.3601, -71.0589],
@@ -1035,7 +1037,7 @@ const REAL_FLIGHT_TRIPS = [
     country: "Stati Uniti & Francia",
     countryCode: "USA",
     flag: "🇺🇸",
-    continent: "Americhe",
+    continent: "Nord America",
     city: "Miami & Florida",
     mainCity: "Miami",
     coordinates: [25.7617, -80.1918],
@@ -1352,8 +1354,7 @@ class TravelDataManager {
       window.TRIPADVISOR_COUNTRIES_LIST.forEach(c => {
         if (c.code) visitedCountries.add(c.code.toUpperCase().trim());
         if (c.continent) {
-          const cont = c.continent === "Nord America" || c.continent === "Sud America" ? "Americhe" : c.continent;
-          uniqueContinents.add(cont);
+          uniqueContinents.add(c.continent);
         }
       });
     }
@@ -1399,7 +1400,7 @@ class TravelDataManager {
       upcomingTripsCount: upcomingTrips.length,
       countriesCount: countriesCount,
       upcomingCountriesCount: upcomingCountries.size,
-      continentsCount: Math.max(6, uniqueContinents.size),
+      continentsCount: Math.min(6, Math.max(6, uniqueContinents.size)),
       citiesCount: computedCities.length,
       totalDays,
       worldPercentage: percentage
@@ -1508,6 +1509,169 @@ class TravelDataManager {
     const list = this.getBucketList().filter(b => b.id !== id);
     this.saveBucketList(list);
     return list;
+  }
+
+  // Estrazione ordinata e strutturata dei Paesi Visitati con continente e statistiche
+  getVisitedCountriesList() {
+    const map = new Map();
+    const cities = this.getCities();
+
+    // 1. Paesi ufficiali da TripAdvisor
+    if (typeof window !== "undefined" && Array.isArray(window.TRIPADVISOR_COUNTRIES_LIST)) {
+      window.TRIPADVISOR_COUNTRIES_LIST.forEach(c => {
+        if (!c || !c.code) return;
+        const code = c.code.toUpperCase().trim();
+        const cont = c.continent || "Europa";
+        map.set(code, {
+          name: c.name,
+          code: code,
+          flag: c.flag || (window.getCountryFlagByName ? window.getCountryFlagByName(c.name) : "📍") || "📍",
+          continent: cont,
+          citiesCount: 0,
+          tripsCount: 0
+        });
+      });
+    }
+
+    // 2. Integra paesi da viaggi passati
+    const pastTrips = this.getPastTrips();
+    pastTrips.forEach(t => {
+      const codes = (t.countryCodes && t.countryCodes.length > 0) ? t.countryCodes : [t.countryCode];
+      codes.forEach(cCode => {
+        if (!cCode) return;
+        const code = cCode.toUpperCase().trim();
+        if (!map.has(code)) {
+          const cont = t.continent || "Europa";
+          map.set(code, {
+            name: t.country || code,
+            code: code,
+            flag: t.flag || (window.getCountryFlagByName ? window.getCountryFlagByName(t.country) : "📍") || "📍",
+            continent: cont,
+            citiesCount: 0,
+            tripsCount: 1
+          });
+        } else {
+          map.get(code).tripsCount++;
+        }
+      });
+    });
+
+    // 3. Associa conteggio città reali visitate in ciascun paese
+    cities.forEach(city => {
+      if (!city.hasPastVisit && city.isUpcomingOnly) return;
+      const cName = (city.country || "").toLowerCase().trim();
+      for (const item of map.values()) {
+        if (item.name.toLowerCase().trim() === cName || (city.countryCode && city.countryCode.toUpperCase() === item.code)) {
+          item.citiesCount++;
+          break;
+        }
+      }
+    });
+
+    return Array.from(map.values()).sort((a, b) => a.name.localeCompare(b.name, 'it'));
+  }
+
+  // Ripartizione continentale sui 7 continenti mondiali (6 visitati colorati, 1 non visitato neutro)
+  getContinentalBreakdown() {
+    const visited = this.getVisitedCountriesList();
+    const continents = [
+      {
+        id: "Europa",
+        name: "Europa",
+        ringName: "Cerchio Blu",
+        olympicColor: "#0081C8",
+        olympicColorBorder: "#38BDF8",
+        totalCountries: 44,
+        icon: "🇪🇺",
+        desc: "Il cuore storico e culla culturale delle esplorazioni, ricco di capitali e borghi millenari"
+      },
+      {
+        id: "Asia",
+        name: "Asia",
+        ringName: "Cerchio Giallo",
+        olympicColor: "#FCB131",
+        olympicColorBorder: "#FDE047",
+        totalCountries: 48,
+        icon: "⛩️",
+        desc: "Dall'Estremo Oriente alle metropoli ultramoderne, santuari imperiali e isole tropicali"
+      },
+      {
+        id: "Africa",
+        name: "Africa",
+        ringName: "Cerchio Nero",
+        olympicColor: "#1E293B",
+        olympicColorBorder: "#94A3B8",
+        totalCountries: 54,
+        icon: "🦁",
+        desc: "Terre sconfinate, dune sahariane, oasi imperiali e meraviglie archeologiche millenarie"
+      },
+      {
+        id: "Nord America",
+        name: "Nord America",
+        ringName: "Cerchio Rosso",
+        olympicColor: "#EE334E",
+        olympicColorBorder: "#F87171",
+        totalCountries: 23,
+        icon: "🗽",
+        desc: "Dai parchi nazionali e metropoli cosmopolite alle civiltà Maya e le coste caraibiche"
+      },
+      {
+        id: "Sud America",
+        name: "Sud America",
+        ringName: "Cerchio Arancione",
+        olympicColor: "#F97316",
+        olympicColorBorder: "#FB923C",
+        totalCountries: 12,
+        icon: "🌴",
+        desc: "Foreste pluviali, spiagge atlantiche leggendarie, ritmo carioca e metropoli vibranti"
+      },
+      {
+        id: "Oceania",
+        name: "Oceania",
+        ringName: "Cerchio Verde",
+        olympicColor: "#00A651",
+        olympicColorBorder: "#4ADE80",
+        totalCountries: 14,
+        icon: "🦘",
+        desc: "Le terre australi del Pacifico, grandi barriere coralline, outback e baie oceaniche"
+      },
+      {
+        id: "Antartide",
+        name: "Antartide",
+        ringName: "Incolore / Neutro",
+        olympicColor: "#334155",
+        olympicColorBorder: "rgba(255, 255, 255, 0.15)",
+        totalCountries: 0,
+        icon: "🧊",
+        desc: "L'estremo continente polare dei ghiacci perenni, terra disabitata non ancora esplorata",
+        isVisited: false
+      }
+    ];
+
+    const cities = this.getCities();
+
+    return continents.map(c => {
+      const cVisitedCountries = visited.filter(v => v.continent === c.name);
+      const cCities = cities.filter(city => {
+        if (c.name === "Oceania") {
+          return city.continent === "Oceania" || city.continent === "Australia";
+        }
+        return city.continent === c.name;
+      });
+      const isVisited = cVisitedCountries.length > 0;
+      const percentage = c.totalCountries > 0 
+        ? ((cVisitedCountries.length / c.totalCountries) * 100).toFixed(1)
+        : "0.0";
+
+      return {
+        ...c,
+        isVisited: isVisited,
+        visitedCountriesCount: cVisitedCountries.length,
+        visitedCountries: cVisitedCountries,
+        citiesCount: cCities.length,
+        percentage: percentage
+      };
+    });
   }
 
   exportData() {

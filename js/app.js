@@ -234,10 +234,10 @@ class TravelApp {
       });
     }
 
-    // 3. Aggiorna l'etichetta Continenti nella dashboard delle statistiche
+    // 3. Aggiorna l'etichetta Continenti nella dashboard delle statistiche (senza città tra parentesi)
     const contLabel = document.getElementById("stat-continents-label");
     if (contLabel) {
-      contLabel.textContent = `Continenti (${counts.all} città)`;
+      contLabel.textContent = "Continenti";
     }
   }
 
@@ -1285,6 +1285,8 @@ class TravelApp {
       const coords = city.coordinates || [0, 0];
       const regionSub = city.region ? `<span style="opacity: 0.8; font-size: 0.8rem;">${city.region} • </span>` : "";
 
+      const regionDisplay = city.region ? city.region : "Area Metropolitana";
+
       html += `
         <div class="city-card">
           <div>
@@ -1292,7 +1294,11 @@ class TravelApp {
               <span class="city-card-flag">${city.flag || "📍"}</span>
               <div class="city-card-info">
                 <h4>${city.name}</h4>
-                <span class="city-card-country">${regionSub}${city.country} • ${city.continent}</span>
+                <div class="city-geo-meta">
+                  <span class="geo-tag geo-region" title="Regione / Stato / Territorio">🏛️ ${regionDisplay}</span>
+                  <span class="geo-tag geo-country" title="Nazione">🏳️ ${city.country}</span>
+                  <span class="geo-tag geo-continent" title="Continente Visitato">🌍 ${city.continent}</span>
+                </div>
               </div>
             </div>
             <div class="city-card-meta">

@@ -87,29 +87,29 @@
           Il mio spazio cartografico personale. Traccia ogni nazione visitata, le città toccate dai miei voli e viaggi, le date e i compagni di viaggio.
         </p>
 
-        <!-- Dashboard Statistiche Lineare -->
+        <!-- Dashboard Statistiche Lineare Cliccabile -->
         <div class="stats-dashboard">
-          <div class="stat-card">
+          <div class="stat-card stat-card-clickable" onclick="window.location.href='paesi.html'" title="Visualizza l'elenco di tutti i Paesi visitati con il continente di fianco">
             <div class="stat-value" id="stat-countries">0</div>
             <div class="stat-label">Paesi Visitati</div>
           </div>
-          <div class="stat-card">
+          <div class="stat-card stat-card-clickable" onclick="window.location.href='statistiche.html'" title="Visualizza il grafico a torta e la spiegazione di calcolo della % di mondo visitato">
             <div class="stat-value" id="stat-percentage">0.0%</div>
             <div class="stat-label">Del Mondo Esplorato</div>
           </div>
-          <div class="stat-card">
+          <div class="stat-card stat-card-clickable" onclick="window.location.href='citta.html'" title="Visualizza l'elenco completo delle città con regione, nazione e continente">
             <div class="stat-value" id="stat-cities">0</div>
             <div class="stat-label">Città Esplorate</div>
           </div>
-          <div class="stat-card">
+          <div class="stat-card stat-card-clickable" onclick="window.location.href='viaggi.html?tab=past'" title="Apri l'Archivio Storico dei Viaggi Conclusi">
             <div class="stat-value" id="stat-trips">0</div>
             <div class="stat-label">✅ Viaggi Effettuati</div>
           </div>
-          <div class="stat-card stat-card-upcoming">
+          <div class="stat-card stat-card-upcoming stat-card-clickable" onclick="window.location.href='viaggi.html?tab=upcoming'" title="Apri i Viaggi in Programma (Next Stop)">
             <div class="stat-value" id="stat-upcoming">0</div>
-            <div class="stat-label">🗓️ In Programma</div>
+            <div class="stat-label">🗓️ Next Stop</div>
           </div>
-          <div class="stat-card">
+          <div class="stat-card stat-card-clickable" onclick="window.location.href='continenti.html'" title="Visualizza la mappa dei 7 continenti: 6 continenti visitati a colori e la legenda ufficiale">
             <div class="stat-value" id="stat-continents">0 / 7</div>
             <div class="stat-label" id="stat-continents-label">Continenti</div>
           </div>
@@ -553,8 +553,14 @@ New York, Stati Uniti (2023)"></textarea>
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <h4>Giuseppe Ricatti</h4>
-          <p>
+          <div class="brand-logo mb-2">
+            <div class="brand-avatar">GR</div>
+            <div class="brand-text">
+              <h3>Giuseppe Ricatti</h3>
+              <span class="brand-subtitle">Diario di Bordo</span>
+            </div>
+          </div>
+          <p class="footer-desc">
             Diario di viaggio personale, archivio cartografico e rotte dei voli.
           </p>
         </div>
@@ -562,13 +568,16 @@ New York, Stati Uniti (2023)"></textarea>
         <div class="footer-nav">
           <h5>Navigazione</h5>
           <ul>
-            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#home">Home Page</a></li>
             <li><a href="#mappa">Mappa del Mondo</a></li>
-            <li><a href="viaggi.html?tab=upcoming">Viaggi in Programma</a></li>
+            <li><a href="paesi.html">Paesi Visitati</a></li>
+            <li><a href="statistiche.html">Percentuale Mondo Esplorato</a></li>
+            <li><a href="continenti.html">Mappa dei Continenti</a></li>
+            <li><a href="viaggi.html?tab=upcoming">Next Stop</a></li>
             <li><a href="viaggi.html?tab=past">Archivio Viaggi Passati</a></li>
             <li><a href="citta.html">Città Esplorate</a></li>
-            <li><a href="wishlist.html">Wish List (Cosa Voglio Fare)</a></li>
-            <li><a href="chi-sono.html">Chi Sono & Visione</a></li>
+            <li><a href="wishlist.html">Wish List</a></li>
+            <li><a href="chi-sono.html">Chi Sono</a></li>
           </ul>
         </div>
 
