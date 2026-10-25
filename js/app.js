@@ -93,7 +93,7 @@ class TravelApp {
   // TEMA COLORE DINAMICO (ZERO VERDE)
   // ==========================================================================
   initTheme() {
-    const savedTheme = localStorage.getItem("giuseppe_theme") || "amber";
+    const savedTheme = localStorage.getItem("giuseppe_theme") || "gold";
     this.setTheme(savedTheme, false);
   }
 

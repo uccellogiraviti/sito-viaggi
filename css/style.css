@@ -19,12 +19,12 @@
   --border-medium: rgba(255, 255, 255, 0.12);
   --border-focus: var(--accent-theme);
 
-  /* Accento Caldo Minimalista (Ambra Dorata - Zero Verde) */
-  --accent-theme: #f59e0b;
-  --accent-theme-hover: #fbbf24;
-  --accent-theme-subtle: rgba(245, 158, 11, 0.12);
-  --accent-theme-border: rgba(245, 158, 11, 0.3);
-  --text-accent: #fbbf24;
+  /* Accento Principale: Oro Monogramma Regale (Colore Ufficiale del Logo R) */
+  --accent-theme: #d4af37;
+  --accent-theme-hover: #f3e1b9;
+  --accent-theme-subtle: rgba(212, 175, 55, 0.14);
+  --accent-theme-border: rgba(212, 175, 55, 0.38);
+  --text-accent: #f8de7e;
   --marker-core: #38bdf8;
   --accent-danger: #ef4444;
 
@@ -54,13 +54,13 @@
 
 /* TEMI DI COLORE SELEZIONABILI DALL'UTENTE (Verde, Azzurro, Rosso, Oro, Argento, Ambra, Terracotta) */
 
-/* 1. Oro Regale (Dorata Calda ed Editoriale) */
+/* 1. Oro Regale Monogramma (Colore Istituzionale Primario del Logo R) */
 body.theme-gold {
-  --accent-theme: #eab308;
-  --accent-theme-hover: #fde047;
-  --accent-theme-subtle: rgba(234, 179, 8, 0.14);
-  --accent-theme-border: rgba(234, 179, 8, 0.35);
-  --text-accent: #facc15;
+  --accent-theme: #d4af37;
+  --accent-theme-hover: #f3e1b9;
+  --accent-theme-subtle: rgba(212, 175, 55, 0.14);
+  --accent-theme-border: rgba(212, 175, 55, 0.38);
+  --text-accent: #f8de7e;
   --marker-core: #38bdf8;
 }
 
@@ -334,16 +334,19 @@ img {
 /* ==========================================================================
    NAVBAR & PALETTE SWITCHER
    ========================================================================== */
-.navbar {
+.navbar,
+.main-header {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   z-index: 1000;
-  padding: 14px 0;
-  background: rgba(9, 10, 13, 0.85);
-  backdrop-filter: blur(12px);
+  padding: 12px 0;
+  background: rgba(9, 10, 13, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--border-subtle);
+  transition: background-color var(--transition-fast), border-color var(--transition-fast);
 }
 
 .navbar-inner {
@@ -351,7 +354,10 @@ img {
   align-items: center;
   justify-content: center;
   position: relative;
-  min-height: 52px;
+  min-height: 48px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .brand-logo {
@@ -359,33 +365,69 @@ img {
   align-items: center;
   gap: 10px;
   text-decoration: none;
+  flex-shrink: 0;
 }
 
-.main-header .brand-logo,
-.navbar-inner .brand-logo {
-  position: absolute;
-  left: 20px;
+/* Solo su desktop largo (>= 1181px) il logo con avatar GR è posizionato sulla sinistra */
+@media (min-width: 1181px) {
+  .main-header .brand-logo,
+  .navbar-inner .brand-logo {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
 }
 
 .brand-avatar {
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
+  min-width: 34px;
+  min-height: 34px;
   border-radius: var(--radius-sm);
-  background: var(--bg-surface);
-  border: 1px solid var(--border-medium);
+  background: linear-gradient(145deg, #181b24, #0e1017);
+  border: 1px solid rgba(212, 175, 55, 0.35);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-heading);
-  font-weight: 700;
-  font-size: 0.82rem;
-  color: var(--accent-theme);
+  padding: 2px;
+  flex-shrink: 0;
+  user-select: none;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+  transition: all var(--transition-fast);
+}
+
+.brand-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 0 3px rgba(212, 175, 55, 0.35));
+}
+
+.brand-logo:hover .brand-avatar {
+  border-color: var(--accent-theme);
+  box-shadow: 0 0 14px rgba(212, 175, 55, 0.45);
+  transform: scale(1.05);
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  line-height: 1.2;
 }
 
 .brand-text h1 {
   font-size: 0.95rem;
   font-weight: 600;
   letter-spacing: -0.01em;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+  color: var(--text-primary);
 }
 
 .brand-subtitle {
@@ -393,6 +435,14 @@ img {
   font-size: 0.7rem;
   color: var(--text-muted);
   letter-spacing: 0.04em;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+}
+
+.page-main-content {
+  padding-top: 105px;
+  padding-bottom: 60px;
 }
 
 /* Menu di Navigazione a Box / Card (Centrato e Scorrevole) */
@@ -547,7 +597,7 @@ img {
   border-color: #ffffff;
 }
 
-.theme-dot-gold { background: linear-gradient(135deg, #f59e0b, #fde047); box-shadow: 0 0 5px rgba(234, 179, 8, 0.35); }
+.theme-dot-gold { background: linear-gradient(135deg, #b8860b, #d4af37, #f6e3b8); box-shadow: 0 0 6px rgba(212, 175, 55, 0.5); }
 .theme-dot-silver { background: linear-gradient(135deg, #94a3b8, #f8fafc); box-shadow: 0 0 5px rgba(226, 232, 240, 0.35); }
 .theme-dot-emerald { background: linear-gradient(135deg, #059669, #34d399); box-shadow: 0 0 5px rgba(16, 185, 129, 0.35); }
 .theme-dot-azure { background: linear-gradient(135deg, #0284c7, #38bdf8); box-shadow: 0 0 5px rgba(14, 165, 233, 0.35); }
@@ -2454,39 +2504,53 @@ textarea.form-control {
 
 /* 1. TABLET / LAPTOP COMPATTI (<= 1180px): Organizza Header con Box Scorrevole */
 @media (max-width: 1180px) {
-  .navbar-inner {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    padding: 6px 16px;
-    position: static;
+  .navbar,
+  .main-header {
+    padding: 6px 0 6px 0 !important;
   }
 
+  .navbar-inner {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    padding: 6px 16px 4px 16px !important;
+    position: static !important;
+    width: 100% !important;
+  }
+
+  .main-header .brand-logo,
+  .navbar-inner .brand-logo,
   .brand-logo {
-    position: static;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+    position: static !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+    margin: 0 auto 2px auto !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: left !important;
+    gap: 10px !important;
+    width: auto !important;
+    max-width: 100% !important;
   }
 
   .navbar-box-nav,
   .navbar-links {
-    width: 100%;
-    margin: 2px auto 0 auto;
-    padding: 4px 0 6px 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    justify-content: safe center;
-    gap: 8px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
+    width: 100% !important;
+    margin: 2px auto 0 auto !important;
+    padding: 4px 6px 4px 6px !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.07) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    justify-content: safe center !important;
+    gap: 8px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
     scroll-snap-type: x proximity;
   }
 
@@ -2518,22 +2582,138 @@ textarea.form-control {
 
 /* 3. SMARTPHONE PORTRAIT & TABLET STRETTO (<= 768px) */
 @media (max-width: 768px) {
-  .navbar {
-    padding: 6px 0 8px 0;
+  .navbar,
+  .main-header {
+    padding: 6px 0 6px 0 !important;
   }
 
+  .navbar-inner {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 3px !important;
+    padding: 2px 10px 4px 10px !important;
+    position: static !important;
+    width: 100% !important;
+  }
+
+  /* RIGA 1 (IN ALTO): Iniziali GR nel riquadro, Nome Giuseppe Ricatti e Sottotitolo puliti, centrati e mai sovrapposti */
+  .main-header .brand-logo,
+  .navbar-inner .brand-logo,
+  .brand-logo {
+    position: static !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+    margin: 0 auto 2px auto !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: left !important;
+    gap: 9px !important;
+    width: auto !important;
+    max-width: 100% !important;
+    padding: 2px 6px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .brand-avatar {
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    min-height: 28px !important;
+    font-size: 0.74rem !important;
+    flex-shrink: 0 !important;
+    border-radius: var(--radius-sm) !important;
+  }
+
+  .brand-text {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    justify-content: center !important;
+    min-width: 0 !important;
+    flex-shrink: 1 !important;
+    line-height: 1.15 !important;
+  }
+
+  .brand-text h1 {
+    font-size: 0.90rem !important;
+    font-weight: 600 !important;
+    margin: 0 !important;
+    white-space: nowrap !important;
+    letter-spacing: -0.01em !important;
+  }
+
+  .brand-subtitle {
+    font-size: 0.65rem !important;
+    margin: 0 !important;
+    white-space: nowrap !important;
+    color: var(--text-muted) !important;
+    letter-spacing: 0.04em !important;
+  }
+
+  /* RIGA 2 (SOTTO): Barra a box navigazione scorrevole col dito orizzontalmente */
+  .navbar-box-nav,
   .navbar-links {
-    position: static;
-    transform: none;
-    background: transparent;
-    border: none;
-    padding: 4px 0;
-    flex-direction: row;
-    width: 100%;
+    position: static !important;
+    transform: none !important;
+    background: transparent !important;
+    border: none !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+    width: 100% !important;
+    margin: 2px 0 0 0 !important;
+    padding: 4px 4px 2px 4px !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 6px !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .navbar-box-nav::-webkit-scrollbar,
+  .navbar-links::-webkit-scrollbar {
+    display: none !important;
+    height: 0 !important;
+  }
+
+  .nav-box-btn {
+    padding: 5px 9px !important;
+    font-size: 0.75rem !important;
+    gap: 4px !important;
+    flex-shrink: 0 !important;
+    white-space: nowrap !important;
+  }
+
+  .nav-box-btn.nav-box-home {
+    padding: 5px 8px !important;
+    min-width: 32px !important;
+  }
+
+  .nav-box-icon {
+    font-size: 0.88rem !important;
   }
 
   .mobile-menu-btn {
     display: none !important;
+  }
+
+  /* Spazio superiore per le sezioni affinché i contenuti non vengano coperti dall'header */
+  .hero-section {
+    padding-top: 98px !important;
+  }
+
+  .page-main-content,
+  .page-content-padding,
+  main.section-padding,
+  .trip-detail-hero {
+    padding-top: 96px !important;
   }
 
   /* Dashboard Statistiche compatta */
@@ -2671,22 +2851,45 @@ textarea.form-control {
 /* 4. SMARTPHONE VERTICALE STRETTO (<= 480px) */
 @media (max-width: 480px) {
   .container {
-    padding-left: 12px;
-    padding-right: 12px;
+    padding-left: 10px;
+    padding-right: 10px;
   }
 
-  .brand-text h1 {
-    font-size: 0.88rem;
+  .navbar,
+  .main-header {
+    padding: 5px 0 5px 0 !important;
   }
 
-  .brand-subtitle {
-    font-size: 0.65rem;
+  .navbar-inner {
+    padding: 2px 8px 3px 8px !important;
+    gap: 2px !important;
+  }
+
+  .main-header .brand-logo,
+  .navbar-inner .brand-logo,
+  .brand-logo {
+    gap: 8px !important;
+    margin: 0 auto 1px auto !important;
+    padding: 1px 4px !important;
   }
 
   .brand-avatar {
-    width: 28px;
-    height: 28px;
-    font-size: 0.75rem;
+    width: 26px !important;
+    height: 26px !important;
+    min-width: 26px !important;
+    min-height: 26px !important;
+    font-size: 0.70rem !important;
+    flex-shrink: 0 !important;
+  }
+
+  .brand-text h1 {
+    font-size: 0.84rem !important;
+    white-space: nowrap !important;
+  }
+
+  .brand-subtitle {
+    font-size: 0.62rem !important;
+    white-space: nowrap !important;
   }
 
   .navbar-actions {
@@ -2703,10 +2906,25 @@ textarea.form-control {
     height: 13px;
   }
 
+  .navbar-box-nav,
+  .navbar-links {
+    padding: 3px 2px 2px 2px !important;
+    gap: 5px !important;
+  }
+
   .nav-box-btn {
-    padding: 5px 10px;
-    font-size: 0.78rem;
-    gap: 5px;
+    padding: 4px 8px !important;
+    font-size: 0.72rem !important;
+    gap: 4px !important;
+  }
+
+  .nav-box-btn.nav-box-home {
+    padding: 4px 7px !important;
+    min-width: 30px !important;
+  }
+
+  .nav-box-icon {
+    font-size: 0.82rem !important;
   }
 
   .hero-title {
@@ -2769,7 +2987,8 @@ textarea.form-control {
 /* 5. SMARTPHONE LANDSCAPE (ORIZZONTALE DA CELLULARE) */
 /* Rileva l'orientamento orizzontale o l'altezza ridotta tipica dei display smartphone */
 @media (max-height: 520px) and (orientation: landscape) {
-  .navbar {
+  .navbar,
+  .main-header {
     padding: 4px 0 !important;
   }
 
@@ -2781,20 +3000,33 @@ textarea.form-control {
     gap: 12px !important;
   }
 
+  .main-header .brand-logo,
+  .navbar-inner .brand-logo,
   .brand-logo {
+    position: static !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
     width: auto !important;
     flex-shrink: 0 !important;
-    gap: 6px;
+    gap: 6px !important;
+    margin: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
   }
 
   .brand-avatar {
-    width: 24px;
-    height: 24px;
-    font-size: 0.7rem;
+    width: 24px !important;
+    height: 24px !important;
+    min-width: 24px !important;
+    min-height: 24px !important;
+    font-size: 0.7rem !important;
+    flex-shrink: 0 !important;
   }
 
   .brand-text h1 {
-    font-size: 0.82rem;
+    font-size: 0.82rem !important;
+    white-space: nowrap !important;
   }
 
   .brand-subtitle {
