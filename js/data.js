@@ -237,6 +237,14 @@ window.getCountryFlagByName = function(name) {
 window.getTripFlags = function(trip) {
   if (!trip) return "📍";
 
+  // Override prioritari specifici
+  if (trip.id === "trip-real-49" || (trip.country && trip.country.includes("Thailandia") && trip.country.includes("Corea"))) {
+    return "🇹🇭 🇰🇷";
+  }
+  if (trip.id === "trip-real-52" || (trip.country && trip.country.includes("Cina"))) {
+    return "🇨🇳 🇭🇰 🇲🇴";
+  }
+
   // 1. Se ha già un array di bandiere multiple salvate
   if (trip.flags && Array.isArray(trip.flags) && trip.flags.length > 0) {
     return trip.flags.join(" ");
@@ -1144,19 +1152,26 @@ const REAL_FLIGHT_TRIPS = [
     id: "trip-real-49",
     country: "Thailandia & Corea del Sud",
     countryCode: "THA",
-    flag: "🇹🇭",
+    countryCodes: ["THA", "KOR"],
+    flag: "🇹🇭 🇰🇷",
+    flags: ["🇹🇭", "🇰🇷"],
     continent: "Asia",
     city: "Bangkok, Koh Samui, Chiang Mai, Seoul",
     mainCity: "Bangkok",
-    coordinates: [13.7563, 100.5018],
+    coordinates: [13.7444, 100.5558],
     startDate: "2026-08-05",
-    endDate: "2026-08-29",
-    durationDays: 25,
+    endDate: "2026-08-28",
+    durationDays: 24,
     companions: "In viaggio con amici",
-    category: "Oriente & Isole Tropicali",
+    category: "Oriente, Isole Tropicali & Metropoli Asiatica",
     imageUrl: "https://images.unsplash.com/photo-1508009603885-50cf7c579365?auto=format&fit=crop&w=800&q=80",
-    description: "Viaggio straordinario di 25 giorni: MXP ➔ Bangkok (BKK) con Thai Airways Airbus A350-900 (TG941/940), volo Bangkok Airways su Koh Samui (USM), volo per Chiang Mai (CNX), volo internazionale Eastar Jet (737 MAX) verso Seoul Incheon (ICN, Corea del Sud) e rientro via Bangkok.",
-    highlights: ["Grande Palazzo Reale e Wat Arun a Bangkok", "Spiagge tropicali di Koh Samui", "Templi e natura a Chiang Mai", "Gangnam, palazzi reali e K-Culture a Seoul"]
+    description: "Itinerario straordinario di 24 giorni: Volo Thai Airways da Milano Malpensa su Bangkok (BKK) con A350 e posti al ponte superiore (32J, 32K, 32L); soggiorno a Bangkok presso DAVAA Hotel Sukhumvit 11 con escursione guidata ai mercati di Maeklong e Damnoen Saduak e Corgi Café; volo Bangkok Airways su Koh Samui con soggiorno al Pure Sunset Beach Resort a Lipa Noi Beach; volo su Chiang Mai con alloggio al Moose Hotel ed escursione a Chiang Rai (Tempio Bianco e Tempio Blu); volo notturno internazionale Eastar Jet per Seoul con soggiorno all'Hotel Gracery Seoul (Sejong-daero, Jung-gu); infine voli di rientro Thai Airways da Seoul a Bangkok e rientro a Milano Malpensa.",
+    highlights: [
+      "Bangkok: DAVAA Hotel Sukhumvit 11, Mercato Galleggiante di Damnoen Saduak, Ferrovia di Maeklong & Corgi Café",
+      "Koh Samui: Pure Sunset Beach Resort a Lipa Noi Beach, Fisherman's Village Bophut & tramonti tropicali",
+      "Chiang Mai & Chiang Rai: Moose Hotel, Tempio Bianco Wat Rong Khun & Tempio Blu Wat Rong Suea Ten",
+      "Seoul (Corea del Sud): Hotel Gracery Seoul, Palazzi Reali Joseon, Bukchon Hanok, Myeongdong & Gangnam"
+    ]
   },
   {
     id: "trip-real-50",
@@ -1196,21 +1211,30 @@ const REAL_FLIGHT_TRIPS = [
   },
   {
     id: "trip-real-52",
-    country: "Cina & Svizzera",
+    country: "Cina (con Hong Kong & Macao)",
     countryCode: "CHN",
-    flag: "🇨🇳",
+    countryCodes: ["CHN", "HKG", "MAC"],
+    flag: "🇨🇳 🇭🇰 🇲🇴",
+    flags: ["🇨🇳", "🇭🇰", "🇲🇴"],
     continent: "Asia",
-    city: "Shanghai & Zurigo",
+    city: "Shanghai, Shenzhen, Hong Kong, Macao, Yangshuo, Zhangjiajie, Chongqing, Chengdu, Xi'an, Pechino",
     mainCity: "Shanghai",
     coordinates: [31.2304, 121.4737],
     startDate: "2027-07-22",
     endDate: "2027-08-16",
     durationDays: 26,
     companions: "Grande Spedizione",
-    category: "Metropoli del Futuro",
+    category: "Grand Tour della Cina, Megacittà & Montagne Sacre",
     imageUrl: "https://images.unsplash.com/photo-1508804185872-d7badad00f7d?auto=format&fit=crop&w=800&q=80",
-    description: "Ritorno in Cina di quasi un mese: MXP ➔ Zurigo (ZRH) ➔ Shanghai Pudong (PVG) a bordo dell'Airbus A350-900 di Swiss International Air Lines (LX188/189) e Airbus A320neo.",
-    highlights: ["Skyline futuristico di Pudong e Shanghai Tower", "Giardino Yu e Città Vecchia", "Crociera notturna sul fiume Huangpu"]
+    description: "Spedizione straordinaria di 26 giorni attraverso la Cina: Voli Swiss da Malpensa via Zurigo su Shanghai; treno notturno per Shenzhen con escursioni a Hong Kong (Victoria Peak e Star Ferry) e Macao in traghetto TurboJET; treno ad alta velocità per le colline carsiche di Yangshuo e crociera sul Fiume Li; Zhangjiajie tra le vette di Avatar, ascensore Bailong e passerella di vetro a Tianmen; la metropoli cyberpunk di Chongqing e monorotaia Liziba; Chengdu con la riserva dei Panda Giganti ed escursione al Buddha Gigante di Leshan; Xi'an e l'Esercito di Terracotta; Pechino con Città Proibita e Grande Muraglia a Mutianyu; treno proiettile Fuxing a 350 km/h per Shanghai, The Bund, Giardino Yu, treno a levitazione magnetica Maglev a 430 km/h e rientro in Italia.",
+    highlights: [
+      "Shenzhen, Hong Kong (Victoria Peak, Star Ferry) & Macao in traghetto TurboJET",
+      "Yangshuo e Fiume Li: colline carsiche in bici, zattere di bambù e Moon Hill",
+      "Zhangjiajie: Montagne Hallelujah di Avatar, Ascensore Bailong e passerella di vetro a Tianmen",
+      "Chongqing e Chengdu: monorotaia Liziba, hotpot del Sichuan, Panda Giganti e Buddha di Leshan",
+      "Xi'an e Pechino: Esercito di Terracotta, Città Proibita e Grande Muraglia Cinese a Mutianyu",
+      "Shanghai: Treno Fuxing a 350 km/h, The Bund, Giardino Yu e Treno Maglev a 430 km/h"
+    ]
   }
 ];
 
@@ -1260,9 +1284,20 @@ class TravelDataManager {
   getTrips() {
     try {
       const data = localStorage.getItem(this.STORAGE_KEY);
-      const trips = data ? JSON.parse(data) : REAL_FLIGHT_TRIPS;
-      // Assicura compatibilità con countryCodes multipli
+      let trips = data ? JSON.parse(data) : REAL_FLIGHT_TRIPS;
+      // Sincronizza sempre i dati master aggiornati dei viaggi ufficiali (come trip-real-49 e trip-real-52)
       return trips.map(t => {
+        const master = REAL_FLIGHT_TRIPS.find(m => m.id === t.id);
+        if (master) {
+          t.flag = master.flag;
+          t.flags = master.flags || [master.flag];
+          t.country = master.country;
+          t.countryCodes = master.countryCodes || [master.countryCode];
+          t.city = master.city;
+          t.durationDays = master.durationDays;
+          t.category = master.category;
+          t.highlights = master.highlights;
+        }
         if (!t.countryCodes || !Array.isArray(t.countryCodes) || t.countryCodes.length === 0) {
           t.countryCodes = t.countryCode ? [t.countryCode] : [];
         }
@@ -1295,6 +1330,13 @@ class TravelDataManager {
       const dateB = new Date(b.startDate || "2099-01-01").getTime();
       return dateA - dateB;
     });
+  }
+
+  // Cerca un viaggio specifico per ID
+  getTripById(tripId) {
+    if (!tripId) return null;
+    const trips = this.getTrips();
+    return trips.find(t => t.id === tripId) || null;
   }
 
   saveTrips(trips) {
@@ -1814,4 +1856,5 @@ class TravelDataManager {
 }
 
 // Istanza globale esportata
+window.TravelDataManager = TravelDataManager;
 window.travelManager = new TravelDataManager();

@@ -913,21 +913,30 @@ class TravelApp {
 
     const primaryCoords = (trip.coordinates && Array.isArray(trip.coordinates)) ? trip.coordinates : [0, 0];
 
+    const detailUrl = `dettaglio-viaggio.html?id=${encodeURIComponent(trip.id)}`;
+    const bannerActionLabel = isUpcoming ? "🗓️ Vedi Itinerario & Guida ↗" : "📖 Scheda & Mappa ↗";
+    const buttonActionLabel = isUpcoming ? "🗓️ Itinerario & Preparativi →" : "📖 Scheda & Mappa →";
+
     return `
       <article class="trip-card ${isUpcoming ? 'trip-card-upcoming' : ''}" id="card-${trip.id}">
-        <div class="trip-card-image" onclick="window.travelApp.openLightbox('${trip.imageUrl}', '${trip.country} - ${trip.city}', '${formattedStartDate}')">
+        <div class="trip-card-image" role="button" tabindex="0" onclick="window.location.href='${detailUrl}'" title="Clicca per aprire la scheda dettagliata del viaggio">
           <img src="${trip.imageUrl || 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&q=80'}" 
                alt="${trip.country}" 
                loading="lazy">
           <div class="image-gradient-overlay"></div>
-          <span class="trip-category-pill">${trip.category || 'Viaggio'}</span>
-          <span class="trip-card-flag">${flagEmoji}</span>
+          <div class="trip-card-top-bar">
+            <span class="trip-category-pill" title="${trip.category || 'Viaggio'}">${trip.category || 'Viaggio'}</span>
+            <span class="trip-card-flag" title="${trip.country}">${flagEmoji}</span>
+          </div>
+          <span class="trip-banner-open-pill">${bannerActionLabel}</span>
         </div>
 
         <div class="trip-card-body">
           <div class="trip-card-destination">
             ${upcomingBadge}
-            <h3 class="trip-card-title mt-1">${trip.country}</h3>
+            <a href="${detailUrl}" class="trip-card-title-link" title="Apri scheda dettagliata">
+              <h3 class="trip-card-title mt-1">${trip.country}</h3>
+            </a>
             <p class="trip-card-city">📍 ${trip.city}</p>
           </div>
 
@@ -959,8 +968,11 @@ class TravelApp {
             </div>
 
             <div class="trip-card-actions">
-              <button class="btn btn-icon" title="Mostra sulla Mappa" onclick="window.travelApp.scrollToMapLocation(${primaryCoords[0]}, ${primaryCoords[1]}, '${trip.mainCity || trip.country}')">
-                🗺️ Mappa
+              <a href="${detailUrl}" class="btn ${isUpcoming ? 'btn-accent' : 'btn-outline'} btn-sm trip-cta-btn">
+                ${buttonActionLabel}
+              </a>
+              <button class="btn btn-icon" title="Mostra sulla Mappa Home" onclick="window.travelApp.scrollToMapLocation(${primaryCoords[0]}, ${primaryCoords[1]}, '${trip.mainCity || trip.country}')">
+                🗺️
               </button>
               <button class="btn btn-icon" title="Modifica Scheda" onclick="window.travelApp.openEditTripModal('${trip.id}')">
                 ✏️

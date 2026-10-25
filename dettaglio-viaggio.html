@@ -1,0 +1,1764 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="page-title">Scheda & Itinerario Viaggio | Giuseppe Ricatti</title>
+  <meta name="description" content="Scheda riepilogativa, itinerario giorno per giorno e ora per ora, mappa dinamica con bandierine, documenti, abbigliamento e gadget di viaggio.">
+
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Leaflet CSS per Mappa Dinamica -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+
+  <!-- Stili Personalizzati -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="page-dettaglio-viaggio">
+
+  <!-- ======================================================================
+       BARRA DI NAVIGAZIONE UNIFICATA
+       ====================================================================== -->
+  <header class="navbar" id="main-navbar">
+    <div class="container navbar-inner">
+      <a href="index.html" class="brand-logo" title="Giuseppe Ricatti - Home">
+        <div class="brand-avatar">GR</div>
+        <div class="brand-text">
+          <h1>Giuseppe Ricatti</h1>
+          <span class="brand-subtitle">Diario di Bordo</span>
+        </div>
+      </a>
+
+      <nav class="navbar-box-nav" id="navbar-links">
+        <a href="index.html#home" class="nav-box-btn nav-box-home" title="Home">
+          <span class="nav-box-icon">🏠</span>
+        </a>
+        <a href="index.html#mappa" class="nav-box-btn" title="Mappa Interattiva">
+          <span class="nav-box-icon">🗺️</span>
+          <span class="nav-box-label">Mappa</span>
+        </a>
+        <a href="viaggi.html?tab=upcoming" class="nav-box-btn nav-box-upcoming" title="Viaggi in Programma">
+          <span class="nav-box-icon">🗓️</span>
+          <span class="nav-box-label">Next Stop</span>
+        </a>
+        <a href="viaggi.html?tab=past" class="nav-box-btn" title="Archivio Viaggi Passati">
+          <span class="nav-box-icon">🌍</span>
+          <span class="nav-box-label">Archivio</span>
+        </a>
+        <a href="citta.html" class="nav-box-btn" title="Indice Città Esplorate nel Mondo">
+          <span class="nav-box-icon">🏙️</span>
+          <span class="nav-box-label">Città</span>
+        </a>
+        <a href="wishlist.html" class="nav-box-btn" title="Travel Wish List">
+          <span class="nav-box-icon">🌟</span>
+          <span class="nav-box-label">Wish List</span>
+        </a>
+        <a href="chi-sono.html" class="nav-box-btn" title="Biografia & Visione">
+          <span class="nav-box-icon">👤</span>
+          <span class="nav-box-label">Chi Sono</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ======================================================================
+       HERO BANNER DEL VIAGGIO (DINAMICO)
+       ====================================================================== -->
+  <section class="trip-detail-hero" id="trip-hero">
+    <div class="trip-hero-backdrop" id="hero-backdrop"></div>
+    <div class="trip-hero-overlay"></div>
+    <div class="container trip-hero-content">
+      
+      <div class="trip-hero-nav-bar">
+        <a href="viaggi.html" class="back-home-link" id="back-nav-btn">
+          ← Torna all'elenco dei Viaggi
+        </a>
+        <div id="trip-status-pill" class="badge badge-accent">
+          Caricamento...
+        </div>
+      </div>
+
+      <div class="trip-hero-main">
+        <div class="trip-hero-header-row">
+          <span class="trip-hero-flag" id="hero-flag">📍</span>
+          <div>
+            <span class="trip-hero-category" id="hero-category">Categoria</span>
+            <h1 class="trip-hero-title" id="hero-title">Destinazione</h1>
+            <p class="trip-hero-city" id="hero-city">📍 Città</p>
+          </div>
+        </div>
+
+        <div class="trip-hero-pills-row">
+          <div class="hero-pill">
+            <span class="pill-icon">📅</span>
+            <div>
+              <span class="pill-label">Periodo:</span>
+              <strong class="pill-val" id="hero-dates">--</strong>
+            </div>
+          </div>
+          <div class="hero-pill">
+            <span class="pill-icon">⏱️</span>
+            <div>
+              <span class="pill-label">Durata:</span>
+              <strong class="pill-val" id="hero-duration">--</strong>
+            </div>
+          </div>
+          <div class="hero-pill">
+            <span class="pill-icon">👥</span>
+            <div>
+              <span class="pill-label">Compagni:</span>
+              <strong class="pill-val" id="hero-companions">--</strong>
+            </div>
+          </div>
+          <div class="hero-pill">
+            <span class="pill-icon">🌍</span>
+            <div>
+              <span class="pill-label">Continente:</span>
+              <strong class="pill-val" id="hero-continent">--</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       CORPO PRINCIPALE DELLA PAGINA
+       ====================================================================== -->
+  <main class="container section-padding" style="padding-top: 24px; padding-bottom: 80px;">
+
+    <!-- ====================================================================
+         1. MAPPA DINAMICA DEL VIAGGIO (DIVISA IN GIORNATE & CON BANDIERINE)
+         ==================================================================== -->
+    <section class="trip-map-section mb-5" id="section-map">
+      <div class="card map-card-wrapper">
+        <div class="card-header flex-between flex-wrap gap-2">
+          <div>
+            <div class="d-flex align-items-center gap-2 mb-1">
+              <span class="badge badge-accent" id="map-country-badge">📍 Destinazione</span>
+              <span class="badge badge-duration" id="map-active-day-badge">Tutti i Giorni</span>
+            </div>
+            <h2 class="card-title" id="map-section-title">🗺️ Mappa Dinamica del Viaggio & Punti di Interesse</h2>
+            <p class="card-subtitle" id="map-section-desc">Seleziona una giornata per vedere la mappa aggiornarsi con i luoghi specifici e il percorso orario.</p>
+          </div>
+          <div class="map-actions-group">
+            <button class="btn btn-outline btn-sm" id="btn-recenter-map">
+              🎯 Ricentra sulla Destinazione
+            </button>
+            <span class="badge badge-accent" id="map-points-count">0 Punti Tracciati</span>
+          </div>
+        </div>
+
+        <!-- Barra di Selezione Giornata per la Mappa Dinamica -->
+        <div class="map-days-filter-bar p-3" style="background: rgba(11, 16, 27, 0.7); border-bottom: 1px solid var(--border-subtle);">
+          <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+            <span class="filter-bar-label" style="font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);">
+              🗓️ <strong>Scegli Giornata da visualizzare sulla Mappa:</strong>
+            </span>
+            <div class="itinerary-days-nav" id="map-days-tabs" style="border: none; padding: 0; margin: 0;">
+              <!-- Bottoni Giorno generati dinamicamente -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Barra di Controllo Animazione Dinamica del Percorso del Giorno -->
+        <div class="map-route-animation-toolbar px-3 py-2 d-flex align-items-center justify-content-between flex-wrap gap-2">
+          <div class="d-flex align-items-center gap-2 flex-wrap">
+            <button class="btn btn-sm anim-play-btn d-flex align-items-center gap-2" id="btn-play-day-animation" title="Avvia animazione dal primo all'ultimo punto del giorno">
+              <span id="anim-play-icon">▶️</span> <span id="anim-play-text">Riproduci Percorso del Giorno</span>
+            </button>
+            <button class="btn btn-outline btn-sm" id="btn-pause-day-animation" style="display: none;" title="Metti in pausa l'animazione">
+              ⏸️ Pausa
+            </button>
+            <button class="btn btn-outline btn-sm" id="btn-stop-day-animation" style="display: none;" title="Ferma e ripristina">
+              ⏹️ Ferma
+            </button>
+            <div class="speed-selector-group">
+              <span style="font-size: 0.72rem; margin-right: 4px; color: var(--text-muted);">Velocità:</span>
+              <button class="speed-btn active" data-speed="1" onclick="window.setAnimSpeed(1)">1x</button>
+              <button class="speed-btn" data-speed="2" onclick="window.setAnimSpeed(2)">2x</button>
+              <button class="speed-btn" data-speed="4" onclick="window.setAnimSpeed(4)">4x</button>
+            </div>
+          </div>
+          
+          <div class="animation-status-badge d-flex align-items-center gap-2" id="anim-live-status-pill">
+            <span class="anim-vehicle-icon" id="anim-vehicle-indicator">🚶</span>
+            <span class="anim-step-desc" id="anim-status-text">Pronto per l'animazione delle attività</span>
+          </div>
+        </div>
+        
+        <div class="card-body p-0">
+          <div id="trip-dynamic-map" class="trip-interactive-map" style="height: 520px; width: 100%;"></div>
+        </div>
+
+        <div class="card-footer map-legend-bar flex-wrap gap-2">
+          <div class="map-legend-item">
+            <span class="legend-flag-icon" id="legend-flag-sample">🇨🇳</span> <strong id="legend-flag-label">Paese Visitato</strong>
+          </div>
+          <div class="map-legend-item">
+            <span class="legend-dot dot-dest"></span> <span>Tappa Oraria</span>
+          </div>
+          <div class="map-legend-item">
+            <span style="font-size: 1rem;">🚄</span> <span>Treno AV</span>
+          </div>
+          <div class="map-legend-item">
+            <span style="font-size: 1rem;">🚝</span> <span>Maglev</span>
+          </div>
+          <div class="map-legend-item">
+            <span style="font-size: 1rem;">🚆</span> <span>Treno Cuccette</span>
+          </div>
+          <div class="map-legend-item">
+            <span style="font-size: 1rem;">✈️</span> <span>Aereo</span>
+          </div>
+          <div class="map-legend-item">
+            <span style="font-size: 1rem;">⛴️</span> <span>Aliscafo/Traghetto</span>
+          </div>
+          <div class="map-legend-item">
+            <span style="font-size: 1rem;">🚠</span> <span>Funivia</span>
+          </div>
+          <div class="map-legend-item">
+            <span style="font-size: 1rem;">🚲</span> <span>Bici/Risciò</span>
+          </div>
+          <div class="map-legend-item">
+            <span style="font-size: 1rem;">🚶</span> <span>A piedi</span>
+          </div>
+          <div class="map-legend-item text-muted" style="margin-left: auto; font-size: 0.78rem;">
+            💡 <em>L'animazione scorre sincronizzata con la timeline sottostante</em>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SEZIONI SPECIFICHE PER I PROSSIMI VIAGGI (NEXT STOP)
+         ==================================================================== -->
+    <div id="upcoming-sections-container" style="display: none;">
+      
+      <!-- 2. ITINERARIO PREVISTO GIORNO PER GIORNO & ORA PER ORA -->
+      <section class="trip-itinerary-section mb-5" id="section-itinerary">
+        <div class="card">
+          <div class="card-header flex-between flex-wrap gap-2">
+            <div>
+              <span class="badge badge-accent mb-1">🧭 PROGRAMMA DETTAGLIATO</span>
+              <h2 class="card-title">🗓️ Itinerario Previsto Giorno per Giorno & Ora per Ora</h2>
+              <p class="card-subtitle">Clicca su un'attività per visualizzare il punto esatto sulla mappa in alto.</p>
+            </div>
+            <div class="btn-group-actions">
+              <button class="btn btn-accent btn-sm" id="btn-edit-itinerary" title="Modifica itinerario (Richiede Password)">
+                ✏️ Modifica Itinerario
+              </button>
+              <button class="btn btn-outline btn-sm" id="btn-reset-itinerary" title="Ripristina itinerario predefinito">
+                ↺ Reset
+              </button>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <!-- Selettore Giorni Timeline -->
+            <div class="itinerary-days-nav mb-4" id="itinerary-days-tabs">
+              <!-- Generato dinamicamente via JS -->
+            </div>
+
+            <!-- Contenitore Giornate & Fasce Orarie -->
+            <div class="itinerary-days-content" id="itinerary-days-container">
+              <!-- Generato dinamicamente via JS -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. DOCUMENTI NECESSARI PER IL PAESE & PERIODO -->
+      <section class="trip-documents-section mb-5">
+        <div class="card">
+          <div class="card-header">
+            <span class="badge badge-duration mb-1">📋 CHECKLIST PARTENZA</span>
+            <h2 class="card-title">📄 Documenti Necessari per il Viaggio</h2>
+            <p class="card-subtitle" id="docs-subtitle">Requisiti di ingresso, visti, assicurazione sanitaria e formalità doganali.</p>
+          </div>
+          <div class="card-body">
+            <div class="documents-grid" id="documents-grid-container">
+              <!-- Generato dinamicamente via JS -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. ABBIGLIAMENTO CONSIGLIATO IN BASE AL PAESE E AL PERIODO -->
+      <section class="trip-clothing-section mb-5">
+        <div class="card">
+          <div class="card-header">
+            <span class="badge badge-continent mb-1">🌤️ VALIGIA & METEO STAGIONALE</span>
+            <h2 class="card-title">🧥 Abbigliamento Consigliato da Portare</h2>
+            <p class="card-subtitle" id="clothing-subtitle">Guida su misura per il clima previsto, abiti consigliati, calzature e dress code.</p>
+          </div>
+          <div class="card-body">
+            <div class="clothing-layout" id="clothing-layout-container">
+              <!-- Generato dinamicamente via JS -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. GADGET & ACCESSORI DI VIAGGIO -->
+      <section class="trip-gadgets-section mb-5">
+        <div class="card">
+          <div class="card-header">
+            <span class="badge badge-accent mb-1">🔌 TECNOLOGIA & PRESE ELETTRICHE</span>
+            <h2 class="card-title">⚡ Gadget & Accessori di Viaggio Indispensabili</h2>
+            <p class="card-subtitle" id="gadgets-subtitle">Standard delle prese elettriche, adattatori, power bank omologati, connettività e kit di salute.</p>
+          </div>
+          <div class="card-body">
+            <div class="gadgets-layout" id="gadgets-layout-container">
+              <!-- Generato dinamicamente via JS -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- ====================================================================
+         SEZIONI SPECIFICHE PER I VIAGGI PASSATI (ARCHIVIO STORICO)
+         ==================================================================== -->
+    <div id="past-sections-container" style="display: none;">
+      
+      <!-- DIARIO DI BORDO & CRONACA DELL'ESPERIENZA -->
+      <section class="trip-past-summary-section mb-5">
+        <div class="card">
+          <div class="card-header">
+            <span class="badge badge-continent mb-1">📖 MEMORIE DI VIAGGIO</span>
+            <h2 class="card-title">Cronaca dell'Esperienza Vissuta</h2>
+            <p class="card-subtitle">Dettagli del volo, delle tappe e dell'itinerario percorso registrati nel Diario di Bordo.</p>
+          </div>
+          <div class="card-body">
+            <div class="past-trip-experience-box">
+              <p class="trip-full-description" id="past-trip-description">--</p>
+            </div>
+
+            <div class="highlights-container mt-4">
+              <h3 class="subsection-title">⭐ Momenti Salienti & Attrazioni Esplorate</h3>
+              <p class="text-secondary" style="font-size: 0.88rem; margin-bottom: 14px;">Clicca su un momento saliente per visualizzarlo istantaneamente sulla mappa in alto.</p>
+              <div class="highlights-grid-cards" id="past-highlights-container">
+                <!-- Card momenti salienti generate dinamicamente -->
+              </div>
+            </div>
+
+            <!-- Note Personali Modificabili -->
+            <div class="personal-notes-box mt-4 p-4 card" style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color);">
+              <div class="flex-between flex-wrap gap-2 mb-2">
+                <h4 class="m-0" style="font-family: var(--font-heading); color: var(--text-primary);">📝 Note Personali & Ricordi</h4>
+                <button class="btn btn-outline btn-sm" id="btn-edit-personal-notes">
+                  ✏️ Modifica Note
+                </button>
+              </div>
+              <p id="personal-notes-text" class="text-secondary" style="line-height: 1.7; font-style: italic;">
+                Nessuna nota personale registrata per questo viaggio. Clicca su 'Modifica Note' per annotare ristoranti preferiti, aneddoti o dettagli del diario.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+  </main>
+
+  <!-- ======================================================================
+       MODALE MODIFICA NOTE / ITINERARIO (PROTETTA DA PASSWORD)
+       ====================================================================== -->
+  <div class="modal" id="modal-edit-notes">
+    <div class="modal-overlay" onclick="closeNotesModal()"></div>
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modal-notes-title">✏️ Modifica Note Personali</h3>
+        <button class="modal-close-btn" onclick="closeNotesModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-desc">
+          Inserisci o aggiorna le tue note personali, memorie o suggerimenti per questa tappa.
+        </p>
+        <div class="form-group">
+          <label for="personal-notes-textarea">Testo delle Note:</label>
+          <textarea id="personal-notes-textarea" rows="6" class="form-input" placeholder="Scrivi qui i tuoi ricordi, ristoranti, aneddoti..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" onclick="closeNotesModal()">Annulla</button>
+        <button type="button" class="btn btn-accent" id="btn-save-personal-notes">Salva Note 💾</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notifiche -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- ======================================================================
+       FOOTER ELEGANTE CON SELETTORE COLORI PALETTE
+       ====================================================================== -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <div class="brand-avatar">GR</div>
+        <div>
+          <h3>Giuseppe Ricatti</h3>
+          <p>Diario di Bordo & Tracciamento Cartografico dei Viaggi nel Mondo.</p>
+        </div>
+      </div>
+
+      <div class="footer-links">
+        <h4>Navigazione Rapida</h4>
+        <ul>
+          <li><a href="index.html">🏠 Home & Mappa Generale</a></li>
+          <li><a href="viaggi.html?tab=upcoming">🗓️ Next Stop (Viaggi in Programma)</a></li>
+          <li><a href="viaggi.html?tab=past">🌍 Archivio Completo Viaggi</a></li>
+          <li><a href="paesi-non-visitati.html">🧭 Paesi Non Ancora Visitati</a></li>
+          <li><a href="citta.html">🏙️ Città Esplorate</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-theme-selector">
+        <h4>Palette Colore Accento</h4>
+        <p class="theme-subtitle">Personalizza il colore di accento delle mappe e dei dettagli:</p>
+        <div class="theme-buttons-grid" id="theme-buttons-container">
+          <!-- Bottoni Palette 7 tonalità -->
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container flex-between">
+        <p>&copy; 2026 Giuseppe Ricatti. Tutti i diritti riservati.</p>
+        <p class="footer-credit">Travel Logbook & Interactive Cartography System</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ======================================================================
+       LIBRERIE & SCRIPT DELLA PAGINA
+       ====================================================================== -->
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  
+  <!-- Dati & Helper -->
+  <script src="data/countries-data.js"></script>
+  <script src="js/tripadvisor_cities.js"></script>
+  <script src="js/sovereign_countries.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/travel_guide_helper.js"></script>
+
+  <!-- Logica Dettaglio Viaggio & Mappa Dinamica Giorno per Giorno -->
+  <script>
+    (function() {
+      "use strict";
+
+      let currentTrip = null;
+      let tripMap = null;
+      let mapMarkersLayer = null;
+      let mapSegmentsLayer = null;
+      let mapPolyline = null;
+      let currentActiveDay = "all";
+      const markersCache = new Map(); // Mappa activityId -> L.Marker
+
+      // Stato Animazione Percorso del Giorno
+      let animWaypoints = [];
+      let animatedVehicleMarker = null;
+      let isAnimatingRoute = false;
+      let isAnimationPaused = false;
+      let animSpeed = 1; // 1x, 2x, 4x
+      let currentAnimStep = 0;
+      let currentAnimFrameId = null;
+      let animPauseTimeoutId = null;
+
+      // Configurazione Stili e Caratteristiche Mezzi di Trasporto
+      const TRANSPORT_CONFIG = {
+        "flight": {
+          label: "Volo Aereo / Intercontinentale",
+          icon: "✈️",
+          color: "#38bdf8",
+          dashArray: "8, 8",
+          weight: 4,
+          glow: "rgba(56, 189, 248, 0.7)",
+          speedFactor: 2.2
+        },
+        "train_bullet": {
+          label: "Treno Alta Velocità Fuxing (350 km/h)",
+          icon: "🚄",
+          color: "#ef4444",
+          dashArray: null,
+          weight: 4.5,
+          glow: "rgba(239, 68, 68, 0.8)",
+          speedFactor: 1.8
+        },
+        "train_sleeper": {
+          label: "Treno Notturno Soft Sleeper",
+          icon: "🚆",
+          color: "#818cf8",
+          dashArray: "10, 6",
+          weight: 4,
+          glow: "rgba(129, 140, 248, 0.75)",
+          speedFactor: 1.5
+        },
+        "train_maglev": {
+          label: "Treno Maglev Levitazione Magnetica (430 km/h)",
+          icon: "🚝",
+          color: "#00f5ff",
+          dashArray: null,
+          weight: 5,
+          glow: "rgba(0, 245, 255, 0.9)",
+          speedFactor: 2.5
+        },
+        "ferry": {
+          label: "Aliscafo Veloce / Battello Fluviale",
+          icon: "⛴️",
+          color: "#06b6d4",
+          dashArray: "6, 6",
+          weight: 3.5,
+          glow: "rgba(6, 182, 212, 0.75)",
+          speedFactor: 1.2
+        },
+        "cablecar": {
+          label: "Funivia / Funicolare / Ascensore Panoramico",
+          icon: "🚠",
+          color: "#c084fc",
+          dashArray: "4, 4",
+          weight: 3.5,
+          glow: "rgba(192, 132, 252, 0.75)",
+          speedFactor: 0.9
+        },
+        "bike": {
+          label: "Bicicletta / E-Bike / Risciò",
+          icon: "🚲",
+          color: "#10b981",
+          dashArray: null,
+          weight: 3.5,
+          glow: "rgba(16, 185, 129, 0.75)",
+          speedFactor: 1.0
+        },
+        "metro": {
+          label: "Metropolitana / Monorotaia Urbana",
+          icon: "🚇",
+          color: "#f59e0b",
+          dashArray: null,
+          weight: 4,
+          glow: "rgba(245, 158, 11, 0.75)",
+          speedFactor: 1.3
+        },
+        "walk": {
+          label: "A piedi / Camminata / Trekking",
+          icon: "🚶",
+          color: "#d4af37",
+          dashArray: "4, 4",
+          weight: 3,
+          glow: "rgba(212, 175, 55, 0.75)",
+          speedFactor: 0.8
+        },
+        "default": {
+          label: "Spostamento",
+          icon: "📍",
+          color: "#d4af37",
+          dashArray: null,
+          weight: 3.5,
+          glow: "rgba(212, 175, 55, 0.6)",
+          speedFactor: 1.0
+        }
+      };
+
+      function getTransportMeta(transportObj) {
+        if (!transportObj || !transportObj.type) return TRANSPORT_CONFIG["default"];
+        const t = String(transportObj.type).toLowerCase();
+        return TRANSPORT_CONFIG[t] || TRANSPORT_CONFIG["default"];
+      }
+
+      // Inizializzazione al caricamento
+      document.addEventListener("DOMContentLoaded", () => {
+        initThemePalette();
+        loadTripData();
+      });
+
+      // 1. Lettura ID dal parametro URL
+      function getTripIdFromUrl() {
+        const params = new URLSearchParams(window.location.search);
+        return params.get("id") || "trip-real-51";
+      }
+
+      // 2. Caricamento Dati del Viaggio
+      function loadTripData() {
+        const tripId = getTripIdFromUrl();
+        const dataManager = new TravelDataManager();
+        currentTrip = dataManager.getTripById(tripId);
+
+        if (!currentTrip) {
+          const all = dataManager.getTrips();
+          currentTrip = all.length > 0 ? all[0] : null;
+        }
+
+        if (!currentTrip) {
+          document.getElementById("hero-title").textContent = "Nessun Viaggio Disponibile";
+          return;
+        }
+
+        const isUpcoming = dataManager.isUpcoming(currentTrip);
+        renderHeroBanner(currentTrip, isUpcoming);
+
+        // Inizializza i filtri delle giornate sia sulla mappa che nella timeline
+        setupDaysFilterTabs(currentTrip, isUpcoming);
+
+        // Disegna la mappa inizialmente con la vista "all"
+        renderDynamicMap(currentTrip, isUpcoming, "all");
+
+        const itinerary = TravelGuideHelper.getItinerary(currentTrip);
+        const hasItinerary = itinerary && itinerary.days && itinerary.days.length > 0;
+
+        if (hasItinerary) {
+          document.getElementById("upcoming-sections-container").style.display = "block";
+          renderUpcomingItinerary(currentTrip);
+          renderUpcomingDocuments(currentTrip);
+          renderUpcomingClothing(currentTrip);
+          renderUpcomingGadgets(currentTrip);
+        } else {
+          document.getElementById("upcoming-sections-container").style.display = "none";
+        }
+
+        if (!isUpcoming) {
+          document.getElementById("past-sections-container").style.display = "block";
+          renderPastSummary(currentTrip);
+        } else {
+          document.getElementById("past-sections-container").style.display = "none";
+        }
+
+        setupEventListeners(isUpcoming);
+      }
+
+      // 3. Render Hero Banner
+      function renderHeroBanner(trip, isUpcoming) {
+        document.title = `${trip.country} (${trip.city}) | Diario di Bordo Giuseppe Ricatti`;
+        
+        // Immagine di copertina
+        const backdropEl = document.getElementById("hero-backdrop");
+        if (trip.imageUrl) {
+          backdropEl.style.backgroundImage = `url('${trip.imageUrl}')`;
+        }
+
+        // Flag ed emoji reale del paese
+        let flagEmoji = (window.getTripFlags ? window.getTripFlags(trip) : trip.flag) || "📍";
+        if (trip.id === "trip-real-49" || (trip.country && trip.country.includes("Thailandia") && trip.country.includes("Corea"))) {
+          flagEmoji = "🇹🇭 🇰🇷";
+        }
+        if (trip.id === "trip-real-52" || (trip.country && trip.country.includes("Cina"))) {
+          flagEmoji = "🇨🇳 🇭🇰 🇲🇴";
+        }
+        document.getElementById("hero-flag").textContent = flagEmoji;
+        document.getElementById("map-country-badge").textContent = `${flagEmoji} ${trip.country} — ${trip.city || trip.mainCity || ''}`;
+        document.getElementById("legend-flag-sample").textContent = flagEmoji;
+        document.getElementById("legend-flag-label").textContent = `Paese: ${trip.country}`;
+
+        // Categoria, Titolo e Città
+        document.getElementById("hero-category").textContent = trip.category || (isUpcoming ? "Prossimo Viaggio in Programma" : "Archivio Viaggi");
+        // Titolo pulito: mostra solo il nome della destinazione, la bandiera è già presente nell'icona circolare hero-flag
+        document.getElementById("hero-title").textContent = trip.country;
+        document.getElementById("hero-city").textContent = `📍 ${trip.city || trip.mainCity || trip.country}`;
+
+        // Pillola di stato
+        const statusPill = document.getElementById("trip-status-pill");
+        if (isUpcoming) {
+          const daysLeft = calculateCountdown(trip.startDate);
+          statusPill.className = "badge badge-upcoming-countdown";
+          statusPill.textContent = `🗓️ NEXT STOP • Mancano ${daysLeft} giorni`;
+          document.getElementById("back-nav-btn").href = "viaggi.html?tab=upcoming";
+          document.getElementById("back-nav-btn").textContent = "← Torna a Next Stop (In Programma)";
+        } else {
+          statusPill.className = "badge badge-accent";
+          statusPill.textContent = "🟢 VIAGGIO EFFETTUATO • ARCHIVIO STORICO";
+          document.getElementById("back-nav-btn").href = "viaggi.html?tab=past";
+          document.getElementById("back-nav-btn").textContent = "← Torna all'Archivio dei Viaggi";
+        }
+
+        // Info pills
+        document.getElementById("hero-dates").textContent = `${formatItalianDate(trip.startDate)} — ${formatItalianDate(trip.endDate)}`;
+        document.getElementById("hero-duration").textContent = `${trip.durationDays || 1} Giorni`;
+        document.getElementById("hero-companions").textContent = trip.companions || "In solitaria";
+        document.getElementById("hero-continent").textContent = trip.continent || "Mondo";
+      }
+
+      // 4. Configurazione Tab Giornate (sia per Mappa che per Timeline)
+      function setupDaysFilterTabs(trip, isUpcoming) {
+        const itinerary = TravelGuideHelper.getItinerary(trip);
+        const mapTabsNav = document.getElementById("map-days-tabs");
+        const timelineTabsNav = document.getElementById("itinerary-days-tabs");
+        
+        mapTabsNav.innerHTML = "";
+        if (timelineTabsNav) timelineTabsNav.innerHTML = "";
+
+        const daysList = (itinerary && itinerary.days) ? itinerary.days : [];
+        const totalDays = daysList.length > 0 ? daysList.length : (trip.durationDays || 1);
+
+        // Helper creazione bottone tab
+        function createTabButton(label, dayVal, isTimeline = false) {
+          const btn = document.createElement("button");
+          btn.className = `itinerary-tab-btn ${dayVal === currentActiveDay ? 'active' : ''}`;
+          btn.setAttribute("data-day-filter", dayVal);
+          btn.textContent = label;
+          btn.onclick = () => {
+            selectDay(dayVal);
+          };
+          return btn;
+        }
+
+        // 1. Bottone "Tutti i Giorni (Panoramica)"
+        const allLabel = `Tutti i Giorni (${totalDays} gg)`;
+        mapTabsNav.appendChild(createTabButton(allLabel, "all"));
+        if (timelineTabsNav) timelineTabsNav.appendChild(createTabButton(allLabel, "all", true));
+
+        // 2. Bottoni per ciascun giorno singolo
+        for (let i = 1; i <= totalDays; i++) {
+          const dayLabel = `Giorno ${i}`;
+          mapTabsNav.appendChild(createTabButton(dayLabel, String(i)));
+          if (timelineTabsNav) timelineTabsNav.appendChild(createTabButton(dayLabel, String(i), true));
+        }
+      }
+
+      // 5. Funzione di Selezione Dinamica della Giornata
+      function selectDay(dayVal) {
+        currentActiveDay = String(dayVal);
+        const dataManager = new TravelDataManager();
+        const isUpcoming = dataManager.isUpcoming(currentTrip);
+
+        // Aggiorna classi bottoni sia sulla mappa che nella timeline
+        document.querySelectorAll("[data-day-filter]").forEach(btn => {
+          if (btn.getAttribute("data-day-filter") === currentActiveDay) {
+            btn.classList.add("active");
+          } else {
+            btn.classList.remove("active");
+          }
+        });
+
+        // Aggiorna badge giornata attiva
+        const badgeText = currentActiveDay === "all" ? "Tutti i Giorni (Panoramica)" : `Giorno ${currentActiveDay}`;
+        document.getElementById("map-active-day-badge").textContent = badgeText;
+
+        // AGGIORNA LA MAPPA DINAMICAMENTE!
+        renderDynamicMap(currentTrip, isUpcoming, currentActiveDay);
+
+        // Filtra le card della timeline oraria
+        document.querySelectorAll(".itinerary-day-card").forEach(card => {
+          if (currentActiveDay === "all" || card.getAttribute("data-day") === currentActiveDay) {
+            card.style.display = "block";
+          } else {
+            card.style.display = "none";
+          }
+        });
+      }
+
+      // 6. RENDER MAPPA DINAMICA CON BANDIERINE, MEZZI DI TRASPORTO & ANIMAZIONE
+      function renderDynamicMap(trip, isUpcoming, daySelection = "all") {
+        // Ferma animazioni precedenti
+        stopRouteAnimation();
+
+        const waypoints = TravelGuideHelper.getWaypointsForDay(trip, daySelection);
+        const baseCoords = TravelGuideHelper.getTripBaseCoordinates(trip);
+        const flagEmoji = (window.getTripFlags ? window.getTripFlags(trip) : trip.flag) || "📍";
+        animWaypoints = waypoints;
+
+        // Aggiorna contatore
+        const countLabel = daySelection === "all" 
+          ? `${waypoints.length} Punti Tracciati a ${trip.city || trip.country}` 
+          : `Giorno ${daySelection}: ${waypoints.length} Tappe Visitate/Previste`;
+        document.getElementById("map-points-count").textContent = countLabel;
+
+        const mapSectionTitle = document.getElementById("map-section-title");
+        const mapSectionDesc = document.getElementById("map-section-desc");
+        const legendRouteLine = document.getElementById("legend-route-line");
+        const legendRouteText = document.getElementById("legend-route-text");
+
+        if (isUpcoming) {
+          mapSectionTitle.textContent = `🗺️ Mappa Itinerario: ${trip.city || trip.country} (${daySelection === "all" ? "Tutte le Giornate" : "Giorno " + daySelection})`;
+          mapSectionDesc.textContent = `Punti di interesse con bandierine ufficiali, tipologia di mezzo di trasporto ed animazione oraria del percorso a ${trip.city || trip.country}.`;
+          if (legendRouteLine) legendRouteLine.className = "legend-line legend-line-upcoming";
+          if (legendRouteText) legendRouteText.textContent = "Percorsi Tracciati per Mezzo di Trasporto";
+        } else {
+          mapSectionTitle.textContent = `🗺️ Mappa Storica: ${trip.city || trip.country} (${daySelection === "all" ? "Tutte le Tappe" : "Tappa " + daySelection})`;
+          mapSectionDesc.textContent = `Coordinate geografiche, tappe e mezzi documentati durante il viaggio a ${trip.city || trip.country}.`;
+          if (legendRouteLine) legendRouteLine.className = "legend-line legend-line-past";
+          if (legendRouteText) legendRouteText.textContent = "Rotta Effettuata (Tratto Continuo)";
+        }
+
+        // Inizializza o ripulisce Leaflet
+        if (!tripMap) {
+          tripMap = L.map("trip-dynamic-map", {
+            zoomControl: true,
+            scrollWheelZoom: false
+          });
+
+          // Layer Esri World Dark Gray Base (zero watermark, perfetto dark mode, zero API key errors)
+          L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}", {
+            maxZoom: 17,
+            minZoom: 3,
+            attribution: "Esri, HERE, Garmin, © OpenStreetMap contributors"
+          }).addTo(tripMap);
+
+          mapSegmentsLayer = L.layerGroup().addTo(tripMap);
+          mapMarkersLayer = L.layerGroup().addTo(tripMap);
+        } else {
+          mapMarkersLayer.clearLayers();
+          if (mapSegmentsLayer) mapSegmentsLayer.clearLayers();
+          if (mapPolyline) {
+            tripMap.removeLayer(mapPolyline);
+            mapPolyline = null;
+          }
+        }
+
+        markersCache.clear();
+        const latLngs = [];
+        const themeColor = getComputedStyle(document.documentElement).getPropertyValue("--accent-primary").trim() || "#D4AF37";
+
+        waypoints.forEach((wp, idx) => {
+          const latLng = [wp.coords[0], wp.coords[1]];
+          latLngs.push(latLng);
+
+          const transportMeta = getTransportMeta(wp.transport);
+
+          // Marker con Bandierina Reale, Numero Ordine e Badge Mezzo di Trasporto
+          const markerHtml = `
+            <div class="custom-trip-flag-marker" style="--marker-theme: ${themeColor}">
+              <div class="flag-marker-bubble">
+                <span class="flag-emoji">${wp.flag || flagEmoji}</span>
+                <span class="marker-badge-order">${wp.order || (idx + 1)}</span>
+                ${wp.transport ? `<span class="marker-transport-badge" title="${transportMeta.label}">${transportMeta.icon}</span>` : ''}
+              </div>
+              <div class="marker-pin-tip"></div>
+              <div class="marker-time-label">${wp.time || ''}</div>
+            </div>
+          `;
+
+          const customIcon = L.divIcon({
+            className: "leaflet-flag-marker-container",
+            html: markerHtml,
+            iconSize: [44, 48],
+            iconAnchor: [22, 42],
+            popupAnchor: [0, -40]
+          });
+
+          const marker = L.marker(latLng, { icon: customIcon });
+
+          const popupContent = `
+            <div class="map-popup-card">
+              <div class="d-flex align-items-center gap-2 mb-2">
+                <span class="popup-flag-large">${wp.flag || flagEmoji}</span>
+                <div>
+                  <span class="popup-badge">${wp.time ? `Ore ${wp.time}` : 'Tappa'} • Giorno ${wp.dayNumber}</span>
+                  <h4 class="popup-title m-0">${wp.name}</h4>
+                </div>
+              </div>
+              ${wp.transport ? `
+                <div class="popup-transport-chip">
+                  <span style="font-size: 1.1rem;">${transportMeta.icon}</span>
+                  <span><strong>Spostamento:</strong> ${wp.transport.label || transportMeta.label}</span>
+                </div>
+              ` : ''}
+              <p class="popup-desc">${wp.desc || wp.title}</p>
+              <button class="btn btn-accent btn-sm w-100 mt-2" onclick="window.scrollToTimelineItem('${wp.activityId}')">
+                ⬇️ Visualizza Attività nella Timeline
+              </button>
+            </div>
+          `;
+
+          marker.bindPopup(popupContent, { className: "custom-leaflet-popup" });
+
+          // Click sul marker: apre popup e scorre verso l'attività nella timeline
+          marker.on("click", () => {
+            highlightTimelineActivity(wp.activityId);
+          });
+
+          mapMarkersLayer.addLayer(marker);
+          markersCache.set(wp.activityId, marker);
+        });
+
+        // DISEGNO DEI SEGMENTI TRA LE TAPPE DISTINTI PER MEZZO DI TRASPORTO
+        if (latLngs.length > 1) {
+          for (let i = 0; i < waypoints.length - 1; i++) {
+            const wpFrom = waypoints[i];
+            const wpTo = waypoints[i + 1];
+            const tr = wpTo.transport || wpFrom.transport;
+            const meta = getTransportMeta(tr);
+
+            const segmentLine = L.polyline([wpFrom.coords, wpTo.coords], {
+              color: meta.color,
+              weight: meta.weight || 3.5,
+              opacity: 0.9,
+              dashArray: isUpcoming ? (meta.dashArray || "6, 6") : meta.dashArray,
+              lineJoin: "round"
+            });
+
+            segmentLine.bindTooltip(`
+              <div style="font-size: 0.82rem; font-weight: 600;">
+                ${meta.icon} ${tr && tr.label ? tr.label : meta.label}
+                <div style="font-size: 0.72rem; color: #cbd5e1;">Da: ${wpFrom.name} ➔ A: ${wpTo.name}</div>
+              </div>
+            `, { sticky: true });
+
+            mapSegmentsLayer.addLayer(segmentLine);
+          }
+
+          // Centratura ottimizzata (escludendo Malpensa per non zoomare a livello globale se vista all)
+          let boundsLatLngs = latLngs;
+          if (daySelection === "all" && trip.continent !== "Europa") {
+            const destOnly = latLngs.filter(pt => !(pt[0] > 35 && pt[0] < 48 && pt[1] > 6 && pt[1] < 19));
+            if (destOnly.length > 0) boundsLatLngs = destOnly;
+          }
+
+          const targetBounds = L.latLngBounds(boundsLatLngs);
+          tripMap.fitBounds(targetBounds, { padding: [50, 50], maxZoom: 15 });
+        } else if (latLngs.length === 1) {
+          tripMap.setView(latLngs[0], 13);
+        } else {
+          tripMap.setView(baseCoords, 12);
+        }
+
+        // AGGIORNA STATO DELLA TOOLBAR D'ANIMAZIONE
+        setupAnimationToolbar(waypoints, daySelection);
+
+        // Tasto ricentra
+        document.getElementById("btn-recenter-map").onclick = () => {
+          if (latLngs.length > 1) {
+            let boundsLatLngs = latLngs;
+            if (daySelection === "all" && trip.continent !== "Europa") {
+              const destOnly = latLngs.filter(pt => !(pt[0] > 35 && pt[0] < 48 && pt[1] > 6 && pt[1] < 19));
+              if (destOnly.length > 0) boundsLatLngs = destOnly;
+            }
+            tripMap.fitBounds(L.latLngBounds(boundsLatLngs), { padding: [50, 50], maxZoom: 15 });
+          } else if (latLngs.length > 0) {
+            tripMap.setView(latLngs[0], 13);
+          } else {
+            tripMap.setView(baseCoords, 12);
+          }
+        };
+      }
+
+      // ======================================================================
+      // 6.B MOTORE D'ANIMAZIONE DEL PERCORSO DINAMICO DEL GIORNO
+      // ======================================================================
+      function setupAnimationToolbar(waypoints, daySelection) {
+        const playBtn = document.getElementById("btn-play-day-animation");
+        const pauseBtn = document.getElementById("btn-pause-day-animation");
+        const stopBtn = document.getElementById("btn-stop-day-animation");
+        const playText = document.getElementById("anim-play-text");
+        const statusText = document.getElementById("anim-status-text");
+        const vehicleIcon = document.getElementById("anim-vehicle-indicator");
+
+        if (!playBtn) return;
+
+        pauseBtn.style.display = "none";
+        stopBtn.style.display = "none";
+
+        if (!waypoints || waypoints.length === 0) {
+          playBtn.disabled = true;
+          playText.textContent = "Nessuna attività da animare";
+          statusText.textContent = "Nessuna tappa registrata per questa selezione.";
+          return;
+        }
+
+        playBtn.disabled = false;
+        const dayLabel = daySelection === "all" ? "Tutto il Viaggio" : `Giorno ${daySelection}`;
+        playText.textContent = `Riproduci Percorso (${dayLabel})`;
+        statusText.textContent = `Pronto: ${waypoints.length} attività del ${dayLabel} animate con i relativi mezzi di trasporto.`;
+        vehicleIcon.textContent = waypoints[0].flag || "🚶";
+
+        playBtn.onclick = () => {
+          if (isAnimationPaused) {
+            resumeRouteAnimation();
+          } else {
+            startRouteAnimation();
+          }
+        };
+
+        pauseBtn.onclick = () => {
+          pauseRouteAnimation();
+        };
+
+        stopBtn.onclick = () => {
+          stopRouteAnimation();
+        };
+      }
+
+      // Creazione o aggiornamento del marker animato del veicolo
+      function createOrUpdateVehicleMarker(coords, transportMeta) {
+        if (!tripMap) return;
+
+        const html = `
+          <div class="animated-vehicle-marker">
+            <div class="vehicle-marker-core" style="--vehicle-color: ${transportMeta.color}; --vehicle-glow: ${transportMeta.glow};">
+              <span id="vehicle-marker-emoji">${transportMeta.icon}</span>
+              <div class="vehicle-radar-pulse" style="--vehicle-color: ${transportMeta.color};"></div>
+            </div>
+          </div>
+        `;
+
+        const icon = L.divIcon({
+          className: "vehicle-anim-container",
+          html: html,
+          iconSize: [44, 44],
+          iconAnchor: [22, 22]
+        });
+
+        if (!animatedVehicleMarker) {
+          animatedVehicleMarker = L.marker(coords, { icon: icon, zIndexOffset: 10000 }).addTo(tripMap);
+        } else {
+          animatedVehicleMarker.setLatLng(coords);
+          animatedVehicleMarker.setIcon(icon);
+        }
+      }
+
+      function updateVehicleMarkerAppearance(transportMeta) {
+        const emojiEl = document.getElementById("vehicle-marker-emoji");
+        if (emojiEl) emojiEl.textContent = transportMeta.icon;
+        const coreEl = document.querySelector(".vehicle-marker-core");
+        if (coreEl) {
+          coreEl.style.setProperty("--vehicle-color", transportMeta.color);
+          coreEl.style.setProperty("--vehicle-glow", transportMeta.glow);
+        }
+        const pulseEl = document.querySelector(".vehicle-radar-pulse");
+        if (pulseEl) {
+          pulseEl.style.setProperty("--vehicle-color", transportMeta.color);
+        }
+      }
+
+      function setAnimationControlsUI(state) {
+        const playBtn = document.getElementById("btn-play-day-animation");
+        const pauseBtn = document.getElementById("btn-pause-day-animation");
+        const stopBtn = document.getElementById("btn-stop-day-animation");
+        const playIcon = document.getElementById("anim-play-icon");
+        const playText = document.getElementById("anim-play-text");
+
+        if (!playBtn) return;
+
+        if (state === "playing") {
+          playBtn.style.display = "none";
+          pauseBtn.style.display = "inline-flex";
+          stopBtn.style.display = "inline-flex";
+        } else if (state === "paused") {
+          playBtn.style.display = "inline-flex";
+          pauseBtn.style.display = "none";
+          stopBtn.style.display = "inline-flex";
+          playIcon.textContent = "▶️";
+          playText.textContent = "Riprendi Animazione";
+        } else { // stopped / finished
+          playBtn.style.display = "inline-flex";
+          pauseBtn.style.display = "none";
+          stopBtn.style.display = "none";
+          playIcon.textContent = "▶️";
+          playText.textContent = `Riproduci Percorso (${currentActiveDay === "all" ? "Tutto il Viaggio" : "Giorno " + currentActiveDay})`;
+        }
+      }
+
+      function startRouteAnimation() {
+        if (!tripMap || !animWaypoints || animWaypoints.length === 0) return;
+
+        stopRouteAnimation();
+
+        isAnimatingRoute = true;
+        isAnimationPaused = false;
+        currentAnimStep = 0;
+        setAnimationControlsUI("playing");
+
+        const firstWp = animWaypoints[0];
+        const nextWp = animWaypoints[1] || firstWp;
+        const initialTransport = getTransportMeta(nextWp.transport || firstWp.transport);
+
+        createOrUpdateVehicleMarker(firstWp.coords, initialTransport);
+
+        // Se c'è solo un punto
+        if (animWaypoints.length === 1) {
+          triggerWaypointArrival(0, () => {
+            finishRouteAnimation();
+          });
+          return;
+        }
+
+        // Avvia prima tappa
+        triggerWaypointArrival(0, () => {
+          if (!isAnimatingRoute || isAnimationPaused) return;
+          animateBetweenWaypoints(0, 1);
+        });
+      }
+
+      function resumeRouteAnimation() {
+        if (!isAnimatingRoute && !isAnimationPaused) {
+          startRouteAnimation();
+          return;
+        }
+        isAnimationPaused = false;
+        isAnimatingRoute = true;
+        setAnimationControlsUI("playing");
+
+        // Continua dalla tappa corrente
+        if (currentAnimStep + 1 < animWaypoints.length) {
+          animateBetweenWaypoints(currentAnimStep, currentAnimStep + 1);
+        } else {
+          finishRouteAnimation();
+        }
+      }
+
+      function pauseRouteAnimation() {
+        if (!isAnimatingRoute) return;
+        isAnimationPaused = true;
+        isAnimatingRoute = false;
+        if (currentAnimFrameId) cancelAnimationFrame(currentAnimFrameId);
+        if (animPauseTimeoutId) clearTimeout(animPauseTimeoutId);
+
+        setAnimationControlsUI("paused");
+        const statusEl = document.getElementById("anim-status-text");
+        if (statusEl) statusEl.textContent = "⏸️ Animazione in pausa. Clicca su 'Riprendi' per continuare il tragitto.";
+      }
+
+      function stopRouteAnimation() {
+        isAnimatingRoute = false;
+        isAnimationPaused = false;
+        if (currentAnimFrameId) cancelAnimationFrame(currentAnimFrameId);
+        if (animPauseTimeoutId) clearTimeout(animPauseTimeoutId);
+
+        if (animatedVehicleMarker && tripMap) {
+          tripMap.removeLayer(animatedVehicleMarker);
+          animatedVehicleMarker = null;
+        }
+
+        setAnimationControlsUI("stopped");
+        const statusEl = document.getElementById("anim-status-text");
+        if (statusEl && animWaypoints.length > 0) {
+          statusEl.textContent = `Pronto a riprodurre le ${animWaypoints.length} attività del percorso.`;
+        }
+        const vehicleIcon = document.getElementById("anim-vehicle-indicator");
+        if (vehicleIcon && animWaypoints.length > 0) {
+          vehicleIcon.textContent = animWaypoints[0].flag || "🚶";
+        }
+      }
+
+      function finishRouteAnimation() {
+        isAnimatingRoute = false;
+        isAnimationPaused = false;
+        if (currentAnimFrameId) cancelAnimationFrame(currentAnimFrameId);
+        if (animPauseTimeoutId) clearTimeout(animPauseTimeoutId);
+
+        const statusEl = document.getElementById("anim-status-text");
+        const vehicleIcon = document.getElementById("anim-vehicle-indicator");
+        if (statusEl) statusEl.textContent = `🎉 Percorso completato con successo! Raggiunte tutte le ${animWaypoints.length} attività.`;
+        if (vehicleIcon) vehicleIcon.textContent = "🏆";
+
+        setAnimationControlsUI("finished");
+
+        // Rimuove veicolo dopo 4 secondi lasciando la mappa pulita
+        setTimeout(() => {
+          if (!isAnimatingRoute && animatedVehicleMarker && tripMap) {
+            tripMap.removeLayer(animatedVehicleMarker);
+            animatedVehicleMarker = null;
+          }
+        }, 4500);
+      }
+
+      function animateBetweenWaypoints(fromIdx, toIdx) {
+        if (!isAnimatingRoute || isAnimationPaused) return;
+        if (toIdx >= animWaypoints.length) {
+          finishRouteAnimation();
+          return;
+        }
+
+        currentAnimStep = fromIdx;
+        const fromWp = animWaypoints[fromIdx];
+        const toWp = animWaypoints[toIdx];
+        const transport = getTransportMeta(toWp.transport || fromWp.transport);
+
+        updateVehicleMarkerAppearance(transport);
+
+        // Aggiorna badge live
+        const statusEl = document.getElementById("anim-status-text");
+        const vehicleIcon = document.getElementById("anim-vehicle-indicator");
+        const trLabel = toWp.transport ? toWp.transport.label : transport.label;
+        if (statusEl) statusEl.textContent = `${transport.icon} In viaggio con ${trLabel} verso: ${toWp.name}...`;
+        if (vehicleIcon) vehicleIcon.textContent = transport.icon;
+
+        // Chiude popup aperto per lasciare visibilità sul percorso
+        if (tripMap) tripMap.closePopup();
+
+        const p1 = fromWp.coords;
+        const p2 = toWp.coords;
+
+        // Calcola durata proporzionata alla distanza
+        const dist = Math.hypot(p2[0] - p1[0], p2[1] - p1[1]);
+        const baseDurationMs = Math.min(3200, Math.max(1400, dist * 55000));
+        const duration = (baseDurationMs / (animSpeed * (transport.speedFactor || 1)));
+
+        const startTime = performance.now();
+
+        function step(now) {
+          if (!isAnimatingRoute || isAnimationPaused) return;
+
+          const elapsed = now - startTime;
+          const progress = Math.min(elapsed / duration, 1.0);
+
+          // Easing cubico per accelerazione e decelerazione morbida
+          const ease = progress < 0.5 ? 4 * progress * progress * progress : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+
+          const currentLat = p1[0] + (p2[0] - p1[0]) * ease;
+          const currentLng = p1[1] + (p2[1] - p1[1]) * ease;
+          const currentPos = [currentLat, currentLng];
+
+          if (animatedVehicleMarker) {
+            animatedVehicleMarker.setLatLng(currentPos);
+          }
+
+          // Segue dolcemente il veicolo se necessario
+          if (tripMap && !tripMap.getBounds().pad(-0.06).contains(currentPos)) {
+            tripMap.panTo(currentPos, { animate: true, duration: 0.25 });
+          }
+
+          if (progress < 1.0) {
+            currentAnimFrameId = requestAnimationFrame(step);
+          } else {
+            // Raggiunta la tappa toIdx!
+            triggerWaypointArrival(toIdx, () => {
+              if (!isAnimatingRoute || isAnimationPaused) return;
+              if (toIdx + 1 < animWaypoints.length) {
+                animateBetweenWaypoints(toIdx, toIdx + 1);
+              } else {
+                finishRouteAnimation();
+              }
+            });
+          }
+        }
+
+        currentAnimFrameId = requestAnimationFrame(step);
+      }
+
+      function triggerWaypointArrival(idx, callback) {
+        const wp = animWaypoints[idx];
+        if (!wp) return;
+
+        if (animatedVehicleMarker) {
+          animatedVehicleMarker.setLatLng(wp.coords);
+        }
+
+        // Effetto pulsazione marker di arrivo
+        const marker = markersCache.get(wp.activityId);
+        if (marker) {
+          const markerEl = marker.getElement();
+          if (markerEl) {
+            markerEl.classList.add("target-arrived-pulse");
+            setTimeout(() => {
+              if (markerEl) markerEl.classList.remove("target-arrived-pulse");
+            }, 2500);
+          }
+          marker.openPopup();
+        }
+
+        // Aggiorna lo stato nella toolbar
+        const statusEl = document.getElementById("anim-status-text");
+        const vehicleIcon = document.getElementById("anim-vehicle-indicator");
+        if (statusEl) statusEl.textContent = `📍 Tappa ${wp.order || (idx + 1)} Raggiunta: ${wp.name} ${wp.time ? '(Ore ' + wp.time + ')' : ''}`;
+        if (vehicleIcon) vehicleIcon.textContent = wp.flag || "📍";
+
+        // Scroll automatico sincronizzato della timeline oraria
+        highlightTimelineActivity(wp.activityId);
+
+        // Sosta alla tappa
+        const pauseMs = 1500 / animSpeed;
+        animPauseTimeoutId = setTimeout(() => {
+          if (callback) callback();
+        }, pauseMs);
+      }
+
+      window.setAnimSpeed = function(speed) {
+        animSpeed = Number(speed) || 1;
+        document.querySelectorAll(".speed-btn").forEach(btn => {
+          if (Number(btn.getAttribute("data-speed")) === animSpeed) {
+            btn.classList.add("active");
+          } else {
+            btn.classList.remove("active");
+          }
+        });
+      };
+
+      // 7. RIMANDO BIDIREZIONALE: DALLA MAPPA ALLA TIMELINE
+      function highlightTimelineActivity(activityId) {
+        if (!activityId) return;
+        const targetEl = document.getElementById(activityId);
+        if (targetEl) {
+          document.querySelectorAll(".timeline-hour-item.active-highlight-pulse").forEach(el => {
+            el.classList.remove("active-highlight-pulse");
+          });
+
+          targetEl.scrollIntoView({ behavior: "smooth", block: "center" });
+          targetEl.classList.add("active-highlight-pulse");
+
+          setTimeout(() => {
+            targetEl.classList.remove("active-highlight-pulse");
+          }, 4000);
+        }
+      }
+
+      window.scrollToTimelineItem = function(activityId) {
+        highlightTimelineActivity(activityId);
+      };
+
+      // 8. RIMANDO BIDIREZIONALE: DALLA TIMELINE ALLA MAPPA
+      window.focusActivityOnMap = function(activityId, lat, lng) {
+        if (tripMap && lat && lng) {
+          tripMap.flyTo([lat, lng], 15, { duration: 1.0 });
+          const marker = markersCache.get(activityId);
+          if (marker) {
+            setTimeout(() => {
+              marker.openPopup();
+            }, 600);
+          }
+          const mapSection = document.getElementById("section-map");
+          if (mapSection && window.innerWidth <= 768) {
+            mapSection.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+        }
+      };
+
+      // 9. Render Timeline Itinerario Giorno per Giorno e Ora per Ora
+      function renderUpcomingItinerary(trip) {
+        const itinerary = TravelGuideHelper.getItinerary(trip);
+        if (!itinerary || !itinerary.days) return;
+
+        const container = document.getElementById("itinerary-days-container");
+        container.innerHTML = "";
+
+        itinerary.days.forEach(day => {
+          const dayCard = document.createElement("div");
+          dayCard.className = "itinerary-day-card";
+          dayCard.setAttribute("data-day", String(day.dayNumber));
+
+          const scheduleHtml = (day.schedule || []).map((item, idx) => {
+            const actId = item.id || `act-${day.dayNumber}-${idx}`;
+            const coordsAttr = (item.coords && item.coords.length === 2) 
+              ? `onclick="window.focusActivityOnMap('${actId}', ${item.coords[0]}, ${item.coords[1]})"` 
+              : '';
+
+            const trMeta = getTransportMeta(item.transport);
+
+            return `
+              <div class="timeline-hour-item" id="${actId}" ${coordsAttr} title="Clicca per visualizzare sulla mappa">
+                <div class="timeline-hour-badge">${item.time}</div>
+                <div class="timeline-hour-icon">${item.icon || '📍'}</div>
+                <div class="timeline-hour-body">
+                  <div class="d-flex align-items-center justify-content-between flex-wrap gap-1">
+                    <h4 class="timeline-hour-title m-0">${item.title}</h4>
+                    <span class="timeline-map-tag">🗺️ Guarda su Mappa</span>
+                  </div>
+                  ${item.transport ? `
+                    <div class="timeline-transport-badge" style="border-left: 3px solid ${trMeta.color};">
+                      <span class="transport-icon">${trMeta.icon}</span>
+                      <span>${item.transport.label}</span>
+                    </div>
+                  ` : ''}
+                  <p class="timeline-hour-desc mt-1">${item.desc}</p>
+                </div>
+              </div>
+            `;
+          }).join("");
+
+          dayCard.innerHTML = `
+            <div class="day-card-header">
+              <div class="flex-between flex-wrap gap-2">
+                <div>
+                  <span class="day-number-badge">Giorno ${day.dayNumber}</span>
+                  <span class="day-date-text">${day.date}</span>
+                  <h3 class="day-title">${day.title}</h3>
+                </div>
+                <button class="btn btn-outline btn-sm" onclick="selectDay('${day.dayNumber}')">
+                  🗺️ Isola Giorno ${day.dayNumber} sulla Mappa
+                </button>
+              </div>
+              <p class="day-summary-text">${day.summary}</p>
+            </div>
+            <div class="timeline-hours-list">
+              ${scheduleHtml}
+            </div>
+          `;
+          container.appendChild(dayCard);
+        });
+      }
+
+      // 10. Render Documenti Necessari
+      function renderUpcomingDocuments(trip) {
+        const docs = TravelGuideHelper.getDocuments(trip);
+        document.getElementById("docs-subtitle").textContent = 
+          `Guida ai requisiti ufficiali di ingresso per i cittadini italiani in viaggio verso ${docs.country || trip.country}.`;
+
+        const container = document.getElementById("documents-grid-container");
+        container.innerHTML = `
+          <!-- Passaporto -->
+          <div class="doc-card">
+            <div class="doc-card-header">
+              <span class="doc-icon">🛂</span>
+              <span class="doc-badge">${docs.passports.badge}</span>
+            </div>
+            <h4 class="doc-title">${docs.passports.title}</h4>
+            <p class="doc-desc">${docs.passports.desc}</p>
+          </div>
+
+          <!-- Visto / ETA / ESTA -->
+          <div class="doc-card">
+            <div class="doc-card-header">
+              <span class="doc-icon">📑</span>
+              <span class="doc-badge badge-accent">${docs.visa.badge}</span>
+            </div>
+            <h4 class="doc-title">${docs.visa.title}</h4>
+            <p class="doc-desc">${docs.visa.desc}</p>
+          </div>
+
+          <!-- Sanità & Assicurazione -->
+          <div class="doc-card">
+            <div class="doc-card-header">
+              <span class="doc-icon">🏥</span>
+              <span class="doc-badge">${docs.health.badge}</span>
+            </div>
+            <h4 class="doc-title">${docs.health.title}</h4>
+            <p class="doc-desc">${docs.health.desc}</p>
+          </div>
+
+          <!-- Valuta & Pagamenti -->
+          <div class="doc-card">
+            <div class="doc-card-header">
+              <span class="doc-icon">💳</span>
+              <span class="doc-badge">${docs.payments.badge}</span>
+            </div>
+            <h4 class="doc-title">${docs.payments.title}</h4>
+            <p class="doc-desc">${docs.payments.desc}</p>
+          </div>
+
+          <!-- Connettività / Guida -->
+          <div class="doc-card">
+            <div class="doc-card-header">
+              <span class="doc-icon">${docs.connectivity ? '🌐' : (docs.driving ? '🚗' : '🏛️')}</span>
+              <span class="doc-badge">${docs.connectivity ? docs.connectivity.badge : (docs.driving ? docs.driving.badge : 'Regole Locali')}</span>
+            </div>
+            <h4 class="doc-title">${docs.connectivity ? docs.connectivity.title : (docs.driving ? docs.driving.title : 'Formalità di Frontiera')}</h4>
+            <p class="doc-desc">${docs.connectivity ? docs.connectivity.desc : (docs.driving ? docs.driving.desc : 'Rispettare le normative doganali su importazione di valuta e medicinali personali.')}</p>
+          </div>
+
+          <!-- Registrazione Farnesina -->
+          <div class="doc-card">
+            <div class="doc-card-header">
+              <span class="doc-icon">🇮🇹</span>
+              <span class="doc-badge">${docs.farnesina ? docs.farnesina.badge : 'Consigliato'}</span>
+            </div>
+            <h4 class="doc-title">${docs.farnesina ? docs.farnesina.title : 'Registrazione Viaggiare Sicuri'}</h4>
+            <p class="doc-desc">${docs.farnesina ? docs.farnesina.desc : 'Registrare la presenza sul portale d通貨ovesiamosulmondo.it prima della partenza per agevolare l\'assistenza consolare.'}</p>
+          </div>
+        `;
+      }
+
+      // 11. Render Abbigliamento Consigliato
+      function renderUpcomingClothing(trip) {
+        const clothing = TravelGuideHelper.getClothingGuide(trip);
+        document.getElementById("clothing-subtitle").textContent = 
+          `Consigli basati sulla stagione e sul clima previsto: ${clothing.season} (${clothing.tempRange}).`;
+
+        const container = document.getElementById("clothing-layout-container");
+        container.innerHTML = `
+          <div class="clothing-summary-banner">
+            <div class="weather-temp-badge">
+              <span class="temp-icon">🌡️</span>
+              <div class="temp-numbers">
+                <span class="temp-val">${clothing.tempRange}</span>
+                <span class="temp-label">${clothing.season}</span>
+              </div>
+            </div>
+            <p class="weather-desc-text">
+              <strong>Quadro Meteorologico:</strong> ${clothing.weatherDesc}
+            </p>
+          </div>
+
+          <div class="clothing-columns-grid">
+            <div class="clothing-box">
+              <h4 class="clothing-box-title">👕 Capi Consigliati in Valigia</h4>
+              <ul class="clothing-checklist">
+                ${clothing.clothing.map(item => `<li><span class="check-icon">✓</span> <span>${item}</span></li>`).join("")}
+              </ul>
+            </div>
+
+            <div class="clothing-box">
+              <h4 class="clothing-box-title">👟 Calzature Consigliate</h4>
+              <ul class="clothing-checklist">
+                ${clothing.shoes.map(item => `<li><span class="check-icon">✓</span> <span>${item}</span></li>`).join("")}
+              </ul>
+
+              <h4 class="clothing-box-title mt-4">👔 Dress Code & Galateo Locale</h4>
+              <p class="dresscode-text">
+                ${clothing.dressCode}
+              </p>
+            </div>
+          </div>
+        `;
+      }
+
+      // 12. Render Gadget & Accessori di Viaggio
+      function renderUpcomingGadgets(trip) {
+        const gadgets = TravelGuideHelper.getGadgets(trip);
+        document.getElementById("gadgets-subtitle").textContent = 
+          `Dotazione tecnica ed elettrica per ${gadgets.country}: ${gadgets.plugs.type}.`;
+
+        const container = document.getElementById("gadgets-layout-container");
+        container.innerHTML = `
+          <div class="plug-info-card">
+            <div class="plug-header">
+              <span class="plug-icon">🔌</span>
+              <div>
+                <h4 class="plug-title">Tipo di Presa: ${gadgets.plugs.type}</h4>
+                <span class="plug-voltage">Tensione & Frequenza: <strong>${gadgets.plugs.voltage}</strong></span>
+              </div>
+            </div>
+            <div class="plug-body">
+              <p><strong>Adattatore:</strong> ${gadgets.plugs.adapterNeeded}</p>
+              <p class="plug-note">💡 <em>${gadgets.plugs.note}</em></p>
+            </div>
+          </div>
+
+          <div class="gadgets-columns-grid mt-4">
+            <div class="gadget-box">
+              <h4 class="gadget-box-title">📱 Gadget Tecnologici Consigliati</h4>
+              <ul class="gadget-list">
+                ${gadgets.mustHave.map(g => `<li><span class="gadget-bullet">⚡</span> <span>${g}</span></li>`).join("")}
+              </ul>
+            </div>
+
+            <div class="gadget-box">
+              <h4 class="gadget-box-title">💊 Mini Farmacia & Kit Primo Soccorso</h4>
+              <ul class="gadget-list">
+                ${gadgets.healthKit.map(h => `<li><span class="gadget-bullet">🩹</span> <span>${h}</span></li>`).join("")}
+              </ul>
+            </div>
+          </div>
+        `;
+      }
+
+      // 13. Render Sezioni Viaggio Passato
+      function renderPastSummary(trip) {
+        document.getElementById("past-trip-description").textContent = 
+          trip.description || "Nessuna cronaca registrata per questa tappa.";
+
+        const highlightsContainer = document.getElementById("past-highlights-container");
+        highlightsContainer.innerHTML = "";
+        const highlights = trip.highlights || [];
+        const baseCoords = TravelGuideHelper.getTripBaseCoordinates(trip);
+
+        if (highlights.length === 0) {
+          highlightsContainer.innerHTML = `<p class="text-secondary">Nessun momento saliente catalogato per questo viaggio.</p>`;
+        } else {
+          highlights.forEach((h, index) => {
+            const card = document.createElement("div");
+            card.className = "highlight-card";
+            card.style.cursor = "pointer";
+            card.title = "Clicca per centrare la mappa su questa tappa";
+            card.innerHTML = `
+              <div class="highlight-number">0${index + 1}</div>
+              <div class="highlight-text">
+                <div class="d-flex align-items-center justify-content-between">
+                  <h4 class="m-0">${h}</h4>
+                  <span class="timeline-map-tag">🗺️ Mostra</span>
+                </div>
+                <p>Momento saliente documentato nel Diario di Bordo a ${trip.city || trip.country}.</p>
+              </div>
+            `;
+            // Click sull'highlight centra la mappa
+            card.onclick = () => {
+              const angle = (index * (2 * Math.PI / highlights.length));
+              const lat = baseCoords[0] + Math.sin(angle) * 0.045;
+              const lng = baseCoords[1] + Math.cos(angle) * 0.055;
+              tripMap.flyTo([lat, lng], 14, { duration: 0.9 });
+              const marker = markersCache.get(`highlight-${trip.id}-${index + 1}`);
+              if (marker) {
+                setTimeout(() => marker.openPopup(), 500);
+              }
+              const mapSection = document.getElementById("section-map");
+              if (mapSection) {
+                mapSection.scrollIntoView({ behavior: "smooth", block: "start" });
+              }
+            };
+            highlightsContainer.appendChild(card);
+          });
+        }
+
+        const savedNotesKey = "giuseppe_trip_notes_" + trip.id;
+        const savedNotes = localStorage.getItem(savedNotesKey);
+        if (savedNotes) {
+          document.getElementById("personal-notes-text").textContent = savedNotes;
+        }
+      }
+
+      // 14. Event Listeners con Password (C4rl422022022!)
+      function setupEventListeners(isUpcoming) {
+        const requiredPass = "C4rl422022022!";
+
+        const editNotesBtn = document.getElementById("btn-edit-personal-notes");
+        if (editNotesBtn) {
+          editNotesBtn.onclick = () => {
+            const pwd = prompt("🔒 ACCESSO PROTETTO\n\nInserisci la password di sicurezza per modificare le note del diario:");
+            if (pwd === null) return;
+            if (pwd.trim() !== requiredPass) {
+              alert("❌ Password errata. Accesso negato.");
+              return;
+            }
+            const savedNotesKey = "giuseppe_trip_notes_" + currentTrip.id;
+            const currentNotes = localStorage.getItem(savedNotesKey) || "";
+            document.getElementById("personal-notes-textarea").value = currentNotes;
+            document.getElementById("modal-edit-notes").classList.add("active");
+          };
+        }
+
+        const saveNotesBtn = document.getElementById("btn-save-personal-notes");
+        if (saveNotesBtn) {
+          saveNotesBtn.onclick = () => {
+            const newText = document.getElementById("personal-notes-textarea").value.trim();
+            const savedNotesKey = "giuseppe_trip_notes_" + currentTrip.id;
+            localStorage.setItem(savedNotesKey, newText);
+            document.getElementById("personal-notes-text").textContent = newText || "Nessuna nota personale registrata.";
+            closeNotesModal();
+            showToast("Note personali salvate con successo nel Diario di Bordo! 💾", "success");
+          };
+        }
+
+        const editItineraryBtn = document.getElementById("btn-edit-itinerary");
+        if (editItineraryBtn) {
+          editItineraryBtn.onclick = () => {
+            const pwd = prompt("🔒 ACCESSO PROTETTO\n\nInserisci la password di sicurezza per modificare l'itinerario programmato:");
+            if (pwd === null) return;
+            if (pwd.trim() !== requiredPass) {
+              alert("❌ Password errata. Accesso negato.");
+              return;
+            }
+
+            const currentItin = TravelGuideHelper.getItinerary(currentTrip);
+            const promptAdd = prompt("Aggiungi una nuova attività per questo viaggio:\n(Formato: Giorno [1-4], Orario HH:MM, Titolo Attività)", "Giorno 1, 16:30, Tè pomeridiano al Savoy");
+            if (promptAdd) {
+              const parts = promptAdd.split(",");
+              if (parts.length >= 3) {
+                const dayMatch = parts[0].match(/\d+/);
+                const dayNum = dayMatch ? parseInt(dayMatch[0], 10) : 1;
+                const timeStr = parts[1].trim();
+                const titleStr = parts.slice(2).join(",").trim();
+                const baseCoords = TravelGuideHelper.getTripBaseCoordinates(currentTrip);
+
+                const targetDay = currentItin.days.find(d => d.dayNumber === dayNum) || currentItin.days[0];
+                targetDay.schedule.push({
+                  id: `act-${currentTrip.id}-${dayNum}-${Date.now()}`,
+                  time: timeStr,
+                  title: titleStr,
+                  desc: "Attività aggiunta all'itinerario personalizzato.",
+                  icon: "⭐",
+                  locationName: titleStr,
+                  coords: [baseCoords[0] + 0.003, baseCoords[1] + 0.003]
+                });
+                targetDay.schedule.sort((a, b) => a.time.localeCompare(b.time));
+
+                TravelGuideHelper.saveCustomItinerary(currentTrip.id, currentItin);
+                renderUpcomingItinerary(currentTrip);
+                renderDynamicMap(currentTrip, true, currentActiveDay);
+                showToast("Nuova attività aggiunta all'itinerario con successo! 🗓️", "success");
+              } else {
+                alert("Formato non riconosciuto. Usa: Giorno 1, 16:30, Titolo Attività");
+              }
+            }
+          };
+        }
+
+        const resetItineraryBtn = document.getElementById("btn-reset-itinerary");
+        if (resetItineraryBtn) {
+          resetItineraryBtn.onclick = () => {
+            const pwd = prompt("🔒 ACCESSO PROTETTO\n\nInserisci la password di sicurezza per ripristinare l'itinerario originale:");
+            if (pwd === null) return;
+            if (pwd.trim() !== requiredPass) {
+              alert("❌ Password errata. Accesso negato.");
+              return;
+            }
+            TravelGuideHelper.resetCustomItinerary(currentTrip.id);
+            renderUpcomingItinerary(currentTrip);
+            renderDynamicMap(currentTrip, true, currentActiveDay);
+            showToast("Itinerario ripristinato ai valori predefiniti! ↺", "success");
+          };
+        }
+      }
+
+      window.closeNotesModal = function() {
+        document.getElementById("modal-edit-notes").classList.remove("active");
+      };
+
+      function formatItalianDate(dateStr) {
+        if (!dateStr) return "--";
+        const parts = dateStr.split("-");
+        if (parts.length !== 3) return dateStr;
+        const d = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+        return d.toLocaleDateString("it-IT", { day: "numeric", month: "short", year: "numeric" });
+      }
+
+      function calculateCountdown(targetDateStr) {
+        if (!targetDateStr) return 0;
+        const parts = targetDateStr.split("-");
+        const target = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10)).getTime();
+        const now = new Date().getTime();
+        const diff = target - now;
+        return Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
+      }
+
+      function showToast(message, type = "info") {
+        const container = document.getElementById("toast-container");
+        if (!container) return;
+        const toast = document.createElement("div");
+        toast.className = `toast toast-${type}`;
+        toast.textContent = message;
+        container.appendChild(toast);
+        setTimeout(() => toast.classList.add("visible"), 50);
+        setTimeout(() => {
+          toast.classList.remove("visible");
+          setTimeout(() => toast.remove(), 400);
+        }, 3500);
+      }
+
+      function initThemePalette() {
+        const THEMES = [
+          { key: "gold", name: "Oro Regale", color: "#D4AF37" },
+          { key: "silver", name: "Argento Puro", color: "#E5E7EB" },
+          { key: "emerald", name: "Verde Smeraldo", color: "#10B981" },
+          { key: "azure", name: "Azzurro Ceruleo", color: "#38BDF8" },
+          { key: "ruby", name: "Rosso Rubino", color: "#F43F5E" },
+          { key: "amber", name: "Ambra Solare", color: "#F59E0B" },
+          { key: "terracotta", name: "Terracotta", color: "#E07A5F" }
+        ];
+
+        const savedTheme = localStorage.getItem("giuseppe_theme_color") || "gold";
+        document.documentElement.setAttribute("data-theme-color", savedTheme);
+
+        const container = document.getElementById("theme-buttons-container");
+        if (!container) return;
+        container.innerHTML = "";
+
+        THEMES.forEach(t => {
+          const btn = document.createElement("button");
+          btn.className = `theme-color-btn ${savedTheme === t.key ? 'active' : ''}`;
+          btn.setAttribute("data-theme", t.key);
+          btn.title = t.name;
+          btn.style.setProperty("--btn-accent-color", t.color);
+          btn.innerHTML = `<span class="theme-color-dot" style="background-color: ${t.color}"></span><span class="theme-color-name">${t.name}</span>`;
+          btn.onclick = () => {
+            document.documentElement.setAttribute("data-theme-color", t.key);
+            localStorage.setItem("giuseppe_theme_color", t.key);
+            document.querySelectorAll(".theme-color-btn").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            if (currentTrip) {
+              const dataManager = new TravelDataManager();
+              renderDynamicMap(currentTrip, dataManager.isUpcoming(currentTrip), currentActiveDay);
+            }
+          };
+          container.appendChild(btn);
+        });
+      }
+
+    })();
+  </script>
+</body>
+</html>
