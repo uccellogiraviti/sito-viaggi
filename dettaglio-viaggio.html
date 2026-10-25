@@ -24,7 +24,7 @@
        ====================================================================== -->
   <header class="navbar" id="main-navbar">
     <div class="container navbar-inner">
-      <a href="index.html" class="brand-logo" title="Giuseppe Ricatti - Home">
+      <a href="index.html#home" class="brand-logo" title="Giuseppe Ricatti - Home">
         <div class="brand-avatar"><img src="assets/logo-monogram.png" alt="R" class="brand-avatar-img"></div>
         <div class="brand-text">
           <h1>Giuseppe Ricatti</h1>
@@ -44,7 +44,7 @@
           <span class="nav-box-icon">🗓️</span>
           <span class="nav-box-label">Next Stop</span>
         </a>
-        <a href="viaggi.html?tab=past" class="nav-box-btn" title="Archivio Viaggi Passati">
+        <a href="viaggi.html?tab=past" class="nav-box-btn" title="Archivio Storico Viaggi Conclusi">
           <span class="nav-box-icon">🌍</span>
           <span class="nav-box-label">Archivio</span>
         </a>
@@ -52,7 +52,7 @@
           <span class="nav-box-icon">🏙️</span>
           <span class="nav-box-label">Città</span>
         </a>
-        <a href="wishlist.html" class="nav-box-btn" title="Travel Wish List">
+        <a href="wishlist.html" class="nav-box-btn" title="Travel Wish List (Cosa Voglio Fare)">
           <span class="nav-box-icon">🌟</span>
           <span class="nav-box-label">Wish List</span>
         </a>
@@ -76,8 +76,13 @@
         <a href="viaggi.html" class="back-home-link" id="back-nav-btn">
           ← Torna all'elenco dei Viaggi
         </a>
-        <div id="trip-status-pill" class="badge badge-accent">
-          Caricamento...
+        <div class="trip-hero-actions-right" style="display: flex; align-items: center; gap: 10px;">
+          <button class="btn btn-accent btn-sm hero-edit-trip-btn" id="btn-edit-trip-details" title="Modifica scheda di questo viaggio (Richiede Password)">
+            ✏️ Modifica Scheda Viaggio
+          </button>
+          <div id="trip-status-pill" class="badge badge-accent">
+            Caricamento...
+          </div>
         </div>
       </div>
 
@@ -393,46 +398,159 @@
     </div>
   </div>
 
+  <!-- ======================================================================
+       MODALE MODIFICA SCHEDA VIAGGIO (PROTETTA DA PASSWORD)
+       ====================================================================== -->
+  <div class="modal" id="modal-trip">
+    <div class="modal-overlay" onclick="closeTripEditModal()"></div>
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modal-trip-title">✏️ Modifica Scheda Viaggio</h3>
+        <button class="modal-close-btn" onclick="closeTripEditModal()">&times;</button>
+      </div>
+      <form id="trip-modal-form" class="modal-body form-grid">
+        <input type="hidden" id="trip-id-hidden">
+
+        <div class="form-group col-span-2">
+          <label for="trip-country-input">Destinazione / Nazione *</label>
+          <input type="text" class="form-control" id="trip-country-input" placeholder="Es. Cina, Regno Unito, Spagna" required>
+        </div>
+
+        <div class="form-group">
+          <label for="trip-city-input">Città / Tappe Visitate *</label>
+          <input type="text" class="form-control" id="trip-city-input" placeholder="Es. Londra, Shanghai, Pechino" required>
+        </div>
+
+        <div class="form-group">
+          <label for="trip-flag-input">Bandiere Emoji (generate in autonomia)</label>
+          <input type="text" class="form-control" id="trip-flag-input" placeholder="Auto-generate es. 🇨🇳 o 🇬🇧" maxlength="60">
+        </div>
+
+        <div class="form-group">
+          <label for="trip-start-date">Data Inizio *</label>
+          <input type="date" class="form-control" id="trip-start-date" required>
+        </div>
+
+        <div class="form-group">
+          <label for="trip-end-date">Data Fine *</label>
+          <input type="date" class="form-control" id="trip-end-date" required>
+        </div>
+
+        <div class="form-group">
+          <label for="trip-companions">Con Chi Hai Viaggiato? (Compagni)</label>
+          <input type="text" class="form-control" id="trip-companions" placeholder="Es. In famiglia, In solitaria, Con amici">
+        </div>
+
+        <div class="form-group">
+          <label for="trip-category-input">Tipologia di Viaggio</label>
+          <select class="custom-select w-100" id="trip-category-input">
+            <option value="Culturale">Culturale</option>
+            <option value="On The Road">On The Road</option>
+            <option value="Avventura">Avventura</option>
+            <option value="Metropoli">Metropoli</option>
+            <option value="Mare & Isole">Mare & Isole</option>
+            <option value="Volo & Soggiorno">Volo & Soggiorno</option>
+            <option value="Weekend Natalizio">Weekend Natalizio</option>
+          </select>
+        </div>
+
+        <div class="form-group col-span-2">
+          <label for="trip-image-url">Immagine di Copertina (URL)</label>
+          <input type="url" class="form-control" id="trip-image-url" placeholder="https://images.unsplash.com/...">
+        </div>
+
+        <div class="form-group col-span-2">
+          <label for="trip-highlights-input">Momenti Salienti (separati da virgola)</label>
+          <input type="text" class="form-control" id="trip-highlights-input" placeholder="Es. Spettacolo a teatro, Crociera sul fiume, Mercatini">
+        </div>
+
+        <div class="form-group col-span-2">
+          <label for="trip-desc-input">Note & Descrizione del Viaggio</label>
+          <textarea class="form-control" id="trip-desc-input" rows="4" placeholder="Descrivi il viaggio, i voli e le tappe..."></textarea>
+        </div>
+
+        <div class="modal-footer col-span-2" style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px;">
+          <button type="button" class="btn btn-outline" onclick="closeTripEditModal()">Annulla</button>
+          <button type="submit" class="btn btn-accent" id="trip-submit-btn">Salva Modifiche 💾</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- Toast Notifiche -->
   <div class="toast-container" id="toast-container"></div>
 
   <!-- ======================================================================
        FOOTER ELEGANTE CON SELETTORE COLORI PALETTE
        ====================================================================== -->
+  <!-- ======================================================================
+       FOOTER UNIFICATO
+       ====================================================================== -->
   <footer class="footer">
-    <div class="container footer-inner">
-      <div class="footer-brand">
-        <div class="brand-avatar"><img src="assets/logo-monogram.png" alt="R" class="brand-avatar-img"></div>
-        <div>
-          <h3>Giuseppe Ricatti</h3>
-          <p>Diario di Bordo & Tracciamento Cartografico dei Viaggi nel Mondo.</p>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="brand-logo mb-2">
+            <div class="brand-avatar"><img src="assets/logo-monogram.png" alt="R" class="brand-avatar-img"></div>
+            <div class="brand-text">
+              <h3>Giuseppe Ricatti</h3>
+              <span class="brand-subtitle">Diario di Bordo</span>
+            </div>
+          </div>
+          <p class="footer-desc">
+            Diario di viaggio personale, archivio cartografico e rotte dei voli.
+          </p>
+        </div>
+
+        <div class="footer-nav">
+          <h5>Navigazione</h5>
+          <ul>
+            <li><a href="index.html#home">Home Page</a></li>
+            <li><a href="index.html#mappa">Mappa del Mondo</a></li>
+            <li><a href="paesi.html">Paesi Visitati (49)</a></li>
+            <li><a href="paesi-non-visitati.html" style="color: var(--accent); font-weight: 600;">Paesi Non Ancora Visitati (146)</a></li>
+            <li><a href="statistiche.html">Percentuale Mondo Esplorato</a></li>
+            <li><a href="continenti.html">Mappa dei Continenti</a></li>
+            <li><a href="viaggi.html?tab=upcoming">Next Stop</a></li>
+            <li><a href="viaggi.html?tab=past">Archivio Viaggi Passati</a></li>
+            <li><a href="citta.html">Città Esplorate</a></li>
+            <li><a href="wishlist.html">Wish List</a></li>
+            <li><a href="chi-sono.html">Chi Sono</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-backup">
+          <h5>Gestione Tappe</h5>
+          <div class="backup-buttons">
+            <button class="btn btn-accent btn-sm w-100" onclick="window.travelApp ? (window.travelApp.openImportModal ? window.travelApp.openImportModal('flighty') : window.location.href='index.html#mappa') : window.location.href='index.html#mappa'">
+              📥 Importa da Flighty / TripAdvisor
+            </button>
+            <button class="btn btn-outline btn-sm w-100" onclick="window.travelApp ? window.travelApp.exportData() : null">
+              💾 Esporta Backup (JSON)
+            </button>
+            <button class="btn btn-icon btn-danger btn-sm w-100 mt-2" onclick="window.travelApp ? window.travelApp.confirmClearAllTrips() : null">
+              🗑️ Cancella Tutte le Tappe
+            </button>
+            <!-- Selettore Palette Colori del Sito -->
+            <div class="footer-theme-picker-block" style="margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--border-subtle); text-align: left;">
+              <span style="display: block; font-size: 0.76rem; color: var(--text-muted); margin-bottom: 8px; font-weight: 500;">🎨 Palette Colore del Sito:</span>
+              <div class="theme-picker" title="Scegli la tonalità colore della mappa e del sito">
+                <span class="theme-dot theme-dot-gold active" data-theme="gold" onclick="window.travelApp.setTheme('gold')" title="Oro Monogramma R (Colore Principale)"></span>
+                <span class="theme-dot theme-dot-silver" data-theme="silver" onclick="window.travelApp.setTheme('silver')" title="Argento Puro (Argentata)"></span>
+                <span class="theme-dot theme-dot-emerald" data-theme="emerald" onclick="window.travelApp.setTheme('emerald')" title="Verde Smeraldo Elegante"></span>
+                <span class="theme-dot theme-dot-azure" data-theme="azure" onclick="window.travelApp.setTheme('azure')" title="Azzurro Ceruleo Elegante"></span>
+                <span class="theme-dot theme-dot-ruby" data-theme="ruby" onclick="window.travelApp.setTheme('ruby')" title="Rosso Rubino Elegante"></span>
+                <span class="theme-dot theme-dot-amber" data-theme="amber" onclick="window.travelApp.setTheme('amber')" title="Ambra Calda"></span>
+                <span class="theme-dot theme-dot-terracotta" data-theme="terracotta" onclick="window.travelApp.setTheme('terracotta')" title="Terracotta"></span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="footer-links">
-        <h4>Navigazione Rapida</h4>
-        <ul>
-          <li><a href="index.html">🏠 Home & Mappa Generale</a></li>
-          <li><a href="viaggi.html?tab=upcoming">🗓️ Next Stop (Viaggi in Programma)</a></li>
-          <li><a href="viaggi.html?tab=past">🌍 Archivio Completo Viaggi</a></li>
-          <li><a href="paesi-non-visitati.html">🧭 Paesi Non Ancora Visitati</a></li>
-          <li><a href="citta.html">🏙️ Città Esplorate</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-theme-selector">
-        <h4>Palette Colore Accento</h4>
-        <p class="theme-subtitle">Personalizza il colore di accento delle mappe e dei dettagli:</p>
-        <div class="theme-buttons-grid" id="theme-buttons-container">
-          <!-- Bottoni Palette 7 tonalità -->
-        </div>
-      </div>
-    </div>
-
-    <div class="footer-bottom">
-      <div class="container flex-between">
-        <p>&copy; 2026 Giuseppe Ricatti. Tutti i diritti riservati.</p>
-        <p class="footer-credit">Travel Logbook & Interactive Cartography System</p>
+      <div class="footer-bottom">
+        <p>© 2024 Giuseppe Ricatti • Tutti i diritti riservati.</p>
+        <p>Design minimalista scuro con supporto integrato Flighty & TripAdvisor.</p>
       </div>
     </div>
   </footer>
@@ -574,10 +692,16 @@
       }
 
       // Inizializzazione al caricamento
-      document.addEventListener("DOMContentLoaded", () => {
+      function initApp() {
         initThemePalette();
         loadTripData();
-      });
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initApp);
+      } else {
+        initApp();
+      }
 
       // 1. Lettura ID dal parametro URL
       function getTripIdFromUrl() {
@@ -639,8 +763,9 @@
         
         // Immagine di copertina
         const backdropEl = document.getElementById("hero-backdrop");
-        if (trip.imageUrl) {
-          backdropEl.style.backgroundImage = `url('${trip.imageUrl}')`;
+        const coverImg = trip.imageUrl || (trip.id === "trip-real-54" ? "assets/plitvice.jpg" : "");
+        if (coverImg) {
+          backdropEl.style.backgroundImage = `url('${coverImg}')`;
         }
 
         // Flag ed emoji reale del paese
@@ -650,6 +775,12 @@
         }
         if (trip.id === "trip-real-52" || (trip.country && trip.country.includes("Cina"))) {
           flagEmoji = "🇨🇳 🇭🇰 🇲🇴";
+        }
+        if (trip.id === "trip-real-53" || (trip.country && trip.country.includes("Belgio") && trip.country.includes("Lussemburgo"))) {
+          flagEmoji = "🇧🇪 🇱🇺 🇫🇷 🇨🇭";
+        }
+        if (trip.id === "trip-real-54" || (trip.country && trip.country.includes("Croazia") && trip.country.includes("Italia"))) {
+          flagEmoji = "🇭🇷 🇮🇹";
         }
         document.getElementById("hero-flag").textContent = flagEmoji;
         document.getElementById("map-country-badge").textContent = `${flagEmoji} ${trip.country} — ${trip.city || trip.mainCity || ''}`;
@@ -1682,7 +1813,165 @@
             showToast("Itinerario ripristinato ai valori predefiniti! ↺", "success");
           };
         }
+
+        // Modifica Scheda di Viaggio Completa (con Password)
+        const editTripBtn = document.getElementById("btn-edit-trip-details");
+        if (editTripBtn) {
+          editTripBtn.onclick = () => {
+            const pwd = prompt("🔒 ACCESSO PROTETTO\n\nInserisci la password di sicurezza per modificare la scheda di questo viaggio:");
+            if (pwd === null) return;
+            if (pwd.trim() !== requiredPass) {
+              alert("❌ Password errata. Accesso negato.");
+              return;
+            }
+            openTripEditModal();
+          };
+        }
+
+        // Form Submit Modale Scheda Viaggio
+        const tripForm = document.getElementById("trip-modal-form");
+        if (tripForm) {
+          tripForm.onsubmit = (e) => {
+            e.preventDefault();
+            if (!currentTrip) return;
+
+            const highlightsVal = (document.getElementById("trip-highlights-input").value || "")
+              .split(",")
+              .map(s => s.trim())
+              .filter(Boolean);
+
+            const countryVal = (document.getElementById("trip-country-input")?.value || "").trim();
+            const inputFlag = (document.getElementById("trip-flag-input")?.value || "").trim();
+            
+            // Raccogli tutte le bandierine in autonomia, consentendo sia auto-rilevamento da testo sia modifica manuale nel campo
+            const allFlagsList = [];
+            const addFlagItem = (f) => {
+              if (!f || f === "📍") return;
+              const matches = String(f).match(/[\uD83C][\uDDE6-\uDDFF][\uD83C][\uDDE6-\uDDFF]/g);
+              if (matches && matches.length > 0) {
+                matches.forEach(m => {
+                  if (!allFlagsList.includes(m)) allFlagsList.push(m);
+                });
+              } else if (typeof f === "string" && f.trim() && f.trim() !== "📍" && !allFlagsList.includes(f.trim())) {
+                allFlagsList.push(f.trim());
+              }
+            };
+
+            // 1. Includi bandiere scritte o modificate manualmente dall'utente nel campo input
+            if (inputFlag && inputFlag !== "📍") {
+              addFlagItem(inputFlag);
+            }
+
+            // 2. Estrai in autonomia tutte le nazioni presenti in countryVal (es. "Spagna e Portogallo", "Francia & Germania")
+            if (window.extractFlagsFromCountryString && countryVal) {
+              const ext = window.extractFlagsFromCountryString(countryVal);
+              if (ext && ext.flagsArray) {
+                ext.flagsArray.forEach(addFlagItem);
+              }
+            }
+
+            const finalFlag = allFlagsList.length > 0 ? allFlagsList.join(" ") : (inputFlag && inputFlag !== "📍" ? inputFlag : "📍");
+            const finalFlagsArr = allFlagsList.length > 0 ? allFlagsList : [finalFlag];
+
+            // Suddividi l'elenco dei paesi visitati per aggiornare anche countries
+            const countriesList = countryVal ? countryVal.split(/[,&/+]|\be\b|\band\b/i).map(s => s.trim()).filter(Boolean) : [];
+
+            const updatedData = {
+              country: countryVal,
+              countries: countriesList.length > 0 ? countriesList : [countryVal],
+              city: (document.getElementById("trip-city-input")?.value || "").trim(),
+              flag: finalFlag,
+              flags: finalFlagsArr,
+              startDate: document.getElementById("trip-start-date")?.value || "",
+              endDate: document.getElementById("trip-end-date")?.value || "",
+              companions: document.getElementById("trip-companions")?.value || "In solitaria",
+              category: document.getElementById("trip-category-input")?.value || "Culturale",
+              imageUrl: (document.getElementById("trip-image-url")?.value || "").trim(),
+              highlights: highlightsVal,
+              description: (document.getElementById("trip-desc-input")?.value || "").trim()
+            };
+
+            const dataManager = new TravelDataManager();
+            dataManager.updateTrip(currentTrip.id, updatedData);
+            currentTrip = dataManager.getTripById(currentTrip.id) || Object.assign(currentTrip, updatedData);
+
+            window.closeTripEditModal();
+            renderHeroBanner(currentTrip, isUpcoming);
+            if (!isUpcoming) {
+              renderPastSummary(currentTrip);
+            }
+            showToast("Scheda del viaggio aggiornata e salvata con successo! 💾", "success");
+          };
+        }
       }
+
+      window.openTripEditModal = function() {
+        if (!currentTrip) return;
+        const countryEl = document.getElementById("trip-country-input");
+        if (countryEl) countryEl.value = currentTrip.country || "";
+        const cityEl = document.getElementById("trip-city-input");
+        if (cityEl) cityEl.value = currentTrip.city || currentTrip.mainCity || "";
+        const flagEl = document.getElementById("trip-flag-input");
+        const currentFlags = (window.getTripFlags ? window.getTripFlags(currentTrip) : currentTrip.flag) || "";
+        if (flagEl) flagEl.value = currentFlags || currentTrip.flag || "";
+
+        // Ascolto in tempo reale: digitando le nazioni visitate, le bandierine si generano in autonomia
+        if (countryEl && flagEl && !countryEl._hasFlagListener) {
+          countryEl._hasFlagListener = true;
+          countryEl.addEventListener("input", (e) => {
+            if (window.extractFlagsFromCountryString) {
+              const ext = window.extractFlagsFromCountryString(e.target.value);
+              if (ext.flagsString) {
+                flagEl.value = ext.flagsString;
+              }
+            }
+          });
+        }
+
+        const startEl = document.getElementById("trip-start-date");
+        if (startEl) startEl.value = currentTrip.startDate || "";
+        const endEl = document.getElementById("trip-end-date");
+        if (endEl) endEl.value = currentTrip.endDate || "";
+        const compEl = document.getElementById("trip-companions");
+        if (compEl) compEl.value = currentTrip.companions || "In solitaria";
+        
+        const catEl = document.getElementById("trip-category-input");
+        if (catEl) {
+          if (currentTrip.category) {
+            // Se la categoria non è presente tra le option, la aggiungiamo dinamicamente
+            let found = false;
+            for (let i = 0; i < catEl.options.length; i++) {
+              if (catEl.options[i].value === currentTrip.category) {
+                catEl.selectedIndex = i;
+                found = true;
+                break;
+              }
+            }
+            if (!found) {
+              const opt = document.createElement("option");
+              opt.value = currentTrip.category;
+              opt.textContent = currentTrip.category;
+              catEl.appendChild(opt);
+              catEl.value = currentTrip.category;
+            }
+          }
+        }
+
+        const imgEl = document.getElementById("trip-image-url");
+        if (imgEl) imgEl.value = currentTrip.imageUrl || currentTrip.coverImage || "";
+        const hlEl = document.getElementById("trip-highlights-input");
+        if (hlEl) hlEl.value = (currentTrip.highlights || []).join(", ");
+        const descEl = document.getElementById("trip-desc-input");
+        if (descEl) descEl.value = currentTrip.description || "";
+
+        const modal = document.getElementById("modal-trip");
+        if (modal) modal.classList.add("active");
+      };
+
+      window.closeTripEditModal = function() {
+        const modal = document.getElementById("modal-trip");
+        if (modal) modal.classList.remove("active");
+      };
 
       window.closeNotesModal = function() {
         document.getElementById("modal-edit-notes").classList.remove("active");
@@ -1720,42 +2009,46 @@
       }
 
       function initThemePalette() {
-        const THEMES = [
-          { key: "gold", name: "Oro Monogramma R", color: "#D4AF37" },
-          { key: "silver", name: "Argento Puro", color: "#E5E7EB" },
-          { key: "emerald", name: "Verde Smeraldo", color: "#10B981" },
-          { key: "azure", name: "Azzurro Ceruleo", color: "#38BDF8" },
-          { key: "ruby", name: "Rosso Rubino", color: "#F43F5E" },
-          { key: "amber", name: "Ambra Solare", color: "#F59E0B" },
-          { key: "terracotta", name: "Terracotta", color: "#E07A5F" }
-        ];
-
         const savedTheme = localStorage.getItem("giuseppe_theme_color") || "gold";
         document.documentElement.setAttribute("data-theme-color", savedTheme);
 
-        const container = document.getElementById("theme-buttons-container");
-        if (!container) return;
-        container.innerHTML = "";
+        document.querySelectorAll(".theme-dot").forEach(dot => {
+          dot.classList.toggle("active", dot.getAttribute("data-theme") === savedTheme);
+        });
 
-        THEMES.forEach(t => {
-          const btn = document.createElement("button");
-          btn.className = `theme-color-btn ${savedTheme === t.key ? 'active' : ''}`;
-          btn.setAttribute("data-theme", t.key);
-          btn.title = t.name;
-          btn.style.setProperty("--btn-accent-color", t.color);
-          btn.innerHTML = `<span class="theme-color-dot" style="background-color: ${t.color}"></span><span class="theme-color-name">${t.name}</span>`;
-          btn.onclick = () => {
-            document.documentElement.setAttribute("data-theme-color", t.key);
-            localStorage.setItem("giuseppe_theme_color", t.key);
-            document.querySelectorAll(".theme-color-btn").forEach(b => b.classList.remove("active"));
-            btn.classList.add("active");
+        window.travelApp = {
+          setTheme: function(themeKey) {
+            document.documentElement.setAttribute("data-theme-color", themeKey);
+            localStorage.setItem("giuseppe_theme_color", themeKey);
+            document.querySelectorAll(".theme-dot").forEach(dot => {
+              dot.classList.toggle("active", dot.getAttribute("data-theme") === themeKey);
+            });
             if (currentTrip) {
               const dataManager = new TravelDataManager();
               renderDynamicMap(currentTrip, dataManager.isUpcoming(currentTrip), currentActiveDay);
             }
-          };
-          container.appendChild(btn);
-        });
+          },
+          openImportModal: function() {
+            window.location.href = "index.html#mappa";
+          },
+          exportData: function() {
+            const dataManager = new TravelDataManager();
+            const data = dataManager.getTrips();
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `backup_viaggi_${new Date().toISOString().slice(0, 10)}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+          },
+          confirmClearAllTrips: function() {
+            if (confirm("Attenzione: Vuoi davvero cancellare tutte le tappe salvate?")) {
+              localStorage.removeItem("giuseppe_ricatti_real_trips_v7");
+              window.location.reload();
+            }
+          }
+        };
       }
 
     })();

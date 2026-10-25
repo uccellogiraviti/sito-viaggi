@@ -81,7 +81,31 @@
       "Xi'an": [34.2612, 108.9423],
       "Pechino": [39.9042, 116.4074],
       "Beijing": [39.9042, 116.4074],
-      "Cina": [31.2304, 121.4737]
+      "Cina": [31.2304, 121.4737],
+      "Malmedy": [50.4262, 6.0278],
+      "Florenville": [49.7006, 5.3106],
+      "Nancy": [48.6921, 6.1844],
+      "Lussemburgo": [49.6116, 6.1319],
+      "Ardenne": [50.4262, 6.0278],
+      "Belgio": [50.4262, 6.0278],
+      "Chassepierre": [49.7092, 5.2631],
+      "Rochehaut": [49.8394, 5.0069],
+      "Herbeumont": [49.7828, 5.2372],
+      "Wéris": [50.3258, 5.5317],
+      "Durbuy": [50.3528, 5.4561],
+      "Spa": [50.4372, 5.9714],
+      "Stavelot": [50.3942, 5.9317],
+      "Botrange": [50.5019, 6.0928],
+      "Han-sur-Lesse": [50.1256, 5.1878],
+      "Rochefort": [50.1606, 5.2225],
+      "La Roche-en-Ardenne": [50.1836, 5.5761],
+      "Plitvice": [44.8805, 15.6161],
+      "Laghi di Plitvice": [44.8805, 15.6161],
+      "Mukinje": [44.8722, 15.6258],
+      "Zagabria": [45.8150, 15.9819],
+      "Mestre": [45.4936, 12.2415],
+      "Trieste": [45.6495, 13.7768],
+      "Croazia": [44.8805, 15.6161]
     };
 
     for (let cName of Object.keys(KNOWN_COORDS)) {
@@ -97,6 +121,40 @@
   // 1. DATABASE DOCUMENTI NECESSARI PER PAESE & DESTINAZIONE
   // ==========================================================================
   const TRAVEL_DOCUMENTS_DB = {
+    "BEL": {
+      country: "Belgio, Lussemburgo, Francia & Svizzera (Road Trip)",
+      currency: "Euro (€) & Franco Svizzero (CHF) a Zurigo",
+      passports: {
+        title: "Carta d'Identità UE valida per l'espatrio o Passaporto",
+        desc: "Tutti i paesi del tour (Francia, Lussemburgo, Belgio, Svizzera) fanno parte dell'Area Schengen. È sufficiente la carta d'identità valida per l'espatrio o il passaporto in corso di validità.",
+        badge: "Carta d'Identità UE"
+      },
+      visa: {
+        title: "Nessun Visto Richiesto (Libera Circolazione)",
+        desc: "Area Schengen e UE: nessuna richiesta di visto turistico. Libero passaggio tra le frontiere stradali.",
+        badge: "Libera Circolazione"
+      },
+      health: {
+        title: "TEAM (Tessera Sanitaria) + Pet Passport per Carla 🐾",
+        desc: "Tessera TEAM valida per assistenza medica in tutta l'UE e in Svizzera. Per Carla (la nostra Jack Russell) è obbligatorio il Passaporto Europeo per Animali d'Affezione (Pet Passport) con microchip ISO e vaccinazione antirabbica in corso di validità.",
+        badge: "TEAM + Pet Passport Carla"
+      },
+      payments: {
+        title: "Euro (€) ovunque e Contactless / Franco Svizzero a Zurigo",
+        desc: "Pagamenti in Euro (€) in Francia, Lussemburgo e Belgio. A Zurigo e in Svizzera si paga ovunque con carta contactless senza commissioni o in franchi svizzeri (CHF).",
+        badge: "Euro & Contactless"
+      },
+      driving: {
+        title: "Dotazioni Auto Obbligatorie & Vignetta Svizzera",
+        desc: "Viaggio al 100% in macchina (2.063 km): patente italiana valida, carta di circolazione e assicurazione RCA. Obbligo di pneumatici invernali M+S o catene da neve a bordo nelle Ardenne e Svizzera, giubbotti riflettenti e triangolo. Per la Svizzera è necessaria la vignetta autostradale (CHF 40).",
+        badge: "Gomme Termiche + Vignetta CH"
+      },
+      farnesina: {
+        title: "Kit da Viaggio Pet-Friendly per Carla 🐾",
+        desc: "Accessori a bordo per Carla: cintura di sicurezza omologata per cani da auto, telo impermeabile coprisedile, ciotole pieghevoli per acqua e cibo, sacchettini igienici e asciugamano per le zampe dopo i sentieri e boschi umidi delle Ardenne.",
+        badge: "Pet-Friendly Ready 🐾"
+      }
+    },
     "GBR": {
       country: "Regno Unito",
       currency: "Sterlina Britannica (GBP - £)",
@@ -2031,62 +2089,340 @@
       ]
 },
 
-    // VIAGGIO 51: LONDRA (04/12/2026 - 07/12/2026)
+    // VIAGGIO 51: LONDRA (04/12/2026 - 07/12/2026) - VIAGGIO IN FAMIGLIA
     "trip-real-51": {
       destination: "Londra, Regno Unito",
-      theme: "Magia del Natale Londinese & Luci d'Autore",
-      flightInfo: "Volo MXP ➔ LTN Wizz Air A321neo (W4 6301) / Ritorno LTN ➔ MXP (W4 6304)",
+      theme: "Magia del Natale Londinese in Famiglia: Luci d'Autore, Tina Turner Musical & Winter Wonderland",
+      flightInfo: "Volo Wizz Air MXP ➔ LTN (W4 3111, PNR: WA32CY) / Ritorno LTN ➔ MXP (W4 3112) • Posti 27 A-B-C",
+      hotelInfo: "Central Hoxton (84-86 Angela Street, London) • 3 Notti (4-7 Dic) • Check-in 14:00 / Check-out 11:00 • PNR: 55461",
       days: [
         {
           dayNumber: 1,
           date: "Venerdì 4 Dicembre 2026",
-          title: "Arrivo a Londra, Check-in & Prime Luci di Covent Garden",
-          summary: "Volo mattutino per Luton, arrivo a St Pancras, sistemazione e passeggiata tra le luci dorate e le boutique di Covent Garden e Carnaby Street.",
+          title: "Volo Wizz Air da Milano Malpensa, Arrivo a Luton & Check-in al Central Hoxton",
+          summary: "Partenza alle ore 13:20 da Milano Malpensa T1 con volo Wizz Air W4 3111 e atterraggio a Londra Luton alle 14:25 (costo volo A/R 249,00 €, PNR WA32CY, 2 bagagli stiva 10kg + 2 priority 4 zaini, posti 27 A-B-C). Trasferimento in treno Thameslink, check-in all'Hotel Central Hoxton (PNR 55461, costo 477,00 €) e prima serata tra le luci e i mercatini di Shoreditch e Spitalfields.",
           schedule: [
-            { id: "act-51-1-1", time: "09:20", title: "Arrivo all'Aeroporto di Londra Luton (LTN)", desc: "Atterraggio a bordo dell'Airbus A321neo e passaggio ai varchi elettronici ePassport con ETA.", icon: "🛬", locationName: "Aeroporto di Londra Luton", coords: [51.8747, -0.3683] },
-            { id: "act-51-1-2", time: "10:30", title: "Treno Thameslink verso St Pancras International", desc: "Navetta DART e treno veloce verso il cuore monumentale di Londra.", icon: "🚆", locationName: "St Pancras International Station", coords: [51.5314, -0.1261] },
-            { id: "act-51-1-3", time: "13:00", title: "Pranzo Gourmet al Seven Dials Market", desc: "Sosta golosa nel mercato coperto coperto con street food d'autore e formaggi caldi.", icon: "🍔", locationName: "Seven Dials Market", coords: [51.5139, -0.1268] },
-            { id: "act-51-1-4", time: "14:30", title: "Covent Garden & Grande Albero di Natale", desc: "L'albero gigante di Natale di 18 metri, oltre 115.000 luci LED e campane monumentali.", icon: "🎄", locationName: "Piazza di Covent Garden", coords: [51.5117, -0.1226] },
-            { id: "act-51-1-5", time: "16:45", title: "Installazioni di Luce a Carnaby Street", desc: "Le celebri luminarie al neon aeree e passeggiata nel quartiere artistico di Soho.", icon: "✨", locationName: "Carnaby Street", coords: [51.5132, -0.1388] },
-            { id: "act-51-1-6", time: "19:30", title: "Cena Tradizionale in Pub Vittoriano a Soho", desc: "Fish & Chips d'autore, birra Ale tradizionale britannica e atmosfera d'epoca.", icon: "🍺", locationName: "Old Compton Street, Soho", coords: [51.5135, -0.1340] }
+            {
+              id: "act-51-1-1",
+              time: "11:00",
+              title: "Milano Malpensa Terminal 1: Check-in Wizz Air & Imbarco Bagagli",
+              desc: "Ritrovo in aeroporto in famiglia, consegna ai banchi Wizz Air di 2 bagagli da stiva da 10 kg + 2 priority (4 zaini a bordo). Posti riservati assegnati 27 A-B-C (Codice PNR: WA32CY). Costo complessivo volo A/R: 249,00 €.",
+              icon: "🛫",
+              locationName: "Milano Malpensa Terminal 1",
+              coords: [45.6306, 8.7281],
+              flag: "🇮🇹",
+              transport: { type: "flight", icon: "✈️", label: "Volo Wizz Air W4 3111" }
+            },
+            {
+              id: "act-51-1-2",
+              time: "13:20",
+              title: "Decollo Volo Wizz Air W4 3111 (MXP ➔ LTN)",
+              desc: "Volo di 2 ore e 5 minuti verso Londra con posti a sedere riservati per tutta la famiglia (Posti 27 A-B-C).",
+              icon: "✈️",
+              locationName: "In volo verso Londra Luton",
+              coords: [48.7500, 3.8000],
+              flag: "🇬🇧",
+              transport: { type: "flight", icon: "✈️", label: "Volo Wizz Air A321neo (1.180 km)" }
+            },
+            {
+              id: "act-51-1-3",
+              time: "14:25",
+              title: "Atterraggio all'Aeroporto di Londra Luton (LTN)",
+              desc: "Atterraggio a Luton alle 14:25, passaggio rapido ai varchi elettronici ePassport con autorizzazione di viaggio ETA e ritiro dei 2 bagagli da stiva.",
+              icon: "🛬",
+              locationName: "Aeroporto di Londra Luton (LTN)",
+              coords: [51.8747, -0.3683],
+              flag: "🇬🇧",
+              transport: { type: "train", icon: "🚆", label: "Luton DART + Treno Thameslink" }
+            },
+            {
+              id: "act-51-1-4",
+              time: "15:15",
+              title: "Trasferimento Treno Thameslink verso Londra",
+              desc: "Navetta navetta automatica DART fino a Luton Airport Parkway e treno Thameslink rapido verso St Pancras International e Farringdon.",
+              icon: "🚆",
+              locationName: "St Pancras International / Farringdon",
+              coords: [51.5314, -0.1261],
+              flag: "🇬🇧",
+              transport: { type: "metro", icon: "🚇", label: "London Overground per Hoxton" }
+            },
+            {
+              id: "act-51-1-5",
+              time: "16:30",
+              title: "Check-in all'Hotel Central Hoxton (PNR: 55461)",
+              desc: "Sistemazione in camera per la famiglia al Central Hoxton (84-86 Angela Street, London). Soggiorno di 3 notti (dal 4 al 7 dicembre), check-in dalle ore 14:00, check-out entro le 11:00. Costo totale: 477,00 € (Prenotazione In House / Booking).",
+              icon: "🏨",
+              locationName: "Hotel Central Hoxton (84-86 Angela Street)",
+              coords: [51.5305, -0.0768],
+              flag: "🇬🇧",
+              transport: { type: "walk", icon: "🚶", label: "A piedi nel quartiere" }
+            },
+            {
+              id: "act-51-1-6",
+              time: "18:00",
+              title: "Passeggiata a Shoreditch & Old Spitalfields Market",
+              desc: "Prime luci natalizie nell'East End londinese tra boutique vintage, murales di street art e il vivace mercatino coperto di Spitalfields.",
+              icon: "✨",
+              locationName: "Old Spitalfields Market",
+              coords: [51.5197, -0.0754],
+              flag: "🇬🇧",
+              transport: { type: "walk", icon: "🚶", label: "Passeggiata serale" }
+            },
+            {
+              id: "act-51-1-7",
+              time: "19:45",
+              title: "Cena di Benvenuto in Famiglia a Shoreditch",
+              desc: "Cena di benvenuto in famiglia assaporando specialità calde in uno dei caratteristici locali di Brick Lane e Spitalfields.",
+              icon: "🍽️",
+              locationName: "Shoreditch / Brick Lane",
+              coords: [51.5225, -0.0720],
+              flag: "🇬🇧",
+              transport: { type: "walk", icon: "🚶", label: "Rientro in hotel" }
+            }
           ]
         },
         {
           dayNumber: 2,
           date: "Sabato 5 Dicembre 2026",
-          title: "Icone di Westminster, Mercatini sul Tamigi & Regent Street",
-          summary: "Dal Big Ben e Buckingham Palace fino ai mercatini di Natale affacciati sul fiume Tamigi e allo spettacolo degli Angeli di Regent Street.",
+          title: "Icone di Westminster, Luci di Covent Garden & Musical 'Tina' all'Aldwych Theatre",
+          summary: "Mattinata tra il Big Ben, Westminster Abbey e Buckingham Palace; pranzo al celebre Borough Market sul Tamigi; pomeriggio tra le luminarie monumentali e l'albero gigante di Covent Garden. In serata, grande spettacolo teatrale 'Tina : The Tina Turner Musical' all'Aldwych Theatre (3 posti Premium Seating, PNR L440465272, costo 386,75 €).",
           schedule: [
-            { id: "act-51-2-1", time: "09:30", title: "Big Ben & Palazzo di Westminster", desc: "Scorci iconici del Big Ben restaurato e della storica abbazia reale di Westminster.", icon: "🏛️", locationName: "Big Ben & Parliament Square", coords: [51.5007, -0.1246] },
-            { id: "act-51-2-2", time: "11:00", title: "Passeggiata a St. James's Park & Buckingham Palace", desc: "Passeggiata tra i viali alberati popolati da scoiattoli fino alla residenza reale.", icon: "👑", locationName: "Buckingham Palace", coords: [51.5014, -0.1419] },
-            { id: "act-51-2-3", time: "12:45", title: "Pranzo al Tradizionale Borough Market", desc: "Il mercato alimentare più amato sul Tamigi: formaggi, panini caldi, tartufi e dolci.", icon: "🧀", locationName: "Borough Market", coords: [51.5055, -0.0910] },
-            { id: "act-51-2-4", time: "14:30", title: "Tower Bridge & Mercatino 'Winter by the River'", desc: "Chalet in legno natalizi sul fiume Tamigi con artigianato, vin brulé e vista sul ponte.", icon: "🌉", locationName: "Tower Bridge & Southwark", coords: [51.5055, -0.0754] },
-            { id: "act-51-2-5", time: "17:00", title: "L'Angelo di Luce su Regent Street", desc: "'The Spirit of Christmas', i maestosi angeli scintillanti dorati su tutta la curva di Regent Street.", icon: "👼", locationName: "Regent Street Curve", coords: [51.5097, -0.1370] },
-            { id: "act-51-2-6", time: "19:00", title: "Aperitivo Panoramico allo Sky Garden", desc: "Giardino pensile a 150 metri d'altezza con vista spettacolare a 360° sulla City illuminata.", icon: "🍸", locationName: "Sky Garden (Walkie Talkie)", coords: [51.5111, -0.0837] }
+            {
+              id: "act-51-2-1",
+              time: "09:30",
+              title: "Big Ben, Westminster Abbey & Parliament Square",
+              desc: "Scorci maestosi sul Big Ben restaurato e sull'abbazia reale gotica di Westminster Abbey illuminata dal sole invernale.",
+              icon: "🏛️",
+              locationName: "Big Ben & Westminster",
+              coords: [51.5007, -0.1246],
+              flag: "🇬🇧",
+              transport: { type: "walk", icon: "🚶", label: "Passeggiata verso il parco" }
+            },
+            {
+              id: "act-51-2-2",
+              time: "11:00",
+              title: "St. James's Park & Buckingham Palace",
+              desc: "Passeggiata tra gli scoiattoli e i viali alberati di St. James's Park fino ai cancelli dorati della residenza reale di Buckingham Palace.",
+              icon: "👑",
+              locationName: "Buckingham Palace",
+              coords: [51.5014, -0.1419],
+              flag: "🇬🇧",
+              transport: { type: "bus", icon: "🚌", label: "Bus a due piani TfL" }
+            },
+            {
+              id: "act-51-2-3",
+              time: "12:45",
+              title: "Pranzo Gourmet al Borough Market sul Tamigi",
+              desc: "Sosta golosa per la famiglia nel mercato gastronomico più amato di Londra: formaggi fusi, caldi pasticci della Cornovaglia, funghi e dolci artigianali.",
+              icon: "🧀",
+              locationName: "Borough Market",
+              coords: [51.5055, -0.0910],
+              flag: "🇬🇧",
+              transport: { type: "metro", icon: "🚇", label: "Jubilee Line per Covent Garden" }
+            },
+            {
+              id: "act-51-2-4",
+              time: "15:00",
+              title: "Covent Garden & Il Grande Albero di Natale",
+              desc: "La magica piazza storica con il gigantesco abete di 18 metri, oltre 115.000 luci a LED dorate, campane a specchio e spettacoli di artisti di strada.",
+              icon: "🎄",
+              locationName: "Piazza di Covent Garden",
+              coords: [51.5117, -0.1226],
+              flag: "🇬🇧",
+              transport: { type: "walk", icon: "🚶", label: "A piedi verso Aldwych Theatre" }
+            },
+            {
+              id: "act-51-2-5",
+              time: "17:15",
+              title: "Tè Pomeridiano & Atmosfera del West End",
+              desc: "Pausa calda pomeridiana tra caffè storici, vetrine natalizie e passeggiata verso il quartiere dei teatri nel West End.",
+              icon: "☕",
+              locationName: "The Strand, West End",
+              coords: [51.5115, -0.1200],
+              flag: "🇬🇧",
+              transport: { type: "walk", icon: "🚶", label: "Arrivo a teatro" }
+            },
+            {
+              id: "act-51-2-6",
+              time: "18:30",
+              title: "Ingresso all'Aldwych Theatre (The Aldwych)",
+              desc: "Arrivo allo storico Aldwych Theatre (49 Aldwych, London WC2B 4DF). Accesso prioritario e ritiro snack Pick 'n' Mix to share compreso nella prenotazione.",
+              icon: "🎭",
+              locationName: "Aldwych Theatre (49 Aldwych)",
+              coords: [51.5126, -0.1190],
+              flag: "🇬🇧",
+              transport: { type: "walk", icon: "🚶", label: "Ingresso in sala" }
+            },
+            {
+              id: "act-51-2-7",
+              time: "19:00",
+              title: "Spettacolo Teatrale: 'Tina : The Tina Turner Musical'",
+              desc: "Ore 19:00 Inizio Spettacolo! 3 x Seats (£270.00) con pacchetto esclusivo Premium Seating (£59.50) e Pick 'n' Mix to share. Codice PNR: L440465272 (Sito: Ticket / ATG Tickets). Costo totale: 386,75 €. Emozioni travolgenti con i più grandi successi di Tina Turner dal vivo.",
+              icon: "🎶",
+              locationName: "Aldwych Theatre (The Aldwych)",
+              coords: [51.5126, -0.1190],
+              flag: "🇬🇧",
+              transport: { type: "walk", icon: "🚶", label: "Uscita dal teatro" }
+            },
+            {
+              id: "act-51-2-8",
+              time: "22:00",
+              title: "Luci Notturne a Trafalgar Square & Strand",
+              desc: "Uscita dal musical con i ritmi travolgenti nel cuore, passeggiata sotto le luci dorate di Strand e Trafalgar Square prima di rientrare verso Hoxton.",
+              icon: "✨",
+              locationName: "Trafalgar Square",
+              coords: [51.5080, -0.1281],
+              flag: "🇬🇧",
+              transport: { type: "bus", icon: "🚌", label: "Bus notturno TfL per Hoxton" }
+            }
           ]
         },
         {
           dayNumber: 3,
           date: "Domenica 6 Dicembre 2026",
-          title: "Tesori Culturali & Il Villaggio delle Favole a Winter Wonderland",
-          summary: "Mattina al British Museum, pomeriggio interamente dedicato al leggendario Winter Wonderland di Hyde Park e vetrine scintillanti di Harrods.",
+          title: "British Museum, Angeli di Regent Street & Magia a Winter Wonderland",
+          summary: "Mattinata culturale al British Museum tra le meraviglie del mondo antico, le installazioni scintillanti di Regent Street e Carnaby, per poi tuffarsi nell'universo incantato di Winter Wonderland ad Hyde Park.",
           schedule: [
-            { id: "act-51-3-1", time: "09:00", title: "Great Court & Collezioni del British Museum", desc: "La magnifica cupola di vetro di Norman Foster, la Stele di Rosetta e i capolavori antichi.", icon: "🏛️", locationName: "The British Museum", coords: [51.5194, -0.1270] },
-            { id: "act-51-3-2", time: "12:30", title: "Brunch Tradizionale a Marylebone", desc: "Atmosfera rilassata tra boulangerie artigianali e caffè storici.", icon: "🥐", locationName: "Marylebone High Street", coords: [51.5204, -0.1517] },
-            { id: "act-51-3-3", time: "14:30", title: "Ingresso ad Hyde Park: Winter Wonderland", desc: "Il più celebre parco a tema natalizio europeo con oltre 100 attrazioni e sculture di ghiaccio.", icon: "🎡", locationName: "Hyde Park Winter Wonderland", coords: [51.5073, -0.1657] },
-            { id: "act-51-3-4", time: "17:00", title: "Pattinaggio sul Ghiaccio attorno al Gazebo Reale", desc: "L'Ice Rink illuminato da migliaia di microluci con musica dal vivo in sottofondo.", icon: "⛸️", locationName: "Winter Wonderland Ice Rink", coords: [51.5085, -0.1670] },
-            { id: "act-51-3-5", time: "22:00", title: "Vetrine Natalizie e Facciata di Harrods", desc: "La storica facciata monumentale illuminata da migliaia di lampadine dorate a Knightsbridge.", icon: "🛍️", locationName: "Harrods, Knightsbridge", coords: [51.4994, -0.1632] }
+            {
+              id: "act-51-3-1",
+              time: "09:30",
+              title: "The British Museum: Great Court & Tesori Antichi",
+              desc: "Visita per tutta la famiglia sotto la cupola di vetro di Norman Foster, ammirando la Stele di Rosetta, i bassorilievi assiri e le mummie dell'antico Egitto (ingresso gratuito).",
+              icon: "🏛️",
+              locationName: "The British Museum",
+              coords: [51.5194, -0.1270],
+              flag: "🇬🇧",
+              transport: { type: "walk", icon: "🚶", label: "Passeggiata verso Soho" }
+            },
+            {
+              id: "act-51-3-2",
+              time: "12:15",
+              title: "Luminarie di Carnaby Street & Angeli di Regent Street",
+              desc: "Le scenografiche installazioni al neon di Carnaby Street e i maestosi angeli scintillanti 'The Spirit of Christmas' sospesi su tutta la curva di Regent Street.",
+              icon: "👼",
+              locationName: "Regent Street & Carnaby",
+              coords: [51.5097, -0.1370],
+              flag: "🇬🇧",
+              transport: { type: "metro", icon: "🚇", label: "Piccadilly Line per Hyde Park" }
+            },
+            {
+              id: "act-51-3-3",
+              time: "14:15",
+              title: "Ingresso ad Hyde Park: Winter Wonderland",
+              desc: "Il regno delle favole natalizio più famoso al mondo: mercatini bavaresi, ruota panoramica gigante con vista su Londra e attrazioni per famiglie.",
+              icon: "🎡",
+              locationName: "Hyde Park Winter Wonderland",
+              coords: [51.5073, -0.1657],
+              flag: "🇬🇧",
+              transport: { type: "walk", icon: "🚶", label: "Passeggiata nel parco" }
+            },
+            {
+              id: "act-51-3-4",
+              time: "17:00",
+              title: "Pattinaggio sul Ghiaccio all'Ice Rink di Hyde Park",
+              desc: "L'Ice Rink a cielo aperto illuminato da oltre 100.000 lucine dorate attorno al gazebo reale vittoriano con melodie natalizie dal vivo.",
+              icon: "⛸️",
+              locationName: "Winter Wonderland Ice Rink",
+              coords: [51.5085, -0.1670],
+              flag: "🇬🇧",
+              transport: { type: "walk", icon: "🚶", label: "Passeggiata verso Knightsbridge" }
+            },
+            {
+              id: "act-51-3-5",
+              time: "19:30",
+              title: "Vetrine Natalizie & Facciata di Harrods",
+              desc: "La leggendaria facciata monumentale di Harrods a Knightsbridge accesa da oltre 12.000 lampadine dorate e le vetrine animate a tema fiabesco.",
+              icon: "🛍️",
+              locationName: "Harrods, Knightsbridge",
+              coords: [51.4994, -0.1632],
+              flag: "🇬🇧",
+              transport: { type: "metro", icon: "🚇", label: "Piccadilly Line per il centro" }
+            },
+            {
+              id: "act-51-3-6",
+              time: "21:00",
+              title: "Cena Tradizionale in Pub Vittoriano",
+              desc: "Cena rilassante in famiglia con Sunday Roast, Fish & Chips e dolci natalizi in un accogliente pub d'epoca.",
+              icon: "🍺",
+              locationName: "Mayfair / Soho Pub",
+              coords: [51.5120, -0.1440],
+              flag: "🇬🇧",
+              transport: { type: "bus", icon: "🚌", label: "Rientro a Hoxton" }
+            }
           ]
         },
         {
           dayNumber: 4,
           date: "Lunedì 7 Dicembre 2026",
-          title: "Camden Lock, Shopping Finale a Oxford Street & Volo di Rientro",
-          summary: "I murales e le chiuse di Camden Town, acquisti natalizi su Oxford Street e partenza serale verso Malpensa.",
+          title: "Camden Lock, Shopping a Oxford Street & Volo di Rientro a Milano",
+          summary: "Check-out all'Hotel Central Hoxton (entro le ore 11:00, PNR 55461). Mattinata a Camden Lock tra chiuse d'acqua e mercatini artigianali, acquisti natalizi su Oxford Street e partenza serale con volo Wizz Air W4 3112 da Luton verso Milano Malpensa T1 (Posti 27 A-B-C, PNR WA32CY).",
           schedule: [
-            { id: "act-51-4-1", time: "09:45", title: "Camden Market & Regent's Canal", desc: "I canali d'acqua storici, i negozi di artigianato vintage e i pontili di Camden Lock.", icon: "⛵", locationName: "Camden Market & Lock", coords: [51.5414, -0.1465] },
-            { id: "act-51-4-2", time: "12:30", title: "Shopping Natalizio a Liberty London & Oxford Street", desc: "Il palazzo a graticcio Tudor per decorazioni uniche e la via dello shopping londinese.", icon: "🎁", locationName: "Liberty London & Oxford Street", coords: [51.5137, -0.1402] },
-            { id: "act-51-4-3", time: "17:00", title: "Ritorno in Aeroporto a Londra Luton (LTN)", desc: "Arrivo con Thameslink, controlli di sicurezza e gate per il volo di rientro serale W4 6304.", icon: "🛫", locationName: "London Luton Airport Gates", coords: [51.8747, -0.3683] }
+            {
+              id: "act-51-4-1",
+              time: "09:00",
+              title: "Check-out Hotel Central Hoxton & Deposito Bagagli",
+              desc: "Check-out entro le ore 11:00 dal Central Hoxton (PNR 55461) e deposito temporaneo dei bagagli per sfruttare appieno l'ultima giornata a Londra in famiglia.",
+              icon: "🧳",
+              locationName: "Hotel Central Hoxton",
+              coords: [51.5305, -0.0768],
+              flag: "🇬🇧",
+              transport: { type: "metro", icon: "🚇", label: "Northern Line per Camden Town" }
+            },
+            {
+              id: "act-51-4-2",
+              time: "10:00",
+              title: "Camden Market, Regent's Canal & Chiuse Storiche",
+              desc: "Esplorazione dei canali storici di Regent's Canal, i pontili in ferro e le vivaci bancarelle di artigianato e design a Camden Lock.",
+              icon: "⛵",
+              locationName: "Camden Market & Lock",
+              coords: [51.5414, -0.1465],
+              flag: "🇬🇧",
+              transport: { type: "metro", icon: "🚇", label: "Northern Line per Oxford Circus" }
+            },
+            {
+              id: "act-51-4-3",
+              time: "12:30",
+              title: "Shopping Natalizio a Liberty London & Oxford Street",
+              desc: "Acquisto delle tradizionali palline di Natale nel magnifico palazzo a graticcio Tudor di Liberty e passeggiata finale tra i grandi magazzini di Oxford Street.",
+              icon: "🎁",
+              locationName: "Liberty London & Oxford Street",
+              coords: [51.5137, -0.1402],
+              flag: "🇬🇧",
+              transport: { type: "metro", icon: "🚇", label: "Overground per Hoxton (ritiro bagagli)" }
+            },
+            {
+              id: "act-51-4-4",
+              time: "14:30",
+              title: "Ritiro Bagagli a Hoxton & Trasferimento per Luton",
+              desc: "Tratta Londra Hotel ➔ Londra Luton. Ritiro dei bagagli al Central Hoxton e trasferimento verso St Pancras / Farringdon con il treno Thameslink per la stazione di Luton Airport Parkway.",
+              icon: "🚆",
+              locationName: "Londra Hotel ➔ Londra Luton",
+              coords: [51.5314, -0.1261],
+              flag: "🇬🇧",
+              transport: { type: "train", icon: "🚆", label: "Treno Thameslink + Navetta DART" }
+            },
+            {
+              id: "act-51-4-5",
+              time: "16:00",
+              title: "Aeroporto di Londra Luton (LTN): Imbarco Wizz Air",
+              desc: "Arrivo in aeroporto, controlli di sicurezza, consegna 2 bagagli stiva 10 kg e gate per il volo di rientro Wizz Air W4 3112 verso Milano Malpensa T1 (Posti assegnati 27 A-B-C, PNR: WA32CY).",
+              icon: "🛫",
+              locationName: "London Luton Airport (LTN)",
+              coords: [51.8747, -0.3683],
+              flag: "🇬🇧",
+              transport: { type: "flight", icon: "✈️", label: "Volo Wizz Air W4 3112 (LTN ➔ MXP)" }
+            },
+            {
+              id: "act-51-4-6",
+              time: "19:40",
+              title: "Atterraggio a Milano Malpensa T1 & Rientro a Casa",
+              desc: "Atterraggio a Milano Malpensa Terminal 1, ritiro dei 2 bagagli da stiva e conclusione del meraviglioso weekend pre-natalizio a Londra in famiglia.",
+              icon: "🏠",
+              locationName: "Milano Malpensa Terminal 1 (MXP)",
+              coords: [45.6306, 8.7281],
+              flag: "🇮🇹",
+              transport: { type: "car", icon: "🚗", label: "Rientro a casa" }
+            }
           ]
         }
       ]
@@ -3749,6 +4085,899 @@
       ]
 },
 
+
+    // VIAGGIO 53: ROAD TRIP ARDENNE & ZURIGO (26/12/2026 - 05/01/2027) - IN FAMIGLIA CON CARLA 🐾
+    "trip-real-53": {
+      "destination": "Belgio (Ardenne: Florenville, Rochehaut, Herbeumont, Wéris, Durbuy, Malmedy, Spa, Botrange, Han-sur-Lesse), Francia (Nancy), Lussemburgo & Svizzera (Zurigo)",
+      "theme": "Road Trip Natalizio & Capodanno su 4 Ruote in Famiglia con Carla 🐾: Ardenne Innevate, Castelli Feudali, Magia di Malmedy & Zurigo",
+      "flightInfo": "Viaggio interamente in automobile (2.063 km totali percorsi su 4 ruote, pedaggi/vignetta 351,50 €)",
+      "hotelInfo": "Ibis Budget Nancy (90,24 €, PIN 0142), Chez Manu Florenville (345,00 €, PIN 1752), Terrasse de Malmedy (422,00 €, PIN 0787), VISIONAPARTMENTS Zurigo (355,00 €, PIN 4242)",
+      "days": [
+        {
+          "dayNumber": 1,
+          "date": "Sabato 26 Dicembre 2026",
+          "title": "Partenza in Auto dall'Italia verso la Francia: Arrivo a Nancy & Place Stanislas",
+          "summary": "Partenza al mattino da Casa con tutta la famiglia e la nostra Jack Russell Carla a bordo dell'auto verso Nancy in Francia (593 km, 6h 35m, costo stimato carburante/pedaggi 122,00 €). Check-in all'Hotel Ibis Budget Nancy Centre (4 Allée Du Chanoine Drioton, costo 90,24 €, codice Booking PRN: 5782550740, PIN: 0142, colazione inclusa) e splendida passeggiata serale tra le luci natalizie di Place Stanislas (patrimonio mondiale UNESCO).",
+          "schedule": [
+            {
+              "id": "act-53-1-1",
+              "time": "08:30",
+              "title": "Partenza da Casa in Auto con Tutta la Famiglia & Carla",
+              "desc": "Carico bagagli in auto, sistemazione sicura di Carla sul sedile posteriore con pettorina e cintura di sicurezza omologata e inizio del Road Trip invernale di 2.063 km.",
+              "icon": "🚗",
+              "locationName": "Partenza da Casa (Italia)",
+              "coords": [45.4642, 9.1900],
+              "flag": "🇮🇹",
+              "transport": { "type": "car", "icon": "🚗", "label": "Auto propria (593 km)" }
+            },
+            {
+              "id": "act-53-1-2",
+              "time": "12:30",
+              "title": "Sosta Autostradale per Ristoro & Sgambamento Carla",
+              "desc": "Pausa rigenerante nell'area di servizio autostradale per il pranzo e una bella camminata con Carla all'aria aperta.",
+              "icon": "🐾",
+              "locationName": "Autostrada francese",
+              "coords": [47.5000, 7.0000],
+              "flag": "🇫🇷",
+              "transport": { "type": "walk", "icon": "🚶", "label": "Passeggiata con Carla" }
+            },
+            {
+              "id": "act-53-1-3",
+              "time": "15:45",
+              "title": "Arrivo a Nancy & Check-in all'Hotel Ibis Budget Nancy Centre",
+              "desc": "Check-in rapido all'Hotel Ibis Budget Nancy Centre (4 Allée Du Chanoine Drioton, 54000 Nancy). Costo camera: 90,24 € per 1 notte, Codice Booking PRN: 5782550740, PIN: 0142 (colazione inclusa). Camera pet-friendly pronta per Carla.",
+              "icon": "🏨",
+              "locationName": "Hotel Ibis Budget Nancy Centre",
+              "coords": [48.6921, 6.1844],
+              "flag": "🇫🇷",
+              "transport": { "type": "walk", "icon": "🚶", "label": "Check-in hotel" }
+            },
+            {
+              "id": "act-53-1-4",
+              "time": "17:30",
+              "title": "Passeggiata in Famiglia & Carla in Place Stanislas a Nancy",
+              "desc": "Visita alla splendida Place Stanislas a Nancy, capolavoro del XVIII secolo patrimonio UNESCO, magnificamente illuminata per le feste natalizie con archi dorati e fontane storiche.",
+              "icon": "✨",
+              "locationName": "Place Stanislas, Nancy",
+              "coords": [48.6936, 6.1832],
+              "flag": "🇫🇷",
+              "transport": { "type": "walk", "icon": "🚶", "label": "Passeggiata serale" }
+            }
+          ]
+        },
+        {
+          "dayNumber": 2,
+          "date": "Domenica 27 Dicembre 2026",
+          "title": "Da Nancy al Granducato di Lussemburgo e Arrivo a Florenville (Belgio)",
+          "summary": "Colazione all'Ibis Nancy e partenza per Lussemburgo (117 km, 1h 28m, pedaggio 10,50 €). Visita panoramica del centro storico, Chemin de la Corniche e casematte. Nel pomeriggio proseguimento verso le Ardenne belghe a Florenville (75,3 km, 1h 05m, pedaggio 4,80 €) e check-in a Chez Manu (Rue du Terme 10, 6820 Florenville, costo 345,00 € per 3 notti, PIN: 1752).",
+          "schedule": [
+            {
+              "id": "act-53-2-1",
+              "time": "09:30",
+              "title": "Partenza in Auto da Nancy verso Lussemburgo",
+              "desc": "Viaggio autostradale di 117 km attraverso la Lorena fino al confine con il Granducato di Lussemburgo.",
+              "icon": "🚗",
+              "locationName": "In viaggio verso Lussemburgo",
+              "coords": [49.2000, 6.1500],
+              "flag": "🇫🇷",
+              "transport": { "type": "car", "icon": "🚗", "label": "Auto propria (117 km)" }
+            },
+            {
+              "id": "act-53-2-2",
+              "time": "11:15",
+              "title": "Lussemburgo Città: Chemin de la Corniche & Casematte del Bock",
+              "desc": "Passeggiata panoramica con Carla lungo lo Chemin de la Corniche, 'il balcone più bello d'Europa', ammirando i profondi canyon dell'Alzette e le fortificazioni storiche del Grund.",
+              "icon": "🏰",
+              "locationName": "Chemin de la Corniche, Lussemburgo",
+              "coords": [49.6116, 6.1319],
+              "flag": "🇱🇺",
+              "transport": { "type": "walk", "icon": "🚶", "label": "Tour a piedi con Carla" }
+            },
+            {
+              "id": "act-53-2-3",
+              "time": "14:45",
+              "title": "Attraversamento Confine Belga verso Florenville",
+              "desc": "Viaggio di 75,3 km da Lussemburgo verso la regione vallona delle Ardenne belghe.",
+              "icon": "🚗",
+              "locationName": "Verso Florenville, Ardenne belghe",
+              "coords": [49.6500, 5.7000],
+              "flag": "🇧🇪",
+              "transport": { "type": "car", "icon": "🚗", "label": "Auto propria (75,3 km)" }
+            },
+            {
+              "id": "act-53-2-4",
+              "time": "16:00",
+              "title": "Check-in a Florenville: Casa 'Chez Manu'",
+              "desc": "Arrivo a Florenville (Chassepierre) e check-in nella confortevole casa 'Chez Manu' (Rue du Terme 10, 6820 Florenville). Costo soggiorno: 345,00 € per 3 notti (PIN: 1752). Sistemazione di Carla e relax.",
+              "icon": "🏡",
+              "locationName": "Chez Manu, Rue du Terme 10, Florenville",
+              "coords": [49.7006, 5.3106],
+              "flag": "🇧🇪",
+              "transport": { "type": "walk", "icon": "🚶", "label": "Check-in alloggio" }
+            }
+          ]
+        },
+        {
+          "dayNumber": 3,
+          "date": "Lunedì 28 Dicembre 2026",
+          "title": "Escursione Panoramica a Rochehaut: Il Meandro della Semois & Trekking nei Boschi",
+          "summary": "Escursione in auto da Florenville a Rochehaut-sur-Semois (33,6 km, 31m). Ammirazione del celebre 'Point de Vue de Frahan' sul meandro fluviale della Semois e trekking nei boschi valloni con Carla tra paesaggi incontaminati. Rientro a Florenville (33,6 km, 31m).",
+          "schedule": [
+            {
+              "id": "act-53-3-1",
+              "time": "10:00",
+              "title": "In Auto da Florenville verso Rochehaut",
+              "desc": "Tragitto di 33,6 km tra le colline boscose e le valli della Semois verso il villaggio di Rochehaut.",
+              "icon": "🚗",
+              "locationName": "Strada panoramica per Rochehaut",
+              "coords": [49.7700, 5.1500],
+              "flag": "🇧🇪",
+              "transport": { "type": "car", "icon": "🚗", "label": "Auto propria (33,6 km)" }
+            },
+            {
+              "id": "act-53-3-2",
+              "time": "10:45",
+              "title": "Point de Vue de Frahan a Rochehaut",
+              "desc": "Sosta al belvedere più celebre del Belgio: vista panoramica a 180 gradi sul meandro perfetto del fiume Semois e sul villaggio rurale di Frahan incastonato nella valle.",
+              "icon": "📸",
+              "locationName": "Point de Vue de Frahan, Rochehaut",
+              "coords": [49.8394, 5.0069],
+              "flag": "🇧🇪",
+              "transport": { "type": "walk", "icon": "🚶", "label": "Punto panoramico" }
+            },
+            {
+              "id": "act-53-3-3",
+              "time": "12:30",
+              "title": "Trekking nei Sentieri della Semois con Carla",
+              "desc": "Passeggiata rigenerante tra faggi e querce secolari dell'Ardenne: Carla si diverte a correre sui sentieri naturali in sicurezza con pettorina da trekking.",
+              "icon": "🌲",
+              "locationName": "Sentieri naturalistici di Rochehaut",
+              "coords": [49.8420, 5.0150],
+              "flag": "🇧🇪",
+              "transport": { "type": "walk", "icon": "🚶", "label": "Trekking con Carla" }
+            },
+            {
+              "id": "act-53-3-4",
+              "time": "16:00",
+              "title": "Rientro a Florenville & Serata in Famiglia a Chez Manu",
+              "desc": "Ritorno in auto a Florenville (33,6 km) per una serata calda e accogliente a Chez Manu con specialità tipiche valloni.",
+              "icon": "🏡",
+              "locationName": "Chez Manu, Florenville",
+              "coords": [49.7006, 5.3106],
+              "flag": "🇧🇪",
+              "transport": { "type": "car", "icon": "🚗", "label": "Auto propria (33,6 km)" }
+            }
+          ]
+        },
+        {
+          "dayNumber": 4,
+          "date": "Martedì 29 Dicembre 2026",
+          "title": "Castello Medievale di Herbeumont & Borgo di Pietra di Chassepierre",
+          "summary": "Tour storico e artistico nel sud delle Ardenne: visita alle imponenti rovine del castello medievale di Herbeumont (8,8 km da Florenville), seguita dalla scoperta di Chassepierre (12,4 km), uno dei villaggi più belli della Vallonia con le sue caratteristiche case in pietra calcarea.",
+          "schedule": [
+            {
+              "id": "act-53-4-1",
+              "time": "10:30",
+              "title": "Da Florenville a Herbeumont",
+              "desc": "Breve spostamento di 8,8 km verso Herbeumont lungo il corso sinuoso della Semois.",
+              "icon": "🚗",
+              "locationName": "Verso Herbeumont",
+              "coords": [49.7500, 5.2700],
+              "flag": "🇧🇪",
+              "transport": { "type": "car", "icon": "🚗", "label": "Auto propria (8,8 km)" }
+            },
+            {
+              "id": "act-53-4-2",
+              "time": "11:00",
+              "title": "Rovine del Castello Feudale di Herbeumont",
+              "desc": "Esplorazione a piedi delle maestose rovine del castello medievale risalente al XIII secolo, arroccato sulla cima di una cresta di scisto affacciata sulla valle boscosa.",
+              "icon": "🏰",
+              "locationName": "Château d'Herbeumont",
+              "coords": [49.7828, 5.2372],
+              "flag": "🇧🇪",
+              "transport": { "type": "walk", "icon": "🚶", "label": "Visita castello" }
+            },
+            {
+              "id": "act-53-4-3",
+              "time": "13:30",
+              "title": "Chassepierre: Borgo degli Artisti & Plus Beau Village de Wallonie",
+              "desc": "Visita all'incantevole borgo di Chassepierre (12,4 km da Herbeumont), famoso per il ponte in pietra, le sorgenti naturali e le abitazioni storiche settecentesche.",
+              "icon": "🏘️",
+              "locationName": "Chassepierre, Florenville",
+              "coords": [49.7092, 5.2631],
+              "flag": "🇧🇪",
+              "transport": { "type": "walk", "icon": "🚶", "label": "Passeggiata nel borgo" }
+            },
+            {
+              "id": "act-53-4-4",
+              "time": "16:00",
+              "title": "Rientro a Florenville (Chez Manu)",
+              "desc": "Rientro a Florenville (3,6 km) e preparativi per il trasferimento del giorno seguente verso Malmedy.",
+              "icon": "🏡",
+              "locationName": "Florenville",
+              "coords": [49.7006, 5.3106],
+              "flag": "🇧🇪",
+              "transport": { "type": "car", "icon": "🚗", "label": "Auto propria (3,6 km)" }
+            }
+          ]
+        },
+        {
+          "dayNumber": 5,
+          "date": "Mercoledì 30 Dicembre 2026",
+          "title": "I Megaliti di Wéris, la Piccola Durbuy & Arrivo a Malmedy",
+          "summary": "Check-out da Chez Manu e viaggio verso nord a Wéris (91 km, 1h 22m, pedaggio 8,20 €) con i suoi menhir e dolmen celtici. Breve tragitto verso Durbuy (8,5 km, 11m), la città più piccola del mondo tra vicoli medievali e mercatino invernale. Proseguimento per Malmedy (52 km, 1h 00m, pedaggio 1,00 €) e check-in a Terrasse de Malmedy (22 Chemin du Calvaire, costo 422,00 € per 4 notti, PIN: 0787).",
+          "schedule": [
+            {
+              "id": "act-53-5-1",
+              "time": "09:30",
+              "title": "Partenza in Auto da Florenville verso Wéris",
+              "desc": "Check-out da Chez Manu e viaggio di 91 km attraverso il cuore verde dell'Ardenne vallona verso la provincia del Lussemburgo belga.",
+              "icon": "🚗",
+              "locationName": "In viaggio verso Wéris",
+              "coords": [50.0000, 5.4000],
+              "flag": "🇧🇪",
+              "transport": { "type": "car", "icon": "🚗", "label": "Auto propria (91 km)" }
+            },
+            {
+              "id": "act-53-5-2",
+              "time": "11:15",
+              "title": "I Misteriosi Megaliti & Dolmen di Wéris",
+              "desc": "Visita all'unico sito megalitico del Belgio: dolmen e menhir in puddinga risalenti a oltre 5.000 anni fa, immersi in un paesaggio agreste incantato.",
+              "icon": "🪨",
+              "locationName": "Megaliti di Wéris",
+              "coords": [50.3258, 5.5317],
+              "flag": "🇧🇪",
+              "transport": { "type": "walk", "icon": "🚶", "label": "Passeggiata tra i dolmen" }
+            },
+            {
+              "id": "act-53-5-3",
+              "time": "13:00",
+              "title": "Durbuy: 'La Più Piccola Città del Mondo'",
+              "desc": "Breve tragitto in auto verso Durbuy (8,5 km). Passeggiata nel centro storico pedonale dominato dal castello dei Conti d'Ursel, tra botteghe artigiane, cioccolato belga e profumo di vin brulé.",
+              "icon": "🏰",
+              "locationName": "Durbuy Centro Storico",
+              "coords": [50.3528, 5.4561],
+              "flag": "🇧🇪",
+              "transport": { "type": "walk", "icon": "🚶", "label": "Visita città medievale" }
+            },
+            {
+              "id": "act-53-5-4",
+              "time": "15:45",
+              "title": "Arrivo a Malmedy & Check-in a 'Terrasse de Malmedy'",
+              "desc": "Spostamento in auto a Malmedy (52 km, 1h) e check-in all'alloggio 'Terrasse de Malmedy' (22 Chemin du Calvaire, 4960 Malmedy). Costo: 422,00 € per 4 notti di soggiorno (PIN: 0787). Accogliente e ideale per Carla.",
+              "icon": "🏡",
+              "locationName": "Terrasse de Malmedy, 22 Chemin du Calvaire",
+              "coords": [50.4262, 6.0278],
+              "flag": "🇧🇪",
+              "transport": { "type": "car", "icon": "🚗", "label": "Auto propria (52 km)" }
+            }
+          ]
+        },
+        {
+          "dayNumber": 6,
+          "date": "Giovedì 31 Dicembre 2026",
+          "title": "San Silvestro: Circuito di Spa-Francorchamps, Abbazia di Stavelot & Cenone a Malmedy",
+          "summary": "Escursione al leggendario Circuito di Formula 1 di Spa-Francorchamps (12 km da Malmedy) tra Eau Rouge e Raidillon. Visita all'Abbazia storica di Stavelot (7 km) e rientro a Malmedy (12,5 km) per celebrare l'ultimo dell'anno in famiglia con Carla in un'atmosfera festosa e intima.",
+          "schedule": [
+            {
+              "id": "act-53-6-1",
+              "time": "10:30",
+              "title": "Malmedy ➔ Circuito di Spa-Francorchamps",
+              "desc": "Tragitto di 12 km in auto da Malmedy verso il tracciato automobilistico più celebre al mondo, incastonato tra le fitte foreste delle Ardenne.",
+              "icon": "🚗",
+              "locationName": "Verso Spa-Francorchamps",
+              "coords": [50.4300, 6.0000],
+              "flag": "🇧🇪",
+              "transport": { "type": "car", "icon": "🚗", "label": "Auto propria (12 km)" }
+            },
+            {
+              "id": "act-53-6-2",
+              "time": "11:00",
+              "title": "Circuito di Spa-Francorchamps: Eau Rouge & Raidillon",
+              "desc": "Sosta fotografica al leggendario circuito: vista panoramica sulla celeberrima curva Eau Rouge-Raidillon e sull'iconico paddock circondato dalla neve.",
+              "icon": "🏎️",
+              "locationName": "Circuito di Spa-Francorchamps",
+              "coords": [50.4372, 5.9714],
+              "flag": "🇧🇪",
+              "transport": { "type": "walk", "icon": "🚶", "label": "Tappa al circuito" }
+            },
+            {
+              "id": "act-53-6-3",
+              "time": "12:45",
+              "title": "Stavelot: Storica Abbazia & Museo del Circuito",
+              "desc": "Visita a Stavelot (7 km da Spa): il grandioso complesso dell'Abbazia di Stavelot fondata nel VII secolo, patrimonio monumentale della Vallonia.",
+              "icon": "🏛️",
+              "locationName": "Abbaye de Stavelot",
+              "coords": [50.3942, 5.9317],
+              "flag": "🇧🇪",
+              "transport": { "type": "walk", "icon": "🚶", "label": "Visita abbazia" }
+            },
+            {
+              "id": "act-53-6-4",
+              "time": "16:00",
+              "title": "Rientro a Malmedy & Cenone di Capodanno in Famiglia",
+              "desc": "Rientro a Terrasse de Malmedy (12,5 km), relax al caldo con Carla e brindisi di mezzanotte per accogliere il nuovo anno 2027 in famiglia!",
+              "icon": "🥂",
+              "locationName": "Malmedy",
+              "coords": [50.4262, 6.0278],
+              "flag": "🇧🇪",
+              "transport": { "type": "car", "icon": "🚗", "label": "Auto propria (12,5 km)" }
+            }
+          ]
+        },
+        {
+          "dayNumber": 7,
+          "date": "Venerdì 01 Gennaio 2027",
+          "title": "Capodanno sul Tetto del Belgio: Signal de Botrange & Riserva delle Hautes Fagnes",
+          "summary": "Primo giorno dell'anno rilassante con escursione al Signal de Botrange (12,5 km da Malmedy, 16m), la vetta più alta del Belgio a 694 metri di quota. Passeggiata sulla neve e lungo le passerelle in legno del parco naturale con Carla, e rientro a Malmedy per un pomeriggio di quiete.",
+          "schedule": [
+            {
+              "id": "act-53-7-1",
+              "time": "11:30",
+              "title": "Salita in Auto al Signal de Botrange (694m)",
+              "desc": "Tragitto di 12,5 km salendo sull'altopiano delle Hautes Fagnes fino al punto più elevato del Belgio.",
+              "icon": "🚗",
+              "locationName": "Verso Signal de Botrange",
+              "coords": [50.4600, 6.0600],
+              "flag": "🇧🇪",
+              "transport": { "type": "car", "icon": "🚗", "label": "Auto propria (12,5 km)" }
+            },
+            {
+              "id": "act-53-7-2",
+              "time": "12:15",
+              "title": "Signal de Botrange: La Vetta del Belgio & Parco delle Hautes Fagnes",
+              "desc": "Passeggiata sulla torre del Signal de Botrange e lungo i percorsi su passerelle di legno tra torbiere e brughiere innevate, con Carla che si diverte tantissimo all'aria frizzante di montagna.",
+              "icon": "⛰️",
+              "locationName": "Signal de Botrange, Waimes",
+              "coords": [50.5019, 6.0928],
+              "flag": "🇧🇪",
+              "transport": { "type": "walk", "icon": "🚶", "label": "Passeggiata sulla neve con Carla" }
+            },
+            {
+              "id": "act-53-7-3",
+              "time": "15:30",
+              "title": "Rientro a Malmedy & Pomeriggio Relax",
+              "desc": "Rientro a Terrasse de Malmedy (12,5 km), tisana calda, giochi con Carla e atmosfera di festa.",
+              "icon": "☕",
+              "locationName": "Malmedy",
+              "coords": [50.4262, 6.0278],
+              "flag": "🇧🇪",
+              "transport": { "type": "car", "icon": "🚗", "label": "Auto propria (12,5 km)" }
+            }
+          ]
+        },
+        {
+          "dayNumber": 8,
+          "date": "Sabato 02 Gennaio 2027",
+          "title": "Le Meraviglie della Vallonia: Grotte di Han-sur-Lesse, Rochefort & La Roche-en-Ardenne",
+          "summary": "Grande tour delle attrazioni valloni: partenza verso Han-sur-Lesse (84 km, 1h 16m, pedaggio 5,00 €) e le sue famose cavità carsiche; sosta a Rochefort (6 km, 8m), patria dell'abbazia trappista; visita al suggestivo borgo di La Roche-en-Ardenne dominato dal castello feudale (24 km, 22m); rientro serale a Malmedy (57 km, 1h 00m, pedaggio 1,00 €).",
+          "schedule": [
+            {
+              "id": "act-53-8-1",
+              "time": "09:30",
+              "title": "Da Malmedy verso Han-sur-Lesse",
+              "desc": "Tragitto di 84 km attraverso le valli della Famenne verso le storiche grotte di Han.",
+              "icon": "🚗",
+              "locationName": "In viaggio verso Han-sur-Lesse",
+              "coords": [50.2500, 5.5000],
+              "flag": "🇧🇪",
+              "transport": { "type": "car", "icon": "🚗", "label": "Auto propria (84 km)" }
+            },
+            {
+              "id": "act-53-8-2",
+              "time": "11:00",
+              "title": "Han-sur-Lesse: Dominio delle Grotte & Fiume Sotterraneo",
+              "desc": "Visita al celebre complesso naturalistico di Han-sur-Lesse, dove il fiume Lesse si inabissa sotto la roccia calcarea creando cattedrali sotterranee spettacolari.",
+              "icon": "🏞️",
+              "locationName": "Domaine des Grottes de Han",
+              "coords": [50.1256, 5.1878],
+              "flag": "🇧🇪",
+              "transport": { "type": "walk", "icon": "🚶", "label": "Tour naturalistico" }
+            },
+            {
+              "id": "act-53-8-3",
+              "time": "13:00",
+              "title": "Rochefort: Tradizione Trappista & Città Storica",
+              "desc": "Breve tragitto di 6 km fino a Rochefort: passeggiata nel centro storico, vista sui bastioni e cenni alla rinomata Abbazia di Saint-Rémy produttrice della celebre birra trappista.",
+              "icon": "🍺",
+              "locationName": "Rochefort Centro",
+              "coords": [50.1606, 5.2225],
+              "flag": "🇧🇪",
+              "transport": { "type": "walk", "icon": "🚶", "label": "Passeggiata a Rochefort" }
+            },
+            {
+              "id": "act-53-8-4",
+              "time": "14:45",
+              "title": "La Roche-en-Ardenne & Castello Feudale dei Conti",
+              "desc": "Spostamento di 24 km fino a La Roche-en-Ardenne: borgo scenografico incastonato in un meandro del fiume Ourthe, dominato dalle rovine del maestoso castello feudale dell'XI secolo.",
+              "icon": "🏰",
+              "locationName": "Château Féodal de La Roche-en-Ardenne",
+              "coords": [50.1836, 5.5761],
+              "flag": "🇧🇪",
+              "transport": { "type": "walk", "icon": "🚶", "label": "Visita borgo e castello" }
+            },
+            {
+              "id": "act-53-8-5",
+              "time": "17:00",
+              "title": "Rientro a Malmedy",
+              "desc": "Viaggio di ritorno a Malmedy (57 km, 1h) per l'ultima notte nella magica Terrasse de Malmedy.",
+              "icon": "🏡",
+              "locationName": "Malmedy",
+              "coords": [50.4262, 6.0278],
+              "flag": "🇧🇪",
+              "transport": { "type": "car", "icon": "🚗", "label": "Auto propria (57 km)" }
+            }
+          ]
+        },
+        {
+          "dayNumber": 9,
+          "date": "Domenica 03 Gennaio 2027",
+          "title": "Da Malmedy alla Svizzera: Grande Viaggio verso Zurigo & Check-in a Wolframplatz",
+          "summary": "Check-out da Terrasse de Malmedy e partenza per il grande trasferimento verso la Svizzera (520 km, 5h 50m, costo stimato 114,00 €). Arrivo a Zurigo, check-in a VISIONAPARTMENTS Wolframplatz (Wolframplatz 1, Wiedikon, 8045 Zurigo, costo 355,00 € per 2 notti, PIN: 4242) e prima passeggiata serale in famiglia con Carla lungo il lago di Zurigo.",
+          "schedule": [
+            {
+              "id": "act-53-9-1",
+              "time": "08:30",
+              "title": "Check-out da Malmedy & Partenza in Auto per la Svizzera",
+              "desc": "Partenza mattutina da Malmedy per un itinerario di 520 km attraversando Germania e Alsazia verso il confine svizzero di Basilea/Zurigo.",
+              "icon": "🚗",
+              "locationName": "In viaggio verso Zurigo",
+              "coords": [49.0000, 7.5000],
+              "flag": "🇧🇪",
+              "transport": { "type": "car", "icon": "🚗", "label": "Auto propria (520 km)" }
+            },
+            {
+              "id": "act-53-9-2",
+              "time": "12:30",
+              "title": "Sosta Intermedia di Pranzo & Camminata con Carla",
+              "desc": "Pausa relax a metà percorso per far correre Carla e rifocillarsi prima di entrare in territorio elvetico.",
+              "icon": "🐾",
+              "locationName": "Sosta autostradale",
+              "coords": [48.0000, 7.8000],
+              "flag": "🇩🇪",
+              "transport": { "type": "walk", "icon": "🚶", "label": "Pausa sgambamento" }
+            },
+            {
+              "id": "act-53-9-3",
+              "time": "15:45",
+              "title": "Arrivo a Zurigo & Check-in a VISIONAPARTMENTS Wolframplatz",
+              "desc": "Check-in al moderno residence VISIONAPARTMENTS (Wolframplatz 1, Wiedikon, 8045 Zurigo). Costo soggiorno: 355,00 € per 2 notti (PIN: 4242). Parcheggio comodo e appartamento attrezzato anche per Carla.",
+              "icon": "🏢",
+              "locationName": "VISIONAPARTMENTS Wolframplatz 1, Wiedikon, Zurigo",
+              "coords": [47.3620, 8.5210],
+              "flag": "🇨🇭",
+              "transport": { "type": "walk", "icon": "🚶", "label": "Check-in appartamento" }
+            },
+            {
+              "id": "act-53-9-4",
+              "time": "18:00",
+              "title": "Passeggiata Serale con Carla sul Lungolago di Zurigo",
+              "desc": "Prima camminata serale in famiglia con Carla lungo le rive del lago di Zurigo (Zürichsee) e vista sulla città illuminata e riflessa nell'acqua.",
+              "icon": "🌊",
+              "locationName": "Zürichsee, Lungolago di Zurigo",
+              "coords": [47.3650, 8.5430],
+              "flag": "🇨🇭",
+              "transport": { "type": "walk", "icon": "🚶", "label": "Passeggiata serale" }
+            }
+          ]
+        },
+        {
+          "dayNumber": 10,
+          "date": "Lunedì 04 Gennaio 2027",
+          "title": "Giornata a Zurigo: Lindenhof Panoramico, Altstadt & Fiume Limmat",
+          "summary": "Intera giornata dedicata a scoprire il fascino invernale di Zurigo: la terrazza panoramica del colle Lindenhof con vista sul Grossmünster, i vicoli storici dell'Altstadt, la celebre Bahnhofstrasse e rilassanti passeggiate lungo il fiume Limmat con Carla.",
+          "schedule": [
+            {
+              "id": "act-53-10-1",
+              "time": "10:00",
+              "title": "Colle Lindenhof & Panorama sul Centro di Zurigo",
+              "desc": "Salita all'oasi verde di Lindenhof, colle storico sopra il fiume Limmat: spettacolare vista a 360° sui campanili dell'Altstadt e sulle Alpi sullo sfondo.",
+              "icon": "🏙️",
+              "locationName": "Lindenhof, Zurigo",
+              "coords": [47.3728, 8.5410],
+              "flag": "🇨🇭",
+              "transport": { "type": "walk", "icon": "🚶", "label": "Tour a piedi con Carla" }
+            },
+            {
+              "id": "act-53-10-2",
+              "time": "12:00",
+              "title": "Altstadt, Grossmünster & Pranzo Svizzero",
+              "desc": "Passeggiata tra le pittoresche stradine della città vecchia di Zurigo, vista sulle torri gemelle del Grossmünster e pranzo tipico in una locanda tradizionale.",
+              "icon": "⛪",
+              "locationName": "Grossmünster & Altstadt",
+              "coords": [47.3700, 8.5440],
+              "flag": "🇨🇭",
+              "transport": { "type": "walk", "icon": "🚶", "label": "Passeggiata nel centro storico" }
+            },
+            {
+              "id": "act-53-10-3",
+              "time": "15:00",
+              "title": "Bahnhofstrasse, Quai & Passeggiata lungo la Limmat",
+              "desc": "Passeggiata lungo la via dello shopping più prestigiosa della Svizzera e relax con Carla nei parchi alberati lungo il fiume Limmat.",
+              "icon": "🛍️",
+              "locationName": "Bahnhofstrasse & Limmatquai",
+              "coords": [47.3740, 8.5390],
+              "flag": "🇨🇭",
+              "transport": { "type": "walk", "icon": "🚶", "label": "Passeggiata urbana" }
+            },
+            {
+              "id": "act-53-10-4",
+              "time": "18:30",
+              "title": "Rientro a VISIONAPARTMENTS & Preparativi per il Ritorno",
+              "desc": "Rientro all'appartamento a Wiedikon, cena rilassante in famiglia e ultimi preparativi per il rientro in Italia.",
+              "icon": "🏢",
+              "locationName": "VISIONAPARTMENTS, Wolframplatz",
+              "coords": [47.3620, 8.5210],
+              "flag": "🇨🇭",
+              "transport": { "type": "walk", "icon": "🚶", "label": "Rientro alloggio" }
+            }
+          ]
+        },
+        {
+          "dayNumber": 11,
+          "date": "Martedì 05 Gennaio 2027",
+          "title": "Da Zurigo all'Italia: Valico Alpino & Rientro a Casa",
+          "summary": "Check-out da Zurigo e viaggio di rientro in Italia (287 km, 3h 30m, pedaggi/carburante stimati 85,00 €) attraverso il suggestivo scenario delle Alpi svizzere e lombarde. Arrivo a Casa al termine di un indimenticabile road trip natalizio di 11 giorni e oltre 2.060 km con Carla e tutta la famiglia!",
+          "schedule": [
+            {
+              "id": "act-53-11-1",
+              "time": "09:30",
+              "title": "Check-out da Zurigo & Partenza in Auto verso l'Italia",
+              "desc": "Check-out da VISIONAPARTMENTS a Zurigo e inizio del viaggio di ritorno su 4 ruote verso l'Italia percorrendo l'autostrada panoramica del San Gottardo / San Bernardino.",
+              "icon": "🚗",
+              "locationName": "Partenza da Zurigo verso le Alpi",
+              "coords": [47.3000, 8.6000],
+              "flag": "🇨🇭",
+              "transport": { "type": "car", "icon": "🚗", "label": "Auto propria (287 km)" }
+            },
+            {
+              "id": "act-53-11-2",
+              "time": "11:45",
+              "title": "Sosta Alpina tra le Vette Innevate con Carla",
+              "desc": "Breve sosta nel valico alpino per sgranchirsi le gambe, ammirare le cime innevate e far giocare Carla nella neve fresca prima della discesa in pianura.",
+              "icon": "❄️",
+              "locationName": "Valico alpino svizzero",
+              "coords": [46.5000, 9.0000],
+              "flag": "🇨🇭",
+              "transport": { "type": "walk", "icon": "🚶", "label": "Sosta alpina con Carla" }
+            },
+            {
+              "id": "act-53-11-3",
+              "time": "14:00",
+              "title": "Arrivo a Casa (Italia): Conclusione del Grand Road Trip!",
+              "desc": "Arrivo felice a Casa dopo 11 giorni memorabili, 4 nazioni visitate (Francia, Lussemburgo, Belgio, Svizzera), oltre 2.060 km percorsi in auto e tante avventure indimenticabili con Carla!",
+              "icon": "🏠",
+              "locationName": "Casa (Italia)",
+              "coords": [45.4642, 9.1900],
+              "flag": "🇮🇹",
+              "transport": { "type": "car", "icon": "🚗", "label": "Rientro a Casa" }
+            }
+          ]
+        }
+      ]
+    },
+
+    // VIAGGIO 54: ROAD TRIP CROAZIA & ITALIA (28/05/2026 - 02/06/2026) - IN FAMIGLIA CON CARLA 🐾
+    "trip-real-54": {
+      "destination": "Croazia (Laghi di Plitvice, Mukinje, Zagabria) e Italia (Mestre, Trieste)",
+      "theme": "Road Trip Pet-Friendly tra Italia & Croazia in Famiglia con Carla 🐾: Parco Nazionale dei Laghi di Plitvice, Capitale Zagabria & Trieste",
+      "flightInfo": "Viaggio interamente in automobile propria (1.424 km totali percorsi su 4 ruote, 246,00 € carburante/pedaggi/vignetta)",
+      "hotelInfo": "Hotel Centrale Mestre (55,91 €, PIN 3620), Apartment Near the Lake Mukinje (220,00 €, PIN 7660), Zagreb Central 2BR Masarykova (112,97 €, PIN 5832), Residence Le Terrazze Trieste (101,70 €, PIN 5478)",
+      "days": [
+        {
+          "dayNumber": 1,
+          "date": "Giovedì 28 Maggio 2026",
+          "title": "Partenza da Casa in Auto verso il Veneto: Arrivo a Mestre & Hotel Centrale",
+          "summary": "Partenza in auto da Casa con tutta la famiglia (3 adulti) e la nostra cagnolina Jack Russell Carla verso Mestre (269 km, 2h 53m, spesa stimata carburante/pedaggi 48,50 €). Check-in all'Hotel Centrale (P.le Donatori di Sangue 14, 30170 Mestre, Italia, costo 55,91 € per 1 notte, PIN: 3620, check-in dalle 14:00, check-out entro le 10:30). Passeggiata pomeridiana e serale nell'isola pedonale di Piazza Ferretto e cena rilassante.",
+          "schedule": [
+            {
+              "id": "act-54-1-1",
+              "time": "09:30",
+              "title": "Partenza da Casa in Auto in Famiglia con Carla 🐾",
+              "desc": "Carico valigie, sistemazione comoda di Carla sul sedile posteriore con pettorina e cintura di sicurezza e inizio del road trip verso Mestre (269 km).",
+              "icon": "🚗",
+              "locationName": "Partenza da Casa (Italia)",
+              "coords": [45.4642, 9.1900],
+              "flag": "🇮🇹",
+              "transport": { "type": "car", "icon": "🚗", "label": "Auto propria (269 km - 2h 53m, 48,50 €)" }
+            },
+            {
+              "id": "act-54-1-2",
+              "time": "12:15",
+              "title": "Sosta Autostradale per Ristoro & Sgambamento Carla",
+              "desc": "Pausa caffè in autogrill per sgranchirsi le gambe e fare una piacevole passeggiata con Carla prima dell'arrivo.",
+              "icon": "🐾",
+              "locationName": "Area di Servizio Autostrada A4",
+              "coords": [45.4380, 11.0120],
+              "flag": "🇮🇹",
+              "transport": { "type": "walk", "icon": "🚶", "label": "Pausa con Carla" }
+            },
+            {
+              "id": "act-54-1-3",
+              "time": "14:15",
+              "title": "Arrivo a Mestre & Check-in all'Hotel Centrale ***",
+              "desc": "Check-in all'Hotel Centrale (Piazzale Donatori di Sangue 14, 30170 Mestre). Costo camera: 55,91 € per 1 notte, Codice/PIN: 3620. Sistemazione in camera pet-friendly accogliente per 3 adulti e Carla.",
+              "icon": "🏨",
+              "locationName": "Hotel Centrale, Mestre",
+              "coords": [45.4936, 12.2415],
+              "flag": "🇮🇹",
+              "transport": { "type": "walk", "icon": "🚶", "label": "Check-in Hotel (dalle 14:00)" }
+            },
+            {
+              "id": "act-54-1-4",
+              "time": "17:30",
+              "title": "Passeggiata a Piazza Ferretto & Torre dell'Orologio",
+              "desc": "Tour a piedi con Carla nella vivace area pedonale di Piazza Ferretto a Mestre, tra caffè storici, negozi e la caratteristica Torre dell'Orologio medievale.",
+              "icon": "🏛️",
+              "locationName": "Piazza Ferretto, Mestre",
+              "coords": [45.4925, 12.2405],
+              "flag": "🇮🇹",
+              "transport": { "type": "walk", "icon": "🚶", "label": "Passeggiata serale" }
+            }
+          ]
+        },
+        {
+          "dayNumber": 2,
+          "date": "Venerdì 29 Maggio 2026",
+          "title": "Da Trieste verso la Croazia: Arrivo a Mukinje e ai Laghi di Plitvice",
+          "summary": "Check-out dall'Hotel Centrale entro le 10:30 e viaggio attraverso Trieste e la Slovenia verso la Croazia e il Parco Nazionale dei Laghi di Plitvice (333 km, 5h 06m, spesa stimata carburante/pedaggi 62,50 €). Arrivo a Mukinje e check-in all'Apartment Near the Lake (Mukinje 26, Ground Floor, 53231 Plitvička Jezera, costo 220,00 € per 2 notti, PIN: 7660, check-in 12:00-22:00). Relax nella quiete montana della Lika.",
+          "schedule": [
+            {
+              "id": "act-54-2-1",
+              "time": "09:45",
+              "title": "Check-out da Mestre & Transito per Trieste",
+              "desc": "Partenza in auto da Mestre, passaggio panoramico nell'area di Trieste e valico di frontiera verso i Balcani.",
+              "icon": "🚗",
+              "locationName": "Trieste (Transito costiero)",
+              "coords": [45.6495, 13.7768],
+              "flag": "🇮🇹",
+              "transport": { "type": "car", "icon": "🚗", "label": "Auto propria (333 km - 5h 06m, 62,50 €)" }
+            },
+            {
+              "id": "act-54-2-2",
+              "time": "13:30",
+              "title": "Attraversamento della Frontiera & Pausa Panoramica",
+              "desc": "Ingresso in Croazia attraverso gli scenari verdi dell'entroterra croato, sosta per il pranzo al sacco e sgambamento con Carla tra i prati.",
+              "icon": "🌳",
+              "locationName": "Entroterra Croato (Regione della Lika)",
+              "coords": [45.1000, 15.2000],
+              "flag": "🇭🇷",
+              "transport": { "type": "walk", "icon": "🚶", "label": "Pausa natura con Carla" }
+            },
+            {
+              "id": "act-54-2-3",
+              "time": "16:00",
+              "title": "Arrivo a Mukinje & Check-in all'Apartment Near the Lake",
+              "desc": "Arrivo al villaggio di Mukinje ai Laghi di Plitvice. Check-in all'alloggio Apartment Near the Lake (Mukinje 26, Ground Floor, 53231 Plitvička Jezera). Costo soggiorno: 220,00 € per 2 notti, Codice/PIN: 7660. Appartamento accogliente e pet-friendly a pochi passi dai sentieri.",
+              "icon": "🏡",
+              "locationName": "Apartment Near the Lake, Mukinje 26",
+              "coords": [44.8722, 15.6258],
+              "flag": "🇭🇷",
+              "transport": { "type": "walk", "icon": "🚶", "label": "Check-in alloggio (PIN: 7660)" }
+            },
+            {
+              "id": "act-54-2-4",
+              "time": "18:00",
+              "title": "Passeggiata nei Boschi di Mukinje verso il Belvedere sui Laghi",
+              "desc": "Camminata rilassante con Carla nei boschi incontaminati attorno a Mukinje con primi scorci mozzafiato sul canyon e sulle acque turchesi dei laghi.",
+              "icon": "🌲",
+              "locationName": "Sentieri forestali di Mukinje",
+              "coords": [44.8760, 15.6200],
+              "flag": "🇭🇷",
+              "transport": { "type": "walk", "icon": "🚶", "label": "Passeggiata con Carla" }
+            }
+          ]
+        },
+        {
+          "dayNumber": 3,
+          "date": "Sabato 30 Maggio 2026",
+          "title": "Parco Nazionale dei Laghi di Plitvice: Laghi Superiori, Inferiori & Veliki Slap",
+          "summary": "Intera giornata dedicata alla straordinaria esplorazione del Parco Nazionale dei Laghi di Plitvice (Patrimonio Mondiale dell'Umanità UNESCO). Percorso naturalistico a piedi tra passerelle in legno a filo d'acqua, 16 laghi a terrazze con acque color smeraldo, traversata panoramica in battello elettrico sul Lago Kozjak e la maestosa Grande Cascata (Veliki Slap alta 78 metri). Carla è la benvenuta al guinzaglio e si gode la passeggiata nella natura! Seconda notte a Mukinje.",
+          "schedule": [
+            {
+              "id": "act-54-3-1",
+              "time": "08:45",
+              "title": "Ingresso al Parco Nazionale dei Laghi di Plitvice",
+              "desc": "Ingresso mattutino al Parco Nazionale di Plitvice. Inizio del percorso a piedi con Carla al guinzaglio tra i sentieri alberati e le prime passerelle in legno.",
+              "icon": "🎫",
+              "locationName": "Plitvice Entrance 1 & 2",
+              "coords": [44.9022, 15.6111],
+              "flag": "🇭🇷",
+              "transport": { "type": "walk", "icon": "🚶", "label": "Escursione a piedi (Pet-Friendly)" }
+            },
+            {
+              "id": "act-54-3-2",
+              "time": "10:30",
+              "title": "Laghi Superiori (Gornja Jezera) & Cascate di Tufo",
+              "desc": "Spettacolare escursione lungo i 12 Laghi Superiori immersi tra fitti boschi di faggi e abeti, con cascate limpide che collegano i vari bacini d'acqua turchese.",
+              "icon": "🌊",
+              "locationName": "Laghi Superiori di Plitvice",
+              "coords": [44.8730, 15.6015],
+              "flag": "🇭🇷",
+              "transport": { "type": "walk", "icon": "🚶", "label": "Passerelle in legno a filo d'acqua" }
+            },
+            {
+              "id": "act-54-3-3",
+              "time": "12:30",
+              "title": "Traversata Panoramica in Battello Elettrico sul Lago Kozjak",
+              "desc": "Navigazione ecologica a bordo del battello elettrico che attraversa il grande Lago Kozjak, ammirando riflessi smeraldo e pareti rocciose (ammessi cani al guinzaglio).",
+              "icon": "⛴️",
+              "locationName": "Lago Kozjak, Plitvice",
+              "coords": [44.8872, 15.6080],
+              "flag": "🇭🇷",
+              "transport": { "type": "boat", "icon": "⛴️", "label": "Battello elettrico del parco" }
+            },
+            {
+              "id": "act-54-3-4",
+              "time": "14:15",
+              "title": "Laghi Inferiori (Donja Jezera) & Grande Cascata (Veliki Slap)",
+              "desc": "Visita all'imponente Veliki Slap, la cascata più alta di tutta la Croazia (78 metri di salto), che si getta con fragore nel fiume Korana tra spruzzi d'acqua rinfrescanti.",
+              "icon": "💧",
+              "locationName": "Veliki Slap (Grande Cascata)",
+              "coords": [44.9048, 15.6085],
+              "flag": "🇭🇷",
+              "transport": { "type": "walk", "icon": "🚶", "label": "Sentiero del Canyon" }
+            },
+            {
+              "id": "act-54-3-5",
+              "time": "18:00",
+              "title": "Rientro a Mukinje & Cena Tipica della Lika",
+              "desc": "Rientro all'Apartment Near the Lake a Mukinje, riposo meritato per Carla e cena in taverna con specialità locali croate (trota fresca di fiume e peka).",
+              "icon": "🍽️",
+              "locationName": "Mukinje Village",
+              "coords": [44.8722, 15.6258],
+              "flag": "🇭🇷",
+              "transport": { "type": "walk", "icon": "🚶", "label": "Relax serale" }
+            }
+          ]
+        },
+        {
+          "dayNumber": 4,
+          "date": "Domenica 31 Maggio 2026",
+          "title": "Dai Laghi di Plitvice a Zagabria: Soggiorno in Centro a Masarykova Ulica",
+          "summary": "Check-out da Mukinje entro le 10:00 e viaggio verso nord fino alla capitale croata Zagabria (144 km, 2h 15m, spesa stimata carburante/pedaggi 20,40 €). Arrivo nel cuore di Zagabria (Donji Grad) e check-in all'appartamento Zagreb Central 2BR + F14 (Masarykova ulica, Lower Town, 10000 Zagabria, costo 112,97 € per 1 notte, PIN: 5832, check-in dalle 15:00, con parcheggio privato gratuito incluso). Visita alla Città Alta (Gornji Grad), Chiesa di San Marco e Piazza Bano Jelačić.",
+          "schedule": [
+            {
+              "id": "act-54-4-1",
+              "time": "10:15",
+              "title": "Partenza da Mukinje verso Zagabria",
+              "desc": "Partenza in auto da Plitvice verso Zagabria, guidando lungo la strada statale e l'autostrada croata A1 attraverso Karlovac.",
+              "icon": "🚗",
+              "locationName": "In viaggio verso Zagabria",
+              "coords": [45.4800, 15.5500],
+              "flag": "🇭🇷",
+              "transport": { "type": "car", "icon": "🚗", "label": "Auto propria (144 km - 2h 15m, 20,40 €)" }
+            },
+            {
+              "id": "act-54-4-2",
+              "time": "14:45",
+              "title": "Arrivo a Zagabria & Sistemazione Auto nel Parcheggio Gratuito",
+              "desc": "Arrivo in Masarykova ulica a Zagabria. Accesso comodissimo al posto auto riservato gratuito incluso nella prenotazione e check-in alle ore 15:00 all'appartamento Zagreb Central 2BR (PIN: 5832, costo 112,97 €).",
+              "icon": "🅿️",
+              "locationName": "Zagreb Central 2BR, Masarykova ulica",
+              "coords": [45.8116, 15.9723],
+              "flag": "🇭🇷",
+              "transport": { "type": "car", "icon": "🚗", "label": "Parcheggio gratuito incluso" }
+            },
+            {
+              "id": "act-54-4-3",
+              "time": "16:30",
+              "title": "Trg Bana Jelačića & Funicolare di Zagabria verso Gornji Grad",
+              "desc": "Passeggiata da Masarykova ulica fino alla grande Piazza principale Bano Jelačić, salita con Carla verso la Città Alta medievale (Gornji Grad) e la Torre Lotrščak.",
+              "icon": "🚠",
+              "locationName": "Gornji Grad & Trg Bana Jelačića",
+              "coords": [45.8131, 15.9775],
+              "flag": "🇭🇷",
+              "transport": { "type": "walk", "icon": "🚶", "label": "Passeggiata nel centro storico" }
+            },
+            {
+              "id": "act-54-4-4",
+              "time": "18:00",
+              "title": "Chiesa di San Marco con Tetto a Mosaico & Parco Strossmayer",
+              "desc": "Ammirazione del celeberrimo tetto policromo della Chiesa di San Marco con gli stemmi della Croazia e di Zagabria, seguita da una magnifica vista panoramica dai viali alberati di Strossmayerovo šetalište con Carla.",
+              "icon": "⛪",
+              "locationName": "Chiesa di San Marco, Zagabria",
+              "coords": [45.8163, 15.9736],
+              "flag": "🇭🇷",
+              "transport": { "type": "walk", "icon": "🚶", "label": "Passeggiata panoramica con Carla" }
+            }
+          ]
+        },
+        {
+          "dayNumber": 5,
+          "date": "Lunedì 01 Giugno 2026",
+          "title": "Da Zagabria a Trieste: Soggiorno al Residence Le Terrazze & Piazza Unità d'Italia",
+          "summary": "Check-out da Zagabria entro le 10:00 e viaggio in auto di rientro verso l'Italia fino a Trieste (315 km, 3h 30m, spesa stimata carburante/pedaggi 43,00 €). Arrivo a Trieste e check-in al Residence Le Terrazze (Via Filzi 21, 34124 Trieste, costo 101,70 € per 1 notte per 3 adulti, PIN: 5478, check-in 14:00-20:00, check-out entro le 10:30). Pomeriggio e serata tra Piazza Unità d'Italia affacciata sul Golfo, Molo Audace e il Canal Grande ponterosso.",
+          "schedule": [
+            {
+              "id": "act-54-5-1",
+              "time": "09:45",
+              "title": "Partenza in Auto da Zagabria verso Trieste",
+              "desc": "Check-out dall'appartamento di Masarykova ulica e viaggio su 4 ruote verso ovest attraverso la Slovenia fino al valico di Fernetti e arrivo a Trieste.",
+              "icon": "🚗",
+              "locationName": "In viaggio verso Trieste",
+              "coords": [45.7500, 14.5000],
+              "flag": "🇭🇷",
+              "transport": { "type": "car", "icon": "🚗", "label": "Auto propria (315 km - 3h 30m, 43,00 €)" }
+            },
+            {
+              "id": "act-54-5-2",
+              "time": "14:15",
+              "title": "Arrivo a Trieste & Check-in al Residence Le Terrazze",
+              "desc": "Check-in al Residence Le Terrazze (Via Filzi 21, 34124 Trieste). Costo: 101,70 € per 1 notte per 3 adulti, Codice/PIN: 5478. Struttura centrale, confortevole e perfetta per accogliere Carla.",
+              "icon": "🏢",
+              "locationName": "Residence Le Terrazze, Via Filzi 21, Trieste",
+              "coords": [45.6534, 13.7733],
+              "flag": "🇮🇹",
+              "transport": { "type": "walk", "icon": "🚶", "label": "Check-in Residence (dalle 14:00)" }
+            },
+            {
+              "id": "act-54-5-3",
+              "time": "17:00",
+              "title": "Canal Grande di Trieste & Ponte Rosso",
+              "desc": "Passeggiata lungo le rive del Canal Grande asburgico, con la statua di James Joyce e la maestosa Chiesa di Sant'Antonio Taumaturgo.",
+              "icon": "⛵",
+              "locationName": "Canal Grande di Trieste",
+              "coords": [45.6525, 13.7705],
+              "flag": "🇮🇹",
+              "transport": { "type": "walk", "icon": "🚶", "label": "Tour a piedi con Carla" }
+            },
+            {
+              "id": "act-54-5-4",
+              "time": "19:00",
+              "title": "Piazza Unità d'Italia al Tramonto & Molo Audace",
+              "desc": "Emozione unica nella piazza più grande d'Europa aperta sul mare: passeggiata con Carla fino alla punta del Molo Audace per ammirare il tramonto dorato sulle acque del Golfo di Trieste.",
+              "icon": "🌅",
+              "locationName": "Piazza Unità d'Italia & Molo Audace",
+              "coords": [45.6501, 13.7678],
+              "flag": "🇮🇹",
+              "transport": { "type": "walk", "icon": "🚶", "label": "Tramonto sul mare" }
+            }
+          ]
+        },
+        {
+          "dayNumber": 6,
+          "date": "Martedì 02 Giugno 2026",
+          "title": "Da Trieste a Casa: Conclusione del Grand Road Trip tra Italia e Croazia!",
+          "summary": "Check-out dal Residence Le Terrazze entro le 10:30 e viaggio di rientro in autostrada verso Casa (363 km, 3h 35m, spesa stimata carburante/pedaggi 71,60 €). Conclusione trionfale di uno spettacolare road trip di 6 giorni e 1.424 km totali tra Italia e Croazia in famiglia con la nostra amata Jack Russell Carla!",
+          "schedule": [
+            {
+              "id": "act-54-6-1",
+              "time": "09:45",
+              "title": "Check-out da Trieste & Partenza in Auto verso Casa",
+              "desc": "Check-out dal Residence Le Terrazze, ultimi saluti al Golfo di Trieste e imbocco del raccordo autostradale A4 verso ovest.",
+              "icon": "🚗",
+              "locationName": "Partenza da Trieste",
+              "coords": [45.6534, 13.7733],
+              "flag": "🇮🇹",
+              "transport": { "type": "car", "icon": "🚗", "label": "Auto propria (363 km - 3h 35m, 71,60 €)" }
+            },
+            {
+              "id": "act-54-6-2",
+              "time": "12:30",
+              "title": "Sosta Pranzo & Ultimo Sgambamento con Carla",
+              "desc": "Pausa relax lungo il percorso per il pranzo e per far giocare Carla all'aperto prima dell'ultimo tratto di strada.",
+              "icon": "🐾",
+              "locationName": "Area Autostradale A4",
+              "coords": [45.4500, 11.5000],
+              "flag": "🇮🇹",
+              "transport": { "type": "walk", "icon": "🚶", "label": "Pausa con Carla" }
+            },
+            {
+              "id": "act-54-6-3",
+              "time": "15:30",
+              "title": "Arrivo a Casa: 1.424 km Indimenticabili in Famiglia con Carla! 🏆",
+              "desc": "Rientro a Casa felici e soddisfatti dopo 6 giorni straordinari, 2 nazioni visitate (Italia e Croazia), oltre 1.420 km percorsi su 4 ruote e ricordi indimenticabili tra le cascate di Plitvice e le città storiche!",
+              "icon": "🏠",
+              "locationName": "Casa (Italia)",
+              "coords": [45.4642, 9.1900],
+              "flag": "🇮🇹",
+              "transport": { "type": "car", "icon": "🚗", "label": "Rientro a Casa" }
+            }
+          ]
+        }
+      ]
+    }
   };
 
   // ==========================================================================

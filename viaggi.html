@@ -21,7 +21,7 @@
        ====================================================================== -->
   <header class="navbar" id="main-navbar">
     <div class="container navbar-inner">
-      <a href="index.html" class="brand-logo" title="Giuseppe Ricatti - Home">
+      <a href="index.html#home" class="brand-logo" title="Giuseppe Ricatti - Home">
         <div class="brand-avatar"><img src="assets/logo-monogram.png" alt="R" class="brand-avatar-img"></div>
         <div class="brand-text">
           <h1>Giuseppe Ricatti</h1>
@@ -176,46 +176,53 @@
        FOOTER
        ====================================================================== -->
   <footer class="footer">
-    <div class="container footer-content">
+    <div class="container">
       <div class="footer-grid">
-        <div class="footer-col">
+        <div class="footer-brand">
           <div class="brand-logo mb-2">
             <div class="brand-avatar"><img src="assets/logo-monogram.png" alt="R" class="brand-avatar-img"></div>
             <div class="brand-text">
               <h3>Giuseppe Ricatti</h3>
-              <span class="brand-subtitle">Diario & Cartografia Personale</span>
+              <span class="brand-subtitle">Diario di Bordo</span>
             </div>
           </div>
           <p class="footer-desc">
-            Archivio di 755 città in 49 nazioni. Tracciamento continuo dei viaggi reali e futuri in programma.
+            Diario di viaggio personale, archivio cartografico e rotte dei voli.
           </p>
         </div>
 
-        <div class="footer-col">
-          <h4 class="footer-col-title">Navigazione Rapida</h4>
-          <ul class="footer-links">
+        <div class="footer-nav">
+          <h5>Navigazione</h5>
+          <ul>
             <li><a href="index.html#home">Home Page</a></li>
-            <li><a href="index.html#mappa">Mappa Interattiva</a></li>
-            <li><a href="paesi.html">Elenco Paesi Visitati (49)</a></li>
+            <li><a href="index.html#mappa">Mappa del Mondo</a></li>
+            <li><a href="paesi.html">Paesi Visitati (49)</a></li>
             <li><a href="paesi-non-visitati.html" style="color: var(--accent); font-weight: 600;">Paesi Non Ancora Visitati (146)</a></li>
             <li><a href="statistiche.html">Percentuale Mondo Esplorato</a></li>
             <li><a href="continenti.html">Mappa dei Continenti</a></li>
-            <li><a href="citta.html">Tutte le Città</a></li>
+            <li><a href="viaggi.html?tab=upcoming">Next Stop</a></li>
+            <li><a href="viaggi.html?tab=past">Archivio Viaggi Passati</a></li>
+            <li><a href="citta.html">Città Esplorate</a></li>
+            <li><a href="wishlist.html">Wish List</a></li>
+            <li><a href="chi-sono.html">Chi Sono</a></li>
           </ul>
         </div>
 
-        <div class="footer-col">
-          <h4 class="footer-col-title">Azioni Rapide</h4>
-          <div class="footer-actions-group">
-            <button class="btn btn-sm btn-outline w-100 mb-2" onclick="window.travelApp.openAddTripModal()">
-              <span>+</span> Aggiungi Nuova Tappa
+        <div class="footer-backup">
+          <h5>Gestione Tappe</h5>
+          <div class="backup-buttons">
+            <button class="btn btn-accent btn-sm w-100" onclick="window.travelApp ? (window.travelApp.openImportModal ? window.travelApp.openImportModal('flighty') : window.location.href='index.html#mappa') : window.location.href='index.html#mappa'">
+              📥 Importa da Flighty / TripAdvisor
             </button>
-            <button class="btn btn-sm btn-outline w-100" onclick="window.travelApp.exportDataAsJson()">
-              💾 Scarica Backup Archivio (JSON)
+            <button class="btn btn-outline btn-sm w-100" onclick="window.travelApp ? (window.travelApp.exportData ? window.travelApp.exportData() : (window.travelApp.exportDataAsJson ? window.travelApp.exportDataAsJson() : null)) : null">
+              💾 Esporta Backup (JSON)
             </button>
-            <!-- Palette Colore del Sito -->
-            <div class="footer-theme-picker-block" style="margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--border-subtle);">
-              <span style="display: block; font-size: 0.74rem; color: var(--text-muted); margin-bottom: 6px;">🎨 Palette Colore:</span>
+            <button class="btn btn-icon btn-danger btn-sm w-100 mt-2" onclick="window.travelApp ? window.travelApp.confirmClearAllTrips() : null">
+              🗑️ Cancella Tutte le Tappe
+            </button>
+            <!-- Selettore Palette Colori del Sito -->
+            <div class="footer-theme-picker-block" style="margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--border-subtle); text-align: left;">
+              <span style="display: block; font-size: 0.76rem; color: var(--text-muted); margin-bottom: 8px; font-weight: 500;">🎨 Palette Colore del Sito:</span>
               <div class="theme-picker" title="Scegli la tonalità colore della mappa e del sito">
                 <span class="theme-dot theme-dot-gold active" data-theme="gold" onclick="window.travelApp.setTheme('gold')" title="Oro Monogramma R (Colore Principale)"></span>
                 <span class="theme-dot theme-dot-silver" data-theme="silver" onclick="window.travelApp.setTheme('silver')" title="Argento Puro (Argentata)"></span>
@@ -231,8 +238,8 @@
       </div>
 
       <div class="footer-bottom">
-        <p>&copy; 2026 Giuseppe Ricatti. Tutti i diritti riservati.</p>
-        <span class="privacy-note">Dati personali archiviati in locale nel tuo browser.</span>
+        <p>© 2024 Giuseppe Ricatti • Tutti i diritti riservati.</p>
+        <p>Design minimalista scuro con supporto integrato Flighty & TripAdvisor.</p>
       </div>
     </div>
   </footer>
@@ -240,86 +247,118 @@
   <!-- ======================================================================
        MODALE: AGGIUNGI / MODIFICA TAPPA
        ====================================================================== -->
-  <div class="modal" id="modal-trip">
-    <div class="modal-overlay" onclick="window.travelApp.closeAllModals()"></div>
-    <div class="modal-card">
+  <div class="modal custom-modal" id="modal-trip">
+    <div class="modal-backdrop modal-overlay" onclick="window.travelApp.closeAllModals()"></div>
+    <div class="modal-dialog modal-card">
       <div class="modal-header">
         <h3 id="modal-trip-title">Aggiungi Tappa / Viaggio</h3>
         <button class="modal-close-btn" onclick="window.travelApp.closeAllModals()">&times;</button>
       </div>
 
-      <form id="trip-modal-form" class="modal-body form-grid">
-        <input type="hidden" id="trip-id-hidden">
+      <form id="trip-modal-form">
+        <div class="modal-body">
+          <input type="hidden" id="trip-id-hidden" value="">
 
-        <!-- Selezione Multi-Paese -->
-        <div class="form-group col-span-2">
-          <label>Nazione / Nazioni Visitate (Selettore Multi-Paese) *</label>
-          <div class="multi-country-picker-wrap">
-            <input type="text" id="multi-country-search" class="form-control" placeholder="Digita per cercare un paese (es. Italia, Giappone, Stati Uniti)..." autocomplete="off">
-            <div id="multi-country-dropdown" class="multi-country-dropdown"></div>
+          <div class="form-grid">
+            <!-- SELETTORE MULTI-PAESE / NAZIONI TOCCATE -->
+            <div class="form-group col-span-2">
+              <label class="form-label">
+                Nazione / Paese Visitato * <span class="text-muted">(Puoi selezionare più paesi per viaggi che toccano più stati)</span>
+              </label>
+              
+              <!-- Tag dei paesi selezionati -->
+              <div class="selected-countries-tags" id="selected-countries-container">
+                <span class="no-country-hint text-muted">Nessun paese selezionato. Clicca sotto per scegliere.</span>
+              </div>
+
+              <!-- Input di ricerca e pannello a scomparsa -->
+              <div class="multi-country-picker-wrap">
+                <div class="country-search-box">
+                  <span class="country-search-icon">🔍</span>
+                  <input type="text" class="form-control" id="country-search-input" placeholder="Cerca paese da aggiungere (es. Italia, Giappone, Spagna...)" autocomplete="off">
+                  <button type="button" class="btn btn-xs btn-outline" id="country-dropdown-toggle">Elenco Nazioni ▾</button>
+                </div>
+                
+                <div class="country-dropdown-panel" id="country-dropdown-panel" style="display: none;">
+                  <div class="country-options-list" id="country-options-list">
+                    <!-- Popolato dinamicamente da JS con checkbox e bandiere -->
+                  </div>
+                </div>
+              </div>
+              <span class="form-hint">Tutti i paesi selezionati verranno evidenziati sulla mappa interattiva del mondo!</span>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="trip-city-input">Città Esplorata/e *</label>
+              <input type="text" class="form-control" id="trip-city-input" placeholder="es. Tokyo, Kyoto" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="trip-flag-input">Bandiere Emoji (generate in autonomia)</label>
+              <input type="text" class="form-control" id="trip-flag-input" placeholder="Auto-generate es. 🇩🇴 🇫🇷 🇯🇵" maxlength="60">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="trip-start-date">Data Inizio *</label>
+              <input type="date" class="form-control" id="trip-start-date" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="trip-end-date">Data Fine *</label>
+              <input type="date" class="form-control" id="trip-end-date" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="trip-status-select">Stato del Viaggio</label>
+              <select class="form-control" id="trip-status-select">
+                <option value="auto">⏳ Automatico (in base alla data odierna)</option>
+                <option value="upcoming">🗓️ In Programma (Futuro)</option>
+                <option value="completed">✅ Già Effettuato (Passato)</option>
+              </select>
+              <span class="form-hint">Se impostato su automatico, date future diventano viaggi in programma.</span>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="trip-duration">Durata (Giorni)</label>
+              <input type="number" class="form-control" id="trip-duration" placeholder="Calcolata in automatico" min="1">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="trip-companions">Con Chi Hai Viaggiato? *</label>
+              <input type="text" class="form-control" id="trip-companions" placeholder="es. In solitaria, Con gli amici..." required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="trip-category-input">Tipologia</label>
+              <select class="form-control" id="trip-category-input">
+                <option value="Culturale">Culturale</option>
+                <option value="On The Road">On The Road</option>
+                <option value="Avventura">Avventura</option>
+                <option value="Metropoli">Metropoli</option>
+                <option value="Volo & Soggiorno">Volo & Soggiorno</option>
+                <option value="Weekend Natalizio">Weekend Natalizio</option>
+                <option value="Mare & Isole">Mare & Isole</option>
+              </select>
+            </div>
+
+            <div class="form-group col-span-2">
+              <label class="form-label" for="trip-image-url">Immagine Copertina (URL)</label>
+              <input type="url" class="form-control" id="trip-image-url" placeholder="https://images.unsplash.com/...">
+            </div>
+
+            <div class="form-group col-span-2">
+              <label class="form-label" for="trip-desc-input">Note & Memorie Personali</label>
+              <textarea class="form-control" id="trip-desc-input" rows="3" placeholder="I ricordi più belli di questa esperienza..."></textarea>
+            </div>
+
+            <div class="form-group col-span-2">
+              <label class="form-label" for="trip-highlights-input">Momenti Salienti (separati da virgola)</label>
+              <input type="text" class="form-control" id="trip-highlights-input" placeholder="Tramonto a Oia, Museo Louvre, Street food...">
+            </div>
           </div>
-          <div id="selected-countries-tags" class="selected-countries-tags"></div>
-          <small class="form-text-muted">Puoi selezionare più nazioni se la tappa tocca più destinazioni reali (escludendo gli scali aerei).</small>
         </div>
 
-        <div class="form-group">
-          <label for="trip-city-input">Città / Tappe Visitate *</label>
-          <input type="text" class="form-control" id="trip-city-input" placeholder="Es. Tokyo, Kyoto, Osaka" required>
-        </div>
-
-        <div class="form-group">
-          <label for="trip-status-select">Stato del Viaggio *</label>
-          <select class="custom-select w-100" id="trip-status-select">
-            <option value="auto">Rilevamento Automatico (In base alla Data)</option>
-            <option value="past">✅ Effettuato / Già Fatto</option>
-            <option value="upcoming">🗓️ In Programma (Futuro)</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="trip-start-date">Data Inizio *</label>
-          <input type="date" class="form-control" id="trip-start-date" required>
-        </div>
-
-        <div class="form-group">
-          <label for="trip-end-date">Data Fine *</label>
-          <input type="date" class="form-control" id="trip-end-date" required>
-        </div>
-
-        <div class="form-group">
-          <label for="trip-companions">Compagni di Viaggio</label>
-          <input type="text" class="form-control" id="trip-companions" placeholder="Es. In solitaria, Con amici, Con partner, Famiglia">
-        </div>
-
-        <div class="form-group">
-          <label for="trip-category-input">Tipologia di Viaggio</label>
-          <select class="custom-select w-100" id="trip-category-input">
-            <option value="Culturale">Culturale</option>
-            <option value="On The Road">On The Road</option>
-            <option value="Avventura">Avventura</option>
-            <option value="Metropoli">Metropoli</option>
-            <option value="Volo & Soggiorno">Volo & Soggiorno</option>
-          </select>
-        </div>
-
-        <div class="form-group col-span-2">
-          <label for="trip-image-url">Immagine di Copertina (URL)</label>
-          <input type="url" class="form-control" id="trip-image-url" placeholder="https://images.unsplash.com/photo-...">
-        </div>
-
-        <div class="form-group col-span-2">
-          <label for="trip-highlights-input">Momenti Salienti (separati da virgola)</label>
-          <input type="text" class="form-control" id="trip-highlights-input" placeholder="Es. Salita al Monte Fuji, Visita al mercato di Tsukiji">
-        </div>
-
-        <div class="form-group col-span-2">
-          <label for="trip-desc-input">Note & Memorie Personali</label>
-          <textarea class="form-control" id="trip-desc-input" rows="3" placeholder="I ricordi più belli di questa esperienza..."></textarea>
-        </div>
-
-        <input type="hidden" id="trip-flag-input">
-
-        <div class="modal-footer col-span-2">
+        <div class="modal-footer">
           <button type="button" class="btn btn-outline" onclick="window.travelApp.closeAllModals()">Annulla</button>
           <button type="submit" class="btn btn-accent" id="trip-submit-btn">Salva Tappa 💾</button>
         </div>
@@ -372,6 +411,7 @@
 
   <!-- SCRIPTS -->
   <script src="js/tripadvisor_cities.js"></script>
+  <script src="js/sovereign_countries.js"></script>
   <script src="js/data.js"></script>
   <script src="js/travel_guide_helper.js"></script>
   <script src="js/app.js"></script>

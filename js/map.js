@@ -13,7 +13,9 @@ class TravelMap {
     this.geojsonLayer = null;
     this.markersLayer = null;
     this.visitedCountryCodes = new Set();
-    this.visitedCountriesMap = new Map(); // ISO -> Array di viaggi
+    this.upcomingCountryCodes = new Set();
+    this.visitedCountriesMap = new Map(); // ISO -> Array di viaggi passati / consolidati
+    this.upcomingCountriesMap = new Map(); // ISO -> Array di viaggi futuri / in programma
     this.cityMarkersMap = new Map(); // cityName -> { marker, city, lat, lng }
     this.activeContinent = "all";
     this.currentTileLayer = null;
@@ -57,8 +59,6 @@ class TravelMap {
     // Gruppo Layer per i Pin delle Città
     this.markersLayer = L.layerGroup().addTo(this.map);
 
-    this.upcomingCountryCodes = new Set();
-
     // Aggiorna l'elenco dei paesi visitati dai dati correnti
     this.refreshVisitedData();
 
@@ -88,8 +88,12 @@ class TravelMap {
     this.visitedCountryCodes.clear();
     this.upcomingCountryCodes.clear();
     this.visitedCountriesMap.clear();
+    this.upcomingCountriesMap.clear();
 
-    const trips = window.travelManager.getTrips();
+    const trips = (window.travelManager && typeof window.travelManager.getTrips === "function")
+      ? window.travelManager.getTrips()
+      : [];
+
     trips.forEach(trip => {
       const isUp = window.travelManager ? window.travelManager.isUpcoming(trip) : false;
       const codes = (trip.countryCodes && Array.isArray(trip.countryCodes) && trip.countryCodes.length > 0)
@@ -99,14 +103,17 @@ class TravelMap {
       codes.forEach(rawCode => {
         if (!rawCode) return;
         const code = rawCode.toUpperCase().trim();
-        if (!this.visitedCountriesMap.has(code)) {
-          this.visitedCountriesMap.set(code, []);
-        }
-        this.visitedCountriesMap.get(code).push(trip);
-
         if (isUp) {
+          if (!this.upcomingCountriesMap.has(code)) {
+            this.upcomingCountriesMap.set(code, []);
+          }
+          this.upcomingCountriesMap.get(code).push(trip);
           this.upcomingCountryCodes.add(code);
         } else {
+          if (!this.visitedCountriesMap.has(code)) {
+            this.visitedCountriesMap.set(code, []);
+          }
+          this.visitedCountriesMap.get(code).push(trip);
           this.visitedCountryCodes.add(code);
         }
       });
@@ -122,7 +129,7 @@ class TravelMap {
       });
     }
 
-    // Se un paese è già stato visitato nel passato, la priorità è "Visitato"
+    // Se un paese è già stato consolidato/visitato nel passato, la priorità assoluta è "Visitato"
     this.visitedCountryCodes.forEach(code => {
       this.upcomingCountryCodes.delete(code);
     });
@@ -154,11 +161,15 @@ class TravelMap {
     const code = this.getCountryCodeFromFeature(feature);
     if (code && this.visitedCountryCodes.has(code)) return true;
 
-    // Fallback su confronto nome paese
-    const name = (feature.properties.name || "").toLowerCase();
+    // Fallback su confronto nome paese verificando SOLO i viaggi passati / consolidati
+    const name = (feature.properties.name || "").toLowerCase().trim();
     for (const [vCode, trips] of this.visitedCountriesMap.entries()) {
       if (this.visitedCountryCodes.has(vCode)) {
-        if (trips.some(t => (t.country || "").toLowerCase().includes(name))) {
+        if (trips.some(t => {
+          if (window.travelManager && window.travelManager.isUpcoming(t)) return false;
+          const cName = (t.country || "").toLowerCase().trim();
+          return cName === name;
+        })) {
           return true;
         }
       }
@@ -167,13 +178,20 @@ class TravelMap {
   }
 
   isCountryUpcoming(feature) {
+    // Se la nazione è già consolidata / visitata, ha priorità assoluta il colore visitato
+    if (this.isCountryVisited(feature)) return false;
+
     const code = this.getCountryCodeFromFeature(feature);
     if (code && this.upcomingCountryCodes.has(code)) return true;
 
-    const name = (feature.properties.name || "").toLowerCase();
-    for (const [vCode, trips] of this.visitedCountriesMap.entries()) {
-      if (this.upcomingCountryCodes.has(vCode)) {
-        if (trips.some(t => (t.country || "").toLowerCase().includes(name))) {
+    const name = (feature.properties.name || "").toLowerCase().trim();
+    for (const [uCode, trips] of this.upcomingCountriesMap.entries()) {
+      if (this.upcomingCountryCodes.has(uCode)) {
+        if (trips.some(t => {
+          if (window.travelManager && !window.travelManager.isUpcoming(t)) return false;
+          const cName = (t.country || "").toLowerCase().trim();
+          return cName === name;
+        })) {
           return true;
         }
       }
@@ -229,7 +247,9 @@ class TravelMap {
     const isUpcoming = !isVisited && this.isCountryUpcoming(feature);
     const countryName = feature.properties.name || "Nazione";
     const code = this.getCountryCodeFromFeature(feature);
-    const trips = this.visitedCountriesMap.get(code) || [];
+    const trips = isVisited
+      ? (this.visitedCountriesMap.get(code) || [])
+      : (this.upcomingCountriesMap.get(code) || []);
 
     // Costruzione badge e stato tooltip
     let badgeClass = "badge-unvisited";

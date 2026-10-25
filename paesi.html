@@ -129,9 +129,9 @@
        FOOTER
        ====================================================================== -->
   <footer class="footer">
-    <div class="container footer-content">
+    <div class="container">
       <div class="footer-grid">
-        <div class="footer-col">
+        <div class="footer-brand">
           <div class="brand-logo mb-2">
             <div class="brand-avatar"><img src="assets/logo-monogram.png" alt="R" class="brand-avatar-img"></div>
             <div class="brand-text">
@@ -140,36 +140,42 @@
             </div>
           </div>
           <p class="footer-desc">
-            Tracciamento cartografico dei paesi visitati e delle rotte mondiali esplorate.
+            Diario di viaggio personale, archivio cartografico e rotte dei voli.
           </p>
         </div>
 
-        <div class="footer-col">
-          <h4 class="footer-col-title">Navigazione Diretta</h4>
-          <ul class="footer-links">
+        <div class="footer-nav">
+          <h5>Navigazione</h5>
+          <ul>
             <li><a href="index.html#home">Home Page</a></li>
-            <li><a href="index.html#mappa">Mappa Interattiva</a></li>
-            <li><a href="paesi.html">Paesi Già Visitati (49)</a></li>
+            <li><a href="index.html#mappa">Mappa del Mondo</a></li>
+            <li><a href="paesi.html">Paesi Visitati (49)</a></li>
             <li><a href="paesi-non-visitati.html" style="color: var(--accent); font-weight: 600;">Paesi Non Ancora Visitati (146)</a></li>
-            <li><a href="viaggi.html?tab=past">Archivio Viaggi Passati</a></li>
-            <li><a href="citta.html">Tutte le Città</a></li>
             <li><a href="statistiche.html">Percentuale Mondo Esplorato</a></li>
             <li><a href="continenti.html">Mappa dei Continenti</a></li>
+            <li><a href="viaggi.html?tab=upcoming">Next Stop</a></li>
+            <li><a href="viaggi.html?tab=past">Archivio Viaggi Passati</a></li>
+            <li><a href="citta.html">Città Esplorate</a></li>
+            <li><a href="wishlist.html">Wish List</a></li>
+            <li><a href="chi-sono.html">Chi Sono</a></li>
           </ul>
         </div>
 
-        <div class="footer-col">
-          <h4 class="footer-col-title">Azioni Rapide</h4>
-          <div class="footer-actions-group">
-            <button class="btn btn-sm btn-outline w-100 mb-2" onclick="window.travelApp.openAddTripModal()">
-              <span>+</span> Aggiungi Nuova Tappa
+        <div class="footer-backup">
+          <h5>Gestione Tappe</h5>
+          <div class="backup-buttons">
+            <button class="btn btn-accent btn-sm w-100" onclick="window.travelApp ? (window.travelApp.openImportModal ? window.travelApp.openImportModal('flighty') : window.location.href='index.html#mappa') : window.location.href='index.html#mappa'">
+              📥 Importa da Flighty / TripAdvisor
             </button>
-            <button class="btn btn-sm btn-outline w-100" onclick="window.travelApp.exportDataAsJson()">
-              💾 Scarica Backup (JSON)
+            <button class="btn btn-outline btn-sm w-100" onclick="window.travelApp ? (window.travelApp.exportData ? window.travelApp.exportData() : (window.travelApp.exportDataAsJson ? window.travelApp.exportDataAsJson() : null)) : null">
+              💾 Esporta Backup (JSON)
             </button>
-            <!-- Palette Colore del Sito -->
-            <div class="footer-theme-picker-block" style="margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--border-subtle);">
-              <span style="display: block; font-size: 0.74rem; color: var(--text-muted); margin-bottom: 6px;">🎨 Palette Colore:</span>
+            <button class="btn btn-icon btn-danger btn-sm w-100 mt-2" onclick="window.travelApp ? window.travelApp.confirmClearAllTrips() : null">
+              🗑️ Cancella Tutte le Tappe
+            </button>
+            <!-- Selettore Palette Colori del Sito -->
+            <div class="footer-theme-picker-block" style="margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--border-subtle); text-align: left;">
+              <span style="display: block; font-size: 0.76rem; color: var(--text-muted); margin-bottom: 8px; font-weight: 500;">🎨 Palette Colore del Sito:</span>
               <div class="theme-picker" title="Scegli la tonalità colore della mappa e del sito">
                 <span class="theme-dot theme-dot-gold active" data-theme="gold" onclick="window.travelApp.setTheme('gold')" title="Oro Monogramma R (Colore Principale)"></span>
                 <span class="theme-dot theme-dot-silver" data-theme="silver" onclick="window.travelApp.setTheme('silver')" title="Argento Puro (Argentata)"></span>
@@ -185,8 +191,8 @@
       </div>
 
       <div class="footer-bottom">
-        <p>&copy; 2026 Giuseppe Ricatti. Tutti i diritti riservati.</p>
-        <span class="privacy-note">Dati personali archiviati in locale nel tuo browser.</span>
+        <p>© 2024 Giuseppe Ricatti • Tutti i diritti riservati.</p>
+        <p>Design minimalista scuro con supporto integrato Flighty & TripAdvisor.</p>
       </div>
     </div>
   </footer>

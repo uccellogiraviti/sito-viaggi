@@ -602,6 +602,12 @@ class TravelApp {
         this.renderCountryOptions(searchInput.value);
         if (panel) panel.style.display = "block";
       });
+      searchInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          this.addCountriesFromSearch(searchInput.value);
+        }
+      });
     }
 
     if (toggleBtn && panel) {
@@ -621,8 +627,55 @@ class TravelApp {
     this.renderSelectedCountryTags();
   }
 
+  addCountriesFromSearch(query) {
+    if (!query) return;
+    const all = window.getAllWorldCountries ? window.getAllWorldCountries() : [];
+    const q = query.trim().toLowerCase();
+    const parts = q.split(/[,&/+]|\be\b|\band\b|\bcon\b|\s+/i).map(s => s.trim()).filter(s => s.length > 1);
+    
+    const matched = [];
+    parts.forEach(part => {
+      const found = all.find(c => {
+        const cName = c.name.toLowerCase();
+        return cName === part || cName.startsWith(part) || (c.code && c.code.toLowerCase() === part);
+      });
+      if (found && !matched.some(m => m.code === found.code)) {
+        matched.push(found);
+      }
+    });
+
+    if (matched.length > 0) {
+      matched.forEach(c => {
+        if (!this.selectedCountries.some(sc => sc.code.toUpperCase() === c.code.toUpperCase())) {
+          this.selectedCountries.push(c);
+        }
+      });
+      this.updateFlagInputFromSelectedCountries();
+      this.renderSelectedCountryTags();
+      const searchInput = document.getElementById("country-search-input");
+      if (searchInput) searchInput.value = "";
+      this.renderCountryOptions("");
+    }
+  }
+
+  addMultipleCountries(codes) {
+    if (!Array.isArray(codes)) return;
+    const all = window.getAllWorldCountries ? window.getAllWorldCountries() : [];
+    codes.forEach(code => {
+      const c = all.find(item => item.code.toUpperCase() === code.toUpperCase());
+      if (c && !this.selectedCountries.some(sc => sc.code.toUpperCase() === c.code.toUpperCase())) {
+        this.selectedCountries.push(c);
+      }
+    });
+    this.updateFlagInputFromSelectedCountries();
+    this.renderSelectedCountryTags();
+    const searchInput = document.getElementById("country-search-input");
+    if (searchInput) searchInput.value = "";
+    this.renderCountryOptions("");
+  }
+
   renderSelectedCountryTags() {
-    const container = document.getElementById("selected-countries-container");
+    const container = document.getElementById("selected-countries-container") || document.getElementById("selected-countries-tags");
     if (!container) return;
 
     if (this.selectedCountries.length === 0) {
@@ -650,17 +703,50 @@ class TravelApp {
     const allCountries = window.getAllWorldCountries();
     const q = query.toLowerCase().trim();
 
+    // Rilevamento intelligente di più nazioni digitate insieme (es. "Spagna e Portogallo")
+    let multiDetected = [];
+    if (q.length > 2) {
+      const parts = q.split(/[,&/+]|\be\b|\band\b|\bcon\b|\s+/i).map(s => s.trim()).filter(s => s.length > 1);
+      if (parts.length > 1) {
+        parts.forEach(part => {
+          const match = allCountries.find(c => {
+            const cName = c.name.toLowerCase();
+            return cName === part || cName.startsWith(part) || (c.code && c.code.toLowerCase() === part);
+          });
+          if (match && !multiDetected.some(m => m.code === match.code)) {
+            multiDetected.push(match);
+          }
+        });
+      }
+    }
+
     const filtered = allCountries.filter(c => {
       return c.name.toLowerCase().includes(q) || c.code.toLowerCase().includes(q);
     });
 
-    if (filtered.length === 0) {
+    if (filtered.length === 0 && multiDetected.length === 0) {
       listContainer.innerHTML = `<div style="padding: 12px; color: var(--text-muted); font-size: 0.82rem;">Nessun paese trovato con "${query}".</div>`;
       return;
     }
 
     let html = "";
-    filtered.slice(0, 50).forEach(c => {
+    if (multiDetected.length > 1) {
+      const codesJson = JSON.stringify(multiDetected.map(c => c.code)).replace(/"/g, '&quot;');
+      html += `
+        <div style="background: rgba(108, 92, 231, 0.16); border: 1px solid var(--accent); border-radius: 8px; padding: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+          <div>
+            <div style="font-size: 0.82rem; font-weight: 700; color: #fff;">🌍 Rilevate ${multiDetected.length} Nazioni:</div>
+            <div style="font-size: 0.78rem; color: var(--text-muted);">${multiDetected.map(c => `${c.flag || '📍'} ${c.name}`).join(', ')}</div>
+          </div>
+          <button type="button" class="btn btn-xs btn-primary" onclick="window.travelApp.addMultipleCountries(${codesJson})">
+            ➕ Aggiungi Tutte
+          </button>
+        </div>
+      `;
+    }
+
+    const displayList = filtered.length > 0 ? filtered : multiDetected;
+    displayList.slice(0, 50).forEach(c => {
       const isSelected = this.selectedCountries.some(sc => sc.code.toUpperCase() === c.code.toUpperCase());
       html += `
         <div class="country-option-item ${isSelected ? 'selected' : ''}" onclick="window.travelApp.toggleCountry('${c.code}')">
@@ -676,6 +762,26 @@ class TravelApp {
     listContainer.innerHTML = html;
   }
 
+  updateFlagInputFromSelectedCountries() {
+    const flagInput = document.getElementById("trip-flag-input");
+    if (!flagInput) return;
+    if (!this.selectedCountries || this.selectedCountries.length === 0) {
+      flagInput.value = "📍";
+      return;
+    }
+    const flags = [];
+    this.selectedCountries.forEach(c => {
+      let f = c.flag;
+      if (!f || f === "📍") {
+        f = window.getCountryFlagByName ? (window.getCountryFlagByName(c.name) || window.getCountryFlagByName(c.code)) : null;
+      }
+      if (f && f !== "📍" && !flags.includes(f)) {
+        flags.push(f);
+      }
+    });
+    flagInput.value = flags.length > 0 ? flags.join(" ") : (this.selectedCountries[0]?.flag || "📍");
+  }
+
   toggleCountry(countryCode) {
     const code = countryCode.toUpperCase();
     const existingIndex = this.selectedCountries.findIndex(c => c.code.toUpperCase() === code);
@@ -683,18 +789,15 @@ class TravelApp {
     if (existingIndex !== -1) {
       this.selectedCountries.splice(existingIndex, 1);
     } else {
-      const allCountries = window.getAllWorldCountries();
+      const allCountries = window.getAllWorldCountries ? window.getAllWorldCountries() : [];
       const match = allCountries.find(c => c.code.toUpperCase() === code);
       if (match) {
         this.selectedCountries.push(match);
-        // Pre-popola automaticamente la bandiera se il campo è vuoto
-        const flagInput = document.getElementById("trip-flag-input");
-        if (flagInput && (!flagInput.value || flagInput.value === "📍")) {
-          flagInput.value = match.flag || "📍";
-        }
       }
     }
 
+    // Auto-aggiornamento autonomo e immediato delle bandierine per tutte le nazioni selezionate
+    this.updateFlagInputFromSelectedCountries();
     this.renderSelectedCountryTags();
     const searchInput = document.getElementById("country-search-input");
     this.renderCountryOptions(searchInput ? searchInput.value : "");
@@ -703,6 +806,8 @@ class TravelApp {
   removeCountry(countryCode) {
     const code = countryCode.toUpperCase();
     this.selectedCountries = this.selectedCountries.filter(c => c.code.toUpperCase() !== code);
+    // Auto-aggiornamento autonomo e immediato delle bandierine
+    this.updateFlagInputFromSelectedCountries();
     this.renderSelectedCountryTags();
     const searchInput = document.getElementById("country-search-input");
     this.renderCountryOptions(searchInput ? searchInput.value : "");
@@ -907,7 +1012,7 @@ class TravelApp {
     const highlightsHtml = (trip.highlights && trip.highlights.length > 0)
       ? `<div class="trip-highlights">
           <span class="highlights-title">Momenti salienti:</span>
-          <ul>${trip.highlights.slice(0, 3).map(h => `<li>${h}</li>`).join('')}</ul>
+          <ul>${trip.highlights.map(h => `<li>${h}</li>`).join('')}</ul>
          </div>`
       : '';
 
@@ -962,24 +1067,28 @@ class TravelApp {
           ${highlightsHtml}
 
           <div class="trip-card-footer">
-            <div class="badges-row">
-              ${durationBadge}
-              <span class="badge badge-continent">${trip.continent || 'Mondo'}</span>
+            <div class="trip-card-footer-top">
+              <div class="badges-row">
+                ${durationBadge}
+                <span class="badge badge-continent">${trip.continent || 'Mondo'}</span>
+              </div>
+              <div class="trip-card-icon-actions">
+                <button class="btn btn-icon trip-action-icon-btn" title="Mostra posizione sulla Mappa" onclick="event.stopPropagation(); window.travelApp.scrollToMapLocation(${primaryCoords[0]}, ${primaryCoords[1]}, '${trip.mainCity || trip.country}')">
+                  🗺️
+                </button>
+                <button class="btn btn-sm btn-outline trip-action-edit-btn" title="Modifica Scheda di Viaggio" onclick="event.stopPropagation(); window.travelApp.openEditTripModal('${trip.id}')">
+                  ✏️ Modifica
+                </button>
+                <button class="btn btn-icon btn-danger trip-action-icon-btn" title="Elimina Scheda dal Diario" onclick="event.stopPropagation(); window.travelApp.confirmDeleteTrip('${trip.id}')">
+                  🗑️
+                </button>
+              </div>
             </div>
 
-            <div class="trip-card-actions">
+            <div class="trip-card-footer-cta">
               <a href="${detailUrl}" class="btn ${isUpcoming ? 'btn-accent' : 'btn-outline'} btn-sm trip-cta-btn">
                 ${buttonActionLabel}
               </a>
-              <button class="btn btn-icon" title="Mostra sulla Mappa Home" onclick="window.travelApp.scrollToMapLocation(${primaryCoords[0]}, ${primaryCoords[1]}, '${trip.mainCity || trip.country}')">
-                🗺️
-              </button>
-              <button class="btn btn-icon" title="Modifica Scheda" onclick="window.travelApp.openEditTripModal('${trip.id}')">
-                ✏️
-              </button>
-              <button class="btn btn-icon btn-danger" title="Elimina Scheda" onclick="window.travelApp.confirmDeleteTrip('${trip.id}')">
-                🗑️
-              </button>
             </div>
           </div>
         </div>
@@ -1040,6 +1149,8 @@ class TravelApp {
   openEditTripModal(tripId) {
     if (!this.requireAuth("modificare questa scheda di viaggio")) return;
     this._tripModalAuthorized = true;
+    const tripForm = document.getElementById("trip-modal-form");
+    if (tripForm) tripForm.dataset.authorized = "true";
     if (!window.travelManager) return;
     const trips = window.travelManager.getTrips();
     const trip = trips.find(t => t.id === tripId);
@@ -1049,9 +1160,20 @@ class TravelApp {
     }
 
     this.editingTripId = tripId;
-    document.getElementById("modal-trip-title").textContent = `Modifica Tappa: ${trip.country}`;
-    document.getElementById("trip-id-hidden").value = trip.id;
-    document.getElementById("trip-submit-btn").textContent = "Aggiorna Modifiche 💾";
+
+    // Helper sicuri per evitare TypeError se qualche elemento del DOM manca nella pagina corrente
+    const setText = (id, text) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = text;
+    };
+    const setVal = (id, val) => {
+      const el = document.getElementById(id);
+      if (el) el.value = (val !== undefined && val !== null) ? val : "";
+    };
+
+    setText("modal-trip-title", `Modifica Tappa: ${trip.country || trip.city || 'Viaggio'}`);
+    setVal("trip-id-hidden", trip.id);
+    setText("trip-submit-btn", "Aggiorna Modifiche 💾");
 
     // 1. Ripristina Nazioni Selezionate (Multi-Country)
     this.selectedCountries = [];
@@ -1059,7 +1181,7 @@ class TravelApp {
 
     const codes = (trip.countryCodes && Array.isArray(trip.countryCodes) && trip.countryCodes.length > 0)
       ? trip.countryCodes
-      : [trip.countryCode];
+      : (trip.countryCode ? [trip.countryCode] : []);
 
     codes.forEach(cCode => {
       if (!cCode) return;
@@ -1071,16 +1193,21 @@ class TravelApp {
       }
     });
 
-    // Se non trovata per codice, cerca per nome paese
-    if (this.selectedCountries.length === 0 && trip.country) {
-      const names = trip.country.split(",").map(n => n.trim().toLowerCase());
-      names.forEach(n => {
-        const found = allWorld.find(c => c.name.toLowerCase() === n);
-        if (found && !this.selectedCountries.some(sc => sc.code === found.code)) {
-          this.selectedCountries.push(found);
-        }
-      });
+    // Cerca anche in trip.country (es. "Spagna e Portogallo", "Francia & Germania") e trip.countries
+    const rawCountryNames = [];
+    if (trip.country) {
+      trip.country.split(/[,&/+]|\be\b|\band\b/i).forEach(n => rawCountryNames.push(n.trim().toLowerCase()));
     }
+    if (Array.isArray(trip.countries)) {
+      trip.countries.forEach(n => rawCountryNames.push(String(n).trim().toLowerCase()));
+    }
+    rawCountryNames.forEach(n => {
+      if (!n) return;
+      const found = allWorld.find(c => c.name.toLowerCase() === n || c.name.toLowerCase().startsWith(n));
+      if (found && !this.selectedCountries.some(sc => sc.code.toUpperCase() === found.code.toUpperCase())) {
+        this.selectedCountries.push(found);
+      }
+    });
 
     // Fallback se ancora vuota
     if (this.selectedCountries.length === 0) {
@@ -1094,47 +1221,138 @@ class TravelApp {
 
     this.renderSelectedCountryTags();
 
-    // 2. Pre-popola tutti i campi del form
-    document.getElementById("trip-city-input").value = trip.city || "";
-    document.getElementById("trip-flag-input").value = trip.flag || "📍";
-    document.getElementById("trip-start-date").value = trip.startDate || "";
-    document.getElementById("trip-end-date").value = trip.endDate || "";
-    document.getElementById("trip-duration").value = trip.durationDays || "";
-    document.getElementById("trip-companions").value = trip.companions || "";
-    document.getElementById("trip-category-input").value = trip.category || "Culturale";
-    document.getElementById("trip-status-select").value = trip.status || "auto";
-    document.getElementById("trip-image-url").value = trip.imageUrl || "";
-    document.getElementById("trip-desc-input").value = trip.description || "";
-    document.getElementById("trip-highlights-input").value = (trip.highlights || []).join(", ");
+    // 2. Pre-popola tutti i campi del form con null-safety totale
+    setVal("trip-city-input", trip.city || "");
+    
+    // Auto-popolamento autonomo e intelligente delle bandierine di tutte le nazioni della scheda
+    this.updateFlagInputFromSelectedCountries();
+    const currentFlagInput = document.getElementById("trip-flag-input");
+    const resolvedFlags = window.getTripFlags ? window.getTripFlags(trip) : trip.flag;
+    if (currentFlagInput && resolvedFlags && resolvedFlags !== "📍") {
+      currentFlagInput.value = resolvedFlags;
+    }
 
-    document.getElementById("modal-trip").classList.add("active");
+    setVal("trip-start-date", trip.startDate || "");
+    setVal("trip-end-date", trip.endDate || "");
+    setVal("trip-duration", trip.durationDays || "");
+    setVal("trip-companions", trip.companions || "");
+    
+    const catSelect = document.getElementById("trip-category-input");
+    if (catSelect) {
+      const hasCat = Array.from(catSelect.options).some(o => o.value === trip.category);
+      if (!hasCat && trip.category) {
+        const opt = document.createElement("option");
+        opt.value = trip.category;
+        opt.textContent = trip.category;
+        catSelect.appendChild(opt);
+      }
+      catSelect.value = trip.category || "Culturale";
+    }
+
+    setVal("trip-status-select", trip.status || "auto");
+    setVal("trip-image-url", trip.imageUrl || trip.coverImage || "");
+    setVal("trip-desc-input", trip.description || "");
+    setVal("trip-highlights-input", (trip.highlights || []).join(", "));
+
+    const modal = document.getElementById("modal-trip");
+    if (modal) {
+      modal.classList.add("active");
+    }
   }
 
   handleSaveTripForm() {
-    if (!this._tripModalAuthorized && !this.requireAuth("salvare o modificare questa tappa")) return;
+    const tripForm = document.getElementById("trip-modal-form");
+    const isAuth = this._tripModalAuthorized || (tripForm && tripForm.dataset.authorized === "true");
+    if (!isAuth && !this.requireAuth("salvare o modificare questa tappa")) return;
     this._tripModalAuthorized = false;
+    if (tripForm) tripForm.dataset.authorized = "false";
 
-    if (this.selectedCountries.length === 0) {
-      alert("Seleziona almeno una nazione per questa tappa.");
-      return;
-    }
+    // Helper sicuri di lettura input
+    const getVal = (id, fallback = "") => {
+      const el = document.getElementById(id);
+      return el ? (el.value !== undefined ? el.value : fallback) : fallback;
+    };
 
-    const cityName = document.getElementById("trip-city-input").value.trim();
-    const startDate = document.getElementById("trip-start-date").value;
-    const endDate = document.getElementById("trip-end-date").value;
-    const companions = document.getElementById("trip-companions").value.trim() || "In solitaria";
-    const category = document.getElementById("trip-category-input").value.trim() || "Culturale";
-    const status = document.getElementById("trip-status-select").value || "auto";
-    const imageUrl = document.getElementById("trip-image-url").value.trim() || "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1000&q=80";
-    const description = document.getElementById("trip-desc-input").value.trim();
-    const flag = document.getElementById("trip-flag-input").value.trim() || this.selectedCountries[0].flag || "📍";
-    const highlightsRaw = document.getElementById("trip-highlights-input").value.trim();
+    const cityName = getVal("trip-city-input").trim();
+    const startDate = getVal("trip-start-date");
+    const endDate = getVal("trip-end-date");
+    const companions = getVal("trip-companions").trim() || "In solitaria";
+    const category = getVal("trip-category-input").trim() || "Culturale";
+    const status = getVal("trip-status-select", "auto") || "auto";
+    const imageUrl = getVal("trip-image-url").trim() || "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1000&q=80";
+    const description = getVal("trip-desc-input").trim();
+    const highlightsRaw = getVal("trip-highlights-input").trim();
     const highlights = highlightsRaw ? highlightsRaw.split(",").map(h => h.trim()).filter(Boolean) : [];
 
-    // Nome unito dei paesi e codici
+    // Se per qualche motivo selectedCountries è vuoto, creiamo un fallback sicuro
+    if (!this.selectedCountries || this.selectedCountries.length === 0) {
+      const fallbackName = cityName.split(",")[0].trim() || "Destinazione";
+      const fallbackFlag = window.getCountryFlagByName ? (window.getCountryFlagByName(fallbackName) || "📍") : "📍";
+      this.selectedCountries = [{
+        name: fallbackName,
+        code: "WLD",
+        flag: fallbackFlag,
+        continent: "Europa"
+      }];
+    }
+
+    // Auto-generazione autonoma delle bandiere per tutte le nazioni visitate
+    let autoFlags = [];
+    this.selectedCountries.forEach(c => {
+      let f = c.flag;
+      if (!f || f === "📍") {
+        f = window.getCountryFlagByName ? (window.getCountryFlagByName(c.name) || window.getCountryFlagByName(c.code)) : null;
+      }
+      if (f && f !== "📍" && !autoFlags.includes(f)) {
+        autoFlags.push(f);
+      }
+    });
+
     const countryName = this.selectedCountries.map(c => c.name).join(", ");
     const countryCodes = this.selectedCountries.map(c => c.code.toUpperCase());
     const primaryCountry = this.selectedCountries[0];
+
+    // Se autoFlags è ancora vuoto, cerca di estrarre da countryName
+    if (autoFlags.length === 0 && window.extractFlagsFromCountryString) {
+      autoFlags = window.extractFlagsFromCountryString(countryName).flagsArray;
+    }
+
+    const inputFlag = getVal("trip-flag-input").trim();
+
+    // Raccoglie e combina tutte le bandierine in autonomia, sia dal selettore paesi sia dal campo bandiere (se modificato dall'utente)
+    const combinedFlags = [];
+    const addFlagUnique = (f) => {
+      if (!f || f === "📍") return;
+      const matches = String(f).match(/[\uD83C][\uDDE6-\uDDFF][\uD83C][\uDDE6-\uDDFF]/g);
+      if (matches && matches.length > 0) {
+        matches.forEach(m => {
+          if (!combinedFlags.includes(m)) combinedFlags.push(m);
+        });
+      } else if (typeof f === "string" && f.trim() && f.trim() !== "📍" && !combinedFlags.includes(f.trim())) {
+        combinedFlags.push(f.trim());
+      }
+    };
+
+    // Aggiungi prima da inputFlag (se l'utente ha modificato direttamente le bandiere nel campo)
+    if (inputFlag && inputFlag !== "📍") {
+      addFlagUnique(inputFlag);
+    }
+    // Aggiungi le bandiere delle nazioni selezionate
+    autoFlags.forEach(addFlagUnique);
+
+    // Se l'utente ha inserito una bandiera emoji nel campo che non corrisponde a una nazione già selezionata, collegala
+    if (window.getAllWorldCountries) {
+      const allW = window.getAllWorldCountries();
+      combinedFlags.forEach(fl => {
+        const matchC = allW.find(c => c.flag === fl);
+        if (matchC && !this.selectedCountries.some(sc => sc.code.toUpperCase() === matchC.code.toUpperCase())) {
+          this.selectedCountries.push(matchC);
+        }
+      });
+    }
+
+    const finalFlagStr = combinedFlags.length > 0 ? combinedFlags.join(" ") : (primaryCountry.flag || "📍");
+    const finalFlagsList = combinedFlags.length > 0 ? combinedFlags : [finalFlagStr];
 
     // Coordinate
     let coords = [41.9028, 12.4964];
@@ -1147,7 +1365,10 @@ class TravelApp {
 
     // Durata
     let durationDays = 1;
-    if (startDate && endDate) {
+    const durInput = parseInt(getVal("trip-duration"), 10);
+    if (!isNaN(durInput) && durInput > 0) {
+      durationDays = durInput;
+    } else if (startDate && endDate) {
       const s = new Date(startDate);
       const e = new Date(endDate);
       const diff = Math.round((e - s) / (1000 * 60 * 60 * 24)) + 1;
@@ -1159,7 +1380,8 @@ class TravelApp {
       countryCode: primaryCountry.code,
       countryCodes: countryCodes,
       countries: this.selectedCountries.map(c => c.name),
-      flag: flag,
+      flag: finalFlagStr,
+      flags: finalFlagsList,
       continent: primaryCountry.continent || "Europa",
       city: cityName || countryName,
       mainCity: mainCity,
@@ -1177,7 +1399,7 @@ class TravelApp {
 
     if (this.editingTripId) {
       window.travelManager.updateTrip(this.editingTripId, tripData);
-      this.showToast("Scheda modificata e aggiornata con successo! 💾");
+      this.showToast("Scheda modificata e salvata con successo! 💾");
     } else {
       window.travelManager.addTrip(tripData);
       this.showToast("Nuovo viaggio registrato con successo! ✈️");
@@ -1188,10 +1410,154 @@ class TravelApp {
     this.populateFilterOptions();
     this.renderGallery();
     this.renderCitiesSection();
+    if (typeof this.renderHomeDirectories === "function") {
+      this.renderHomeDirectories();
+    }
 
     if (window.travelMap) {
       window.travelMap.refreshMap();
       window.travelMap.flyToCoordinates(coords[0], coords[1], 6);
+    }
+  }
+
+  // ==========================================================================
+  // MODIFICA SCHEDA SINGOLA CITTÀ (PROTETTA DA PASSWORD: C4rl422022022!)
+  // Permette di personalizzare ciascuna delle 755 città con note, foto, rating e stato
+  // ==========================================================================
+  openEditCityModal(encodedCityName) {
+    const cityName = decodeURIComponent(encodedCityName);
+    if (!this.requireAuth(`modificare la scheda e le note della città di ${cityName}`)) return;
+    this._cityModalAuthorized = true;
+    const cityForm = document.getElementById("city-modal-form");
+    if (cityForm) cityForm.dataset.authorized = "true";
+
+    const cities = window.travelManager ? window.travelManager.getCities() : [];
+    const city = cities.find(c => (c.name || "").toLowerCase().trim() === cityName.toLowerCase().trim()) || {
+      name: cityName,
+      country: "",
+      region: "",
+      flag: "📍",
+      continent: "Europa",
+      status: "✅ Ci sono stato"
+    };
+
+    this.editingCityName = cityName;
+
+    const titleEl = document.getElementById("modal-city-title");
+    if (titleEl) titleEl.textContent = `✏️ Modifica Scheda Città: ${city.name}`;
+
+    const subEl = document.getElementById("modal-city-subtitle");
+    if (subEl) {
+      const reg = city.region ? `${city.region} • ` : "";
+      subEl.textContent = `${city.flag || '📍'} ${reg}${city.country || ''} (${city.continent || ''})`;
+    }
+
+    const nameHidden = document.getElementById("city-name-hidden");
+    if (nameHidden) nameHidden.value = city.name;
+
+    const statusSelect = document.getElementById("city-status-select");
+    if (statusSelect) {
+      statusSelect.value = city.customStatus || city.status || "✅ Ci sono stato";
+    }
+
+    const ratingSelect = document.getElementById("city-rating-select");
+    if (ratingSelect) {
+      ratingSelect.value = String(city.rating || 0);
+    }
+
+    const yearsInput = document.getElementById("city-years-input");
+    if (yearsInput) {
+      yearsInput.value = (city.years && Array.isArray(city.years)) ? city.years.join(", ") : (city.years || "");
+    }
+
+    const imageInput = document.getElementById("city-image-url");
+    const previewWrap = document.getElementById("city-image-preview-wrap");
+    const previewImg = document.getElementById("city-image-preview");
+    if (imageInput) {
+      imageInput.value = city.imageUrl || "";
+      if (city.imageUrl && previewWrap && previewImg) {
+        previewImg.src = city.imageUrl;
+        previewWrap.style.display = "block";
+      } else if (previewWrap) {
+        previewWrap.style.display = "none";
+      }
+    }
+
+    const attrInput = document.getElementById("city-attractions-input");
+    if (attrInput) {
+      attrInput.value = city.favoriteAttractions || "";
+    }
+
+    const notesInput = document.getElementById("city-notes-input");
+    if (notesInput) {
+      notesInput.value = city.notes || "";
+    }
+
+    const resetBtn = document.getElementById("city-reset-btn");
+    if (resetBtn) {
+      resetBtn.style.display = city.hasCustomData ? "inline-block" : "none";
+    }
+
+    const modal = document.getElementById("modal-city");
+    if (modal) modal.classList.add("active");
+  }
+
+  handleSaveCityForm() {
+    const cityForm = document.getElementById("city-modal-form");
+    const isAuth = this._cityModalAuthorized || (cityForm && cityForm.dataset.authorized === "true");
+    if (!isAuth && !this.requireAuth("salvare le modifiche a questa città")) return;
+    this._cityModalAuthorized = false;
+    if (cityForm) cityForm.dataset.authorized = "false";
+
+    const cityName = (document.getElementById("city-name-hidden")?.value || "").trim();
+    if (!cityName) return;
+
+    const status = document.getElementById("city-status-select")?.value || "✅ Ci sono stato";
+    const rating = parseInt(document.getElementById("city-rating-select")?.value, 10) || 0;
+    const yearsRaw = (document.getElementById("city-years-input")?.value || "").trim();
+    const imageUrl = (document.getElementById("city-image-url")?.value || "").trim();
+    const attractions = (document.getElementById("city-attractions-input")?.value || "").trim();
+    const notes = (document.getElementById("city-notes-input")?.value || "").trim();
+
+    const isFav = status.includes("Preferito") || rating === 5;
+
+    const cityData = {
+      status: status,
+      customStatus: status,
+      rating: rating,
+      years: yearsRaw ? yearsRaw.split(",").map(y => y.trim()).filter(Boolean) : [],
+      imageUrl: imageUrl,
+      favoriteAttractions: attractions,
+      notes: notes,
+      isFavorite: isFav
+    };
+
+    if (window.travelManager) {
+      window.travelManager.saveCustomCity(cityName, cityData);
+    }
+
+    this.showToast(`Scheda di ${cityName} salvata con successo! 🏙️💾`);
+    this.closeAllModals();
+    this.renderCitiesSection();
+    if (typeof this.renderHomeDirectories === "function") {
+      this.renderHomeDirectories();
+    }
+  }
+
+  handleResetCityCustom() {
+    const cityName = (document.getElementById("city-name-hidden")?.value || "").trim();
+    if (!cityName) return;
+
+    if (confirm(`Vuoi ripristinare la città di ${cityName} ai dati originali di TripAdvisor, rimuovendo foto e note personali?`)) {
+      if (window.travelManager) {
+        window.travelManager.deleteCustomCity(cityName);
+      }
+      this.showToast(`Personalizzazioni di ${cityName} ripristinate! 🔄`);
+      this.closeAllModals();
+      this.renderCitiesSection();
+      if (typeof this.renderHomeDirectories === "function") {
+        this.renderHomeDirectories();
+      }
     }
   }
 
@@ -1289,6 +1655,8 @@ class TravelApp {
       let statusBadge = "";
       if (city.isUpcomingOnly) {
         statusBadge = `<span class="badge-upcoming-countdown">🗓️ In Programma</span>`;
+      } else if (city.customStatus) {
+        statusBadge = `<span class="badge" style="background: rgba(212, 160, 23, 0.18); color: #e5b93b; border: 1px solid rgba(212, 160, 23, 0.4); font-weight: 600;">${city.customStatus}</span>`;
       } else if (city.isFavorite) {
         statusBadge = `<span class="badge" style="background: rgba(245, 158, 11, 0.2); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.4); font-weight: 600;">⭐ Preferito TripAdvisor</span>`;
       } else if (city.contributions && city.contributions > 0) {
@@ -1302,17 +1670,55 @@ class TravelApp {
       }
 
       const coords = city.coordinates || [0, 0];
-      const regionSub = city.region ? `<span style="opacity: 0.8; font-size: 0.8rem;">${city.region} • </span>` : "";
-
       const regionDisplay = city.region ? city.region : "Area Metropolitana";
 
+      // Copertina fotografica se presente
+      const coverHtml = city.imageUrl ? `
+        <div class="city-card-cover">
+          <img src="${city.imageUrl}" alt="${city.name}" loading="lazy">
+          ${city.rating ? `<span class="city-cover-rating">⭐ ${city.rating}/5</span>` : ''}
+        </div>
+      ` : '';
+
+      // Valutazione a stelle (se presente e senza foto cover)
+      const ratingHtml = (!city.imageUrl && city.rating) ? `
+        <div class="city-card-rating">
+          ${'⭐'.repeat(city.rating)} <span class="rating-num">(${city.rating}/5)</span>
+        </div>
+      ` : '';
+
+      // Luoghi del cuore
+      const attractionsHtml = city.favoriteAttractions ? `
+        <div class="city-card-attractions" title="Luoghi del Cuore: ${city.favoriteAttractions}">
+          <span>❤️ ${city.favoriteAttractions}</span>
+        </div>
+      ` : '';
+
+      // Note personali
+      const notesHtml = city.notes ? `
+        <div class="city-card-notes" title="Note personali">
+          <span>💬 "${city.notes}"</span>
+        </div>
+      ` : '';
+
+      const customBadge = city.hasCustomData ? `
+        <span class="badge-custom-city" title="Scheda modificata e personalizzata con i tuoi dati">✏️ Modificata</span>
+      ` : '';
+
+      const safeCityName = encodeURIComponent(city.name).replace(/'/g, "%27");
+      const safeCountry = encodeURIComponent(city.country || "").replace(/'/g, "%27");
+
       html += `
-        <div class="city-card">
+        <div class="city-card ${city.hasCustomData ? 'city-card-customized' : ''}">
           <div>
+            ${coverHtml}
             <div class="city-card-header">
               <span class="city-card-flag">${city.flag || "📍"}</span>
               <div class="city-card-info">
-                <h4>${city.name}</h4>
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px;">
+                  <h4>${city.name}</h4>
+                  ${customBadge}
+                </div>
                 <div class="city-geo-meta">
                   <span class="geo-tag geo-region" title="Regione / Stato / Territorio">🏛️ ${regionDisplay}</span>
                   <span class="geo-tag geo-country" title="Nazione">🏳️ ${city.country}</span>
@@ -1322,15 +1728,21 @@ class TravelApp {
             </div>
             <div class="city-card-meta">
               ${statusBadge}
+              ${ratingHtml}
             </div>
+            ${attractionsHtml}
+            ${notesHtml}
           </div>
 
           <div class="city-card-actions">
-            <button class="btn btn-xs btn-accent w-100" onclick="window.travelApp.scrollToMapLocation(${coords[0]}, ${coords[1]}, '${city.name}')">
+            <button class="btn btn-xs btn-accent" onclick="window.travelApp.scrollToMapLocation(${coords[0]}, ${coords[1]}, '${safeCityName}')" title="Centra sulla Mappa">
               🗺️ Mappa
             </button>
-            <button class="btn btn-xs btn-outline w-100" onclick="window.travelApp.filterGalleryByCity('${city.name}', '${city.country}')">
+            <button class="btn btn-xs btn-outline" onclick="window.travelApp.filterGalleryByCity('${safeCityName}', '${safeCountry}')" title="Cerca nel Diario">
               📖 Diario
+            </button>
+            <button class="btn btn-xs btn-outline trip-action-edit-btn city-action-edit-btn" onclick="window.travelApp.openEditCityModal('${safeCityName}')" title="Modifica Scheda di questa Città (Richiede Password)">
+              ✏️ Modifica
             </button>
           </div>
         </div>
@@ -1599,6 +2011,32 @@ class TravelApp {
       });
     }
 
+    // Form Modifica Città
+    const cityForm = document.getElementById("city-modal-form");
+    if (cityForm) {
+      cityForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        this.handleSaveCityForm();
+      });
+    }
+
+    const cityImgInput = document.getElementById("city-image-url");
+    if (cityImgInput) {
+      cityImgInput.addEventListener("input", (e) => {
+        const wrap = document.getElementById("city-image-preview-wrap");
+        const img = document.getElementById("city-image-preview");
+        if (wrap && img) {
+          const val = e.target.value.trim();
+          if (val.startsWith("http")) {
+            img.src = val;
+            wrap.style.display = "block";
+          } else {
+            wrap.style.display = "none";
+          }
+        }
+      });
+    }
+
     // Calcolo automatico durata
     const startInput = document.getElementById("trip-start-date");
     const endInput = document.getElementById("trip-end-date");
@@ -1826,7 +2264,8 @@ class TravelApp {
     this._tripModalAuthorized = false;
     this._wishModalAuthorized = false;
     this._importAuthorized = false;
-    document.querySelectorAll(".custom-modal").forEach(m => m.classList.remove("active"));
+    this._cityModalAuthorized = false;
+    document.querySelectorAll(".custom-modal, .modal").forEach(m => m.classList.remove("active"));
   }
 
   showToast(message) {
@@ -1955,6 +2394,8 @@ class TravelApp {
     if (window.travelMap) window.travelMap.refreshMap();
   }
 }
+
+window.TravelApp = TravelApp;
 
 // Inizializzazione Globale
 document.addEventListener("DOMContentLoaded", () => {
